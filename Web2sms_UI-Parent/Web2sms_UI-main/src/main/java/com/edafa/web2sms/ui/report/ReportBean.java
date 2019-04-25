@@ -29,6 +29,11 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
 import com.edafa.service.campaign.model.CampaignResult;
+import com.edafa.web2sms.reporting.service.model.CampaignAggregationReport;
+import com.edafa.web2sms.reporting.service.model.GetCountResult;
+import com.edafa.web2sms.reporting.service.model.HistoryReportSearch;
+import com.edafa.web2sms.reporting.service.model.ReportsResult;
+import com.edafa.web2sms.reporting.service.model.SMSReport;
 import com.edafa.web2sms.service.acc_manag.account.AccountManegementService;
 import com.edafa.web2sms.service.acc_manag.account.model.QuotaHistoryResult;
 import com.edafa.web2sms.service.acc_manag.model.AccManagUser;
@@ -36,12 +41,7 @@ import com.edafa.web2sms.service.acc_manag.model.AccountUserTrxInfo;
 import com.edafa.web2sms.service.acc_manag.model.QuotaHistory;
 import com.edafa.web2sms.service.campaign.CampaignManagementService;
 import com.edafa.web2sms.service.enums.ResponseStatus;
-import com.edafa.web2sms.service.model.CampaignAggregationReport;
-import com.edafa.web2sms.service.model.GetCountResult;
-import com.edafa.web2sms.service.model.HistoryReportSearch;
-import com.edafa.web2sms.service.model.ReportsResult;
 import com.edafa.web2sms.service.model.ResultStatus;
-import com.edafa.web2sms.service.model.SMSReport;
 import com.edafa.web2sms.service.model.SummaryReport;
 import com.edafa.web2sms.service.model.User;
 import com.edafa.web2sms.service.model.UserTrxInfo;
@@ -617,7 +617,7 @@ public class ReportBean {
 	}
 
 	public void populateList() {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		reportsList = new ArrayList<ReportObject>();
 		try {
 			Calendar c = Calendar.getInstance();
@@ -633,7 +633,10 @@ public class ReportBean {
 			userInfo.setTrxId(trxId);
 			user.setAccountId(userAcc.getAccount().getAccountId());
 			user.setUsername(userAcc.getUsername());
-			userInfo.setUser(user);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 
 			userLogger.info( "Getting report service port instance");
 
@@ -799,12 +802,15 @@ public class ReportBean {
 	}
 
 	public void readFileFromServer() {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		try {
 			String trxId = TrxId.getTrxId();
 			userInfo.setTrxId(trxId);
-			userInfo.setUser(user);
-	        ThreadContext.push(trxId);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
+			ThreadContext.push(trxId);
 //			userLogger.debug( "Setting session attributes ([name=campaignReportId,value=" + campaignId
 //					+ "][name=UserInfo,value=" + userInfo.getTrxId() + ",details=[user_name="
 //					+ userInfo.getUser().getUsername() + ",account_id=" + userInfo.getUser().getAccountId() + "]])");
@@ -830,11 +836,17 @@ public class ReportBean {
 	}
 
 	public void PDF() {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		try {
 			String trxId = TrxId.getTrxId();
 			userInfo.setTrxId(trxId);
-			userInfo.setUser(user);
+//			userInfo.setUser(user);
+			user.setAccountId(userAcc.getAccount().getAccountId());
+			user.setUsername(userAcc.getUsername());
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 	        ThreadContext.push(trxId);
 			/*userLogger.debug(userLogInfo(user.getAccountId(), user.getUsername())
 					+ "Setting session attributes ([name=UserInfo,value=" + userInfo.getTrxId()
@@ -1019,14 +1031,17 @@ public class ReportBean {
 	}// end of method checkDate
 
 	public String loadReportsHistory() {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 
 		try {
 			String trxId = TrxId.getTrxId();
 			userInfo.setTrxId(trxId);
 			user.setAccountId(userAcc.getAccount().getAccountId());
 			user.setUsername(userAcc.getUsername());
-			userInfo.setUser(user);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 	        ThreadContext.push(trxId);
 			userLogger.info( "Getting report service port instance");
 
@@ -1393,14 +1408,17 @@ public class ReportBean {
 	}// end of method loadReportsHistory
 
 	public String loadSmsReportsHistory() {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 
 		try {
 			String trxId = TrxId.getTrxId();
 			userInfo.setTrxId(trxId);
 			user.setAccountId(userAcc.getAccount().getAccountId());
 			user.setUsername(userAcc.getUsername());
-			userInfo.setUser(user);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 	        ThreadContext.push(trxId);
 			userLogger.info("Getting sms api report service port instance");
 
@@ -1912,17 +1930,20 @@ public class ReportBean {
 
 	public void requestExportSMSapi() {
 
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		String trxId = TrxId.getTrxId();
 		String trxIdLog= logTrxId(trxId);
 
 		try {
 			userInfo.setTrxId(trxId);
-			userInfo.setUser(user);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 
 			userLogger.debug(trxIdLog + "Reuqsting detailed report for sms api with historyReportSearch: " +historyReportSearch);
 			reportServicePort = portObj.getReportServicePort();
-			ResultStatus result = reportServicePort.offlineGenerateDetailedSMSAPIReport(userInfo, historyReportSearch);
+			com.edafa.web2sms.reporting.service.model.ResultStatus result = reportServicePort.offlineGenerateDetailedSMSAPIReport(userInfo, historyReportSearch);
 			ResponseStatus status = result.getStatus();
 			switch (status) {
 				case SUCCESS:
@@ -2081,7 +2102,7 @@ public class ReportBean {
 	
 	
 	public void getRequestedReport() {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		requestedReports = new ArrayList<Reports>();
 		String trxId = TrxId.getTrxId();
 		String trxIdLog= logTrxId(trxId);
@@ -2090,7 +2111,10 @@ public class ReportBean {
 			userInfo.setTrxId(trxId);
 			user.setAccountId(userAcc.getAccount().getAccountId());
 			user.setUsername(userAcc.getUsername());
-			userInfo.setUser(user);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 			userLogger.info( trxIdLog + "getting requested reports paginated get_from_row_num=" + requestedReportsFirstRow + ",max_num_of_rows=" + requestedReportsRowsPerPage);
 
 			reportServicePort = portObj.getReportServicePort();
@@ -2183,17 +2207,20 @@ public class ReportBean {
 	}
 	
 	public void requestDetailedReportForCampaign(String campaignId) {
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		String trxId = TrxId.getTrxId();
 		String trxIdLog= logTrxId(trxId);
 
 		try {
 			userInfo.setTrxId(trxId);
-			userInfo.setUser(user);
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 
 			userLogger.debug(trxIdLog + "Reuqsting detailed report for campaign with id["+campaignId+"].");
 			reportServicePort = portObj.getReportServicePort();
-			ResultStatus result = reportServicePort.offlineGenerateDetailedCampaignReport(userInfo, campaignId);
+			com.edafa.web2sms.reporting.service.model.ResultStatus result = reportServicePort.offlineGenerateDetailedCampaignReport(userInfo, campaignId);
 			ResponseStatus status = result.getStatus();
 			switch (status) {
 				case SUCCESS:
@@ -2225,17 +2252,19 @@ public class ReportBean {
 
 	public void cancelReport(int reportId){
 
-		UserTrxInfo userInfo = new UserTrxInfo();
+		com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = new com.edafa.web2sms.reporting.service.model.UserTrxInfo();
 		String trxId = TrxId.getTrxId();
 		String trxIdLog= logTrxId(trxId);
 
 		try {
 			userInfo.setTrxId(trxId);
-			userInfo.setUser(user);
-
+			com.edafa.web2sms.reporting.service.model.User reportingUser = new com.edafa.web2sms.reporting.service.model.User();
+			reportingUser.setAccountId(userAcc.getAccount().getAccountId());
+			reportingUser.setUsername(userAcc.getUsername());
+			userInfo.setUser(reportingUser);
 			userLogger.debug(trxIdLog + "cancel the requested report  with id["+reportId+"].");
 			reportServicePort = portObj.getReportServicePort();
-			ResultStatus result = reportServicePort.cancelReport(userInfo, reportId);			
+			com.edafa.web2sms.reporting.service.model.ResultStatus result = reportServicePort.cancelReport(userInfo, reportId);			
 			ResponseStatus status = result.getStatus();
 			switch (status) {
 				case SUCCESS:

@@ -33,8 +33,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
 
+import com.edafa.web2sms.reporting.service.model.CampaignAggregationReport;
 import com.edafa.web2sms.service.enums.ResponseStatus;
-import com.edafa.web2sms.service.model.CampaignAggregationReport;
 import com.edafa.web2sms.service.model.UserTrxInfo;
 import com.edafa.web2sms.service.report.ReportManagementService;
 import com.edafa.web2sms.service.report.ReportResultSet;
@@ -58,7 +58,7 @@ public class DownloadPDFReport extends HttpServlet {
         AppErrorManagerAdapter appErrorManagerAdapter;
 	DownloadedFileInfo result;
 	InputStream input;
-	UserTrxInfo userInfo = null;
+	com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = null;
 	JasperPrint jasperPrint = new JasperPrint();
 	String startDate;
 	String endDate;
@@ -96,7 +96,7 @@ public class DownloadPDFReport extends HttpServlet {
 		String campaignId = "";
 		try {
 			HttpSession session = request.getSession();
-			userInfo = (UserTrxInfo) session.getAttribute("UserInfo2");
+			userInfo = (com.edafa.web2sms.reporting.service.model.UserTrxInfo) session.getAttribute("UserInfo2");
 			startDate = (String) session.getAttribute("fromDate");
 			endDate = (String) session.getAttribute("endDate");
 			campName = (String) session.getAttribute("CampName");

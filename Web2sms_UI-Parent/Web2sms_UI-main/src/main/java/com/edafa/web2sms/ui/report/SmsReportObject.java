@@ -1,6 +1,7 @@
 package com.edafa.web2sms.ui.report;
 
-import com.edafa.web2sms.service.model.SMSReport;
+import com.edafa.web2sms.reporting.service.model.SMSReport;
+
 
 public class SmsReportObject
 {

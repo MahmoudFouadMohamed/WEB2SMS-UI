@@ -16,9 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.ThreadContext;
-import com.edafa.web2sms.service.enums.ResponseStatus;
-import com.edafa.web2sms.service.model.FileTokenResult;
-import com.edafa.web2sms.service.model.HistoryReportSearch;
+
 import com.edafa.web2sms.service.model.UserReportRequest;
 import com.edafa.web2sms.service.model.UserTrxInfo;
 import com.edafa.web2sms.service.report.ReportManagementService;
@@ -28,7 +26,6 @@ import com.edafa.web2sms.utils.alarm.AppErrors;
 import com.edafa.web2sms.utils.configs.enums.Configs;
 import com.edafa.web2sms.utils.configs.enums.LoggersEnum;
 import com.edafa.web2sms.utils.file.DownloadedFileInfo;
-import com.edafa.web2sms.utils.file.FileDownloadClient;
 import com.edafa.web2sms.utils.file.XmlFileHttpClient;
 import com.sun.jersey.api.client.ClientResponse;
 

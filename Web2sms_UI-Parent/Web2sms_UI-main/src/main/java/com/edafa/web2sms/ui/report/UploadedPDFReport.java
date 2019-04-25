@@ -1,6 +1,6 @@
 package com.edafa.web2sms.ui.report;
 
-import com.edafa.web2sms.service.model.CampaignAggregationReport;
+import com.edafa.web2sms.reporting.service.model.CampaignAggregationReport;
 import com.edafa.web2sms.service.model.SummaryReport;
 
 public class UploadedPDFReport {

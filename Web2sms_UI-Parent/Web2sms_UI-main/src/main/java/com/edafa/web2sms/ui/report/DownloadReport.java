@@ -43,7 +43,7 @@ public class DownloadReport extends HttpServlet {
         AppErrorManagerAdapter appErrorManagerAdapter;
 	DownloadedFileInfo result;
 	InputStream input;
-	UserTrxInfo userInfo = null;
+	com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo = null;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
@@ -63,7 +63,7 @@ public class DownloadReport extends HttpServlet {
 			PrintWriter out = null;
 			HttpSession session = request.getSession();
 			campaignId = (String) session.getAttribute("campaignReportId");
-			userInfo = (UserTrxInfo) session.getAttribute("UserInfo");
+			userInfo = (com.edafa.web2sms.reporting.service.model.UserTrxInfo) session.getAttribute("UserInfo");
 			String trxId = userInfo.getTrxId();
 	        ThreadContext.push(trxId);
 			userLogger.info( "Get report service port, to generate detailed report of campaign id=" + campaignId);
@@ -75,7 +75,7 @@ public class DownloadReport extends HttpServlet {
 //			String ineligibleMessage = "You are ineligible to export report.";
 			String noDataMessage = "Sorry, There's no data for this campaign.";
 			
-			FileTokenResult token = reportServicePort.generateDetailedCampaignReport(userInfo, campaignId);
+			com.edafa.web2sms.reporting.service.model.FileTokenResult token = reportServicePort.generateDetailedCampaignReport(userInfo, campaignId);
 			ResponseStatus status = token.getStatus();
 			switch (status) {
 				case SUCCESS :
@@ -124,7 +124,7 @@ public class DownloadReport extends HttpServlet {
 		// TODO Auto-generated method stub
 	}
 
-	public void exportReport(UserTrxInfo userInfo, FileTokenResult token, HttpServletResponse response) throws IOException {
+	public void exportReport(com.edafa.web2sms.reporting.service.model.UserTrxInfo userInfo, com.edafa.web2sms.reporting.service.model.FileTokenResult token, HttpServletResponse response) throws IOException {
 		OutputStream output = null;
 		try {
 			FileDownloadClient fileDownload = new FileDownloadClient();
