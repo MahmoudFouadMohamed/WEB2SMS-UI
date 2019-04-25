@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VodaTemplate" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5af5e2f-92a3-4a67-ad27-c2c8b4ce5661">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="2"/>
+	<property name="ireport.y" value="252"/>
+	<style name="Style_1" mode="Opaque" forecolor="#FF0000" backcolor="#FFCCCC" hAlign="Center" vAlign="Middle" isBold="true" isUnderline="false"/>
+	<field name="campaignReportObj.startTimestamp" class="java.lang.String"/>
+	<field name="campaignReportObj.smsCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.listsCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.creationTimestamp" class="java.lang.String"/>
+	<field name="campaignReportObj.campaignName" class="java.lang.String"/>
+	<field name="campaignReportObj.smsSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.sender" class="java.lang.String"/>
+	<field name="campaignReportObj.submittedSMSSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.endTimestamp" class="java.lang.String"/>
+	<field name="campaignReportObj.deliverdSMSCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.deliverdSMSSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.pendingSMSCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.pendingSMSSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.unDeliverdSMSCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.unDeliverdSMSSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.failedSMSCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.failedSMSSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.campaignStatus" class="java.lang.Object"/>
+	<field name="grandTotal.deliverdSMSCount" class="java.lang.Integer"/>
+	<field name="grandTotal.deliverdSMSSegCount" class="java.lang.Integer"/>
+	<field name="grandTotal.unDeliverdSMSCount" class="java.lang.Integer"/>
+	<field name="grandTotal.unDeliverdSMSSegCount" class="java.lang.Integer"/>
+	<field name="grandTotal.pendingSMSCount" class="java.lang.Integer"/>
+	<field name="grandTotal.pendingSMSSegCount" class="java.lang.Integer"/>
+	<field name="grandTotal.failedSMSCount" class="java.lang.Integer"/>
+	<field name="grandTotal.failedSMSSegCount" class="java.lang.Integer"/>
+	<field name="campaignReportObj.smsText" class="java.lang.String"/>
+	<field name="campaignReportObj.frequency" class="java.lang.String"/>
+	<field name="listName" class="java.lang.String"/>
+	<field name="grandTotal.etSentSms" class="java.lang.Integer"/>
+	<field name="grandTotal.etDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.etNotDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.vfSentSms" class="java.lang.Integer"/>
+	<field name="grandTotal.vfDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.vfNotDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.ogSentSms" class="java.lang.Integer"/>
+	<field name="grandTotal.ogDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.ogNotDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.weSentSms" class="java.lang.Integer"/>
+	<field name="grandTotal.weDeliveredSms" class="java.lang.Integer"/>
+	<field name="grandTotal.weNotDeliveredSms" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="82" splitType="Stretch">
+			<image>
+				<reportElement x="-20" y="-21" width="166" height="64" uuid="92c983b2-1cab-4a59-a938-4063c13dd803"/>
+				<imageExpression><![CDATA["logo_Voda2.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Transparent" x="204" y="0" width="145" height="43" forecolor="#BF0B0B" uuid="4401b4da-72fe-4896-88bb-b61f46b17515"/>
+				<textElement verticalAlignment="Bottom">
+					<font fontName="Arial" size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SMS Report]]></text>
+			</staticText>
+			<image>
+				<reportElement x="180" y="17" width="24" height="26" uuid="de293153-e015-4cdd-a672-70e4f92b89ed"/>
+				<imageExpression><![CDATA["logo_Voda.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="8" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="84" height="17" uuid="2831df6c-d895-44a0-9ecb-6e63b96e9a6e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Campaign Name:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="2" y="17" width="84" height="17" forecolor="#F9F9F9" backcolor="#F21111" uuid="87773a1c-e30d-49e6-a983-ff1feec4921c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[StartDate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="86" y="17" width="97" height="17" forecolor="#F6F6F6" backcolor="#F21111" uuid="08843c18-5800-49b2-9a4b-61d8de5f847b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[EndDate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="183" y="17" width="85" height="17" forecolor="#FBF6F6" backcolor="#F21111" uuid="afd9a0e7-0b37-4de6-9b05-870719843000"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Type]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="268" y="17" width="134" height="17" forecolor="#FEFEFE" backcolor="#F21111" uuid="501c0134-650c-4d31-8edb-3a5388c787e9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Message]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="402" y="17" width="82" height="17" forecolor="#FAF3F3" backcolor="#F21111" uuid="95156779-4014-4422-9190-76e0f562c959"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="2" y="44" width="84" height="10" uuid="bf2164a1-d5c7-4dca-bacd-5b00d43cb784"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.startTimestamp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="86" y="44" width="97" height="10" uuid="05d3dd06-fe38-4271-985a-d0bb4ac7b5c8"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.endTimestamp}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="183" y="44" width="85" height="10" uuid="8c4b3e55-81f7-484f-9342-048ee2a813d6"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.frequency}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="268" y="44" width="134" height="10" uuid="cb1420c5-45aa-4467-92e4-60bb550b021e"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.smsText}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="402" y="44" width="82" height="10" uuid="9154830e-e316-4e8d-81e1-b1a856b6f959"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.campaignStatus}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="86" y="0" width="126" height="17" uuid="408451b3-8934-4ea9-b51d-3e474cbe72ff"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.campaignName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="484" y="17" width="70" height="17" forecolor="#FAF3F3" backcolor="#F21111" uuid="650a6699-e308-42f3-b852-b5b2a7f593df"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[List(s) Name  ]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="484" y="44" width="68" height="10" isPrintInFirstWholeBand="true" uuid="c87946ca-ea79-4fb6-aa16-88c263bd9e77"/>
+				<textElement textAlignment="Center">
+					<font fontName="Arial" size="8" pdfEncoding="Identity-H" isPdfEmbedded="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{listName}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="60">
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="2" y="5" width="84" height="17" uuid="c363f0b2-dbe4-47bb-8f75-d2a524517bdd"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Campaign Totals]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="22" width="54" height="14" uuid="e7bf0a47-a255-4e00-a7da-83064e584db8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Messages:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="2" y="36" width="54" height="14" uuid="889340e6-08bd-4808-aa02-8b6e6125702f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[SMSs:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="70" y="22" width="40" height="14" uuid="d2d0e98a-53bf-48c4-bb2e-ace8361988f0"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Delivered:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="156" y="22" width="54" height="14" uuid="69998ecb-22ea-4b3c-bf65-0b8858ea6c13"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Undelivered:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="210" y="22" width="31" height="14" uuid="05dfde09-1474-42aa-8418-ab0c51cf947f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.unDeliverdSMSCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="253" y="22" width="39" height="14" uuid="25d9a1f4-1ad2-4298-8fed-49a094ca5ab8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Pending:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="292" y="22" width="31" height="14" uuid="4365416b-55dc-45b7-a4a9-648450eb92da"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.pendingSMSCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="357" y="22" width="39" height="14" uuid="2ca134e5-a23b-43bf-b397-fc5b3e3156ef"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Failed:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="396" y="22" width="33" height="14" uuid="a782304b-4333-47cb-8218-0c337d24df8e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.failedSMSCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="70" y="36" width="40" height="14" uuid="788bf4ec-6f93-427c-bd21-0c1998e50924"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Delivered:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="110" y="36" width="31" height="14" uuid="dc61d128-6b5c-4b03-9075-63a9ee1d522d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.deliverdSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="156" y="36" width="54" height="14" uuid="f27d3cc9-1550-4d22-9ddd-898f79e7151f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Undelivered:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="210" y="36" width="31" height="14" uuid="817c0f96-34ac-4be8-a04b-1327ab5a45b2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.unDeliverdSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="253" y="36" width="39" height="14" uuid="80efa0ff-a9c7-4e83-8ba2-8fdaf3fa078c"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Pending:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="292" y="36" width="31" height="14" uuid="28e99c7d-7eba-4ae0-9d96-f4b28531b78f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.pendingSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="110" y="22" width="31" height="14" uuid="a032fe14-2775-4330-b37e-f92cda8675bf"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{campaignReportObj.deliverdSMSCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="357" y="36" width="39" height="14" uuid="98ead3ad-7f51-4311-a60e-59ba45f89ae9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Failed:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToBandHeight" x="396" y="36" width="31" height="14" uuid="c8d6e383-04e5-4bd8-b603-55184adb9b7f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.failedSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement stretchType="RelativeToTallestObject" x="0" y="53" width="550" height="1" uuid="913b6508-3aaf-41e2-8425-6a659fee34de"/>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#CBC4C4"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="47" splitType="Stretch">
+			<textField>
+				<reportElement x="-10" y="27" width="80" height="20" uuid="92b8427e-14b3-4eeb-8982-c0233c08fa41"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement x="70" y="27" width="40" height="20" uuid="ed81c05b-00c5-4446-97e7-9f7fa28bc977"/>
+				<textElement>
+					<font fontName="Arial"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="2" y="26" width="552" height="1" uuid="14899d3a-28b5-410f-9d40-e617e45fe97b"/>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="72">
+			<staticText>
+				<reportElement x="0" y="-3" width="84" height="17" uuid="9a642d89-d636-4910-8d77-031524693cb5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Grand Total]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="11" width="554" height="1" uuid="97be528b-1d60-4f8d-b8fd-cb43c974bc9b"/>
+				<graphicElement>
+					<pen lineStyle="Solid" lineColor="#CBC4C4"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="0" y="14" width="54" height="14" uuid="177cc882-070b-4efe-b407-ef1f4fc932aa"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Messages:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="31" width="54" height="14" uuid="711d8f8c-c8ae-4b99-a550-c372f00aed99"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[SMSs:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="14" width="40" height="14" uuid="5be83942-dd44-454c-9554-06c416852587"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Delivered:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="14" width="54" height="14" uuid="19aac4ed-c8de-4cee-9b14-df4f448ffcf8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Undelivered:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="15" width="39" height="14" uuid="0e88260d-ebdd-49f8-9578-9be4a6bd4294"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Pending:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="15" width="39" height="14" uuid="2ce9df12-5e48-4375-8806-9185469026cc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Failed:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="70" y="32" width="40" height="14" uuid="f518da33-13b5-4215-85dc-994c31828699"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Delivered:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="156" y="32" width="54" height="14" uuid="91677620-4f8f-4353-97e9-e9dfb4cd6ec9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Undelivered:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="255" y="33" width="39" height="14" uuid="39e2a38d-0c96-43e9-be94-1caf4d91a8a6"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Pending:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="353" y="32" width="39" height="14" uuid="bf82d8d9-97df-4990-a991-d27a4c4cd75a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Failed:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="110" y="14" width="31" height="14" uuid="3b75972d-557c-43c3-b798-d443d5d51432"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.deliverdSMSCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="110" y="32" width="31" height="14" uuid="ebb3a7fc-d010-4554-890f-b413128c36bc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.deliverdSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="209" y="14" width="31" height="14" uuid="c1735544-c157-45db-801f-d29522b4558e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.unDeliverdSMSCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="209" y="32" width="31" height="14" uuid="011190cd-a8b2-4c29-8dde-a613217296df"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.unDeliverdSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="294" y="15" width="31" height="14" uuid="ecf40020-89eb-4c66-8115-cea7e5569cba"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.pendingSMSCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="294" y="33" width="31" height="14" uuid="f66e1bd8-acad-4ce6-8997-b417d202a0a8"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.pendingSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="392" y="15" width="31" height="14" uuid="9d473933-f8ce-4632-bce6-3f41c3aea577"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.failedSMSCount}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="392" y="32" width="31" height="14" uuid="e3800526-85f3-4d2d-b5e4-21b660ea0c7b"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.failedSMSSegCount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="70" y="49" width="40" height="14" uuid="35596be3-3c69-46f1-8e45-cf9f8f81eaa5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Vodafone:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" isPrintRepeatedValues="false" x="110" y="49" width="31" height="14" uuid="6ab1bb34-c7a7-40fa-a9a4-87be93ae981e"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.vfNotDeliveredSms} + $F{grandTotal.vfDeliveredSms} + $F{grandTotal.vfSentSms}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="156" y="49" width="54" height="14" uuid="1c3c3054-810c-4b09-8aad-ba4d33d2dc1f"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Orange:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="209" y="49" width="31" height="14" uuid="31d5410a-fd6e-449a-8fbe-0bd6e2cb0582"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.ogNotDeliveredSms} + $F{grandTotal.ogDeliveredSms} +$F{grandTotal.ogSentSms}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="256" y="49" width="39" height="14" uuid="7c1a9ff9-cedc-40bd-ae7f-85622c09e1db"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[Etisalat:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="293" y="49" width="31" height="14" uuid="b0bba733-62ad-4dec-97f5-1a3cc598120d"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.etSentSms} + $F{grandTotal.etDeliveredSms} + $F{grandTotal.etNotDeliveredSms}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="354" y="48" width="39" height="14" uuid="8bd71754-a8b2-4d6e-9235-b8964af6dadc"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="8"/>
+				</textElement>
+				<text><![CDATA[WE:]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true">
+				<reportElement stretchType="RelativeToTallestObject" x="392" y="48" width="31" height="14" uuid="f6266b41-def9-4834-9c6a-0f6a8d79f9f2"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{grandTotal.weSentSms} + $F{grandTotal.weDeliveredSms} + $F{grandTotal.weNotDeliveredSms}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="-1" y="49" width="54" height="14" uuid="328e10bf-1900-4433-ac40-d0e081a208b3"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="9"/>
+				</textElement>
+				<text><![CDATA[Operators:]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

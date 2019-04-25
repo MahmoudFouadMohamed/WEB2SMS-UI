@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core">
+
+
+
+    <h:form class="logout-panel">
+        <script type="text/javascript">
+            function hideOverlayOnComplete(data) {
+                if (data.status === "complete") {
+                    hideoverlay('Change_User_Password');
+                }
+            }
+            function showChangePassword() {
+                showOverlay('Change_User_Password');
+                $('.old-pass').focus();
+            }
+        </script>
+        <div>
+        <h:panelGroup rendered="#{not loginBean.directLoginFlag}">
+            <a onclick="showChangePassword()">#{msgs.change_password}</a> | 
+            <h:commandLink class="logout-button" value="#{msgs.logout}" action="#{loginBean.logOut()}"/>
+         </h:panelGroup>
+        </div>
+    </h:form>
+
+    <h:form id="change-password">
+        <h:panelGroup id="form-panel">
+            <div class="overlayBG"></div>
+            <div class="overlaydiv" id="Change_User_Password">
+                <div class="overlayContainerOuter">
+                    <div class="overlayContainerInner">
+                        <div class="overlayContent" id="" style="left: 400px;">
+                            <h:panelGroup id="cancel-btn1" >
+                                <h:commandLink rendered="#{loginBean.logOutUser}" class="overlayClose overlayClose_iconed"  
+                                               onclick="hideOverlayOnComplete" action="#{loginBean.logOut()}"/>
+                            </h:panelGroup>
+                            <h:panelGroup id="cancel-btn2">
+                                <h:commandLink rendered="#{not loginBean.logOutUser}"  class="overlayClose overlayClose_iconed" 
+                                               actionListener="#{loginBean.cancelChangePassword}">
+                                    <f:ajax   onevent="hideOverlayOnComplete" render=":change-password:change-pass-form-panel :change-password:confirm-pass :change-password:error_mess :change-password:old-pass :change-password:new-pass :change-password:cancel-btn2"/>
+                                </h:commandLink>
+                            </h:panelGroup>
+                            <div class="modalDetails" style="display: block;">
+
+                                <h2>#{msgs.change_password}</h2>
+                                <hr class="deactivate_bundel_overlay_hrline" />
+
+                                <h:panelGroup id="error_mess">
+                                    <div class="#{general.facesSeverity}">
+                                        <span> </span>
+                                        <h:panelGroup
+                                            rendered="#{(general.facesSeverity == 'disclaimer error')}">
+                                            <h3>#{msgs.error}</h3>
+                                        </h:panelGroup>
+                                        <h:panelGroup
+                                            rendered="#{(general.facesSeverity == 'disclaimer success')}">
+                                            <h3>#{msgs.success}</h3>
+                                        </h:panelGroup>
+
+                                        <h:messages layout="table" showSummary="false"
+                                                    showDetail="true" infoClass="disclaimer success"
+                                                    errorClass="disclaimer error"
+                                                    style="border-collapse:inherit !important;"
+                                                    styleClass="messages-ui" />
+
+                                    </div>
+                                </h:panelGroup>
+                                <h:panelGroup  id="change-pass-form-panel" >
+                                    <h:panelGroup rendered="#{not loginBean.passwordChangedSuccess}">
+                                        <div class="">
+                                            <div class="clearfix"></div>
+                                            <div class="pass_guide_div">
+                                                <span class="mmagd_2sms_campain_text_field pass_guide">
+                                                    #{msgs.password_req}
+                                                </span>
+                                            </div>
+                                            <div class="mmagd_2sms_contact_add_new_txt_field List_name change-pass" >
+                                                <span class="mmagd_2sms_campain_text_field">#{msgs.old_password}:
+                                                </span>
+                                                <h:inputSecret id="old-pass"  
+                                                               styleClass="mmagd_2sms_campain_txt_field_erea change-pass old-pass" 
+                                                               size="25" value="#{loginBean.oldPassword}"/>
+                                            </div>
+                                            <div class="mmagd_2sms_contact_add_new_txt_field List_name change-pass  new-pass">
+                                                <span class="mmagd_2sms_campain_text_field">#{msgs.new_password}:
+                                                </span>
+                                                <h:inputSecret id="new-pass" 
+                                                               styleClass="mmagd_2sms_campain_txt_field_erea change-pass"
+                                                               size="25" value="#{loginBean.newPassword}" />
+                                            </div>
+                                            <div class="mmagd_2sms_contact_add_new_txt_field List_name change-pass  confirm-pass">
+                                                <span class="mmagd_2sms_campain_text_field">#{msgs.confirm_password}:
+                                                </span>
+                                                <h:inputSecret id="confirm-pass" 
+                                                               styleClass="mmagd_2sms_campain_txt_field_erea change-pass"
+                                                               size="25" value="#{loginBean.confirmPassword}" />
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <ul class="actionsList flipped change-pass-bttns">
+                                                <li class="">
+                                                    <h:panelGroup id="cancel-btn3">
+                                                        <h:commandLink  rendered="#{loginBean.logOutUser}"
+                                                                        class="" onclick="hideOverlayOnComplete" action="#{loginBean.logOut()}">
+                                                            <div>#{msgs.cancel}</div>
+                                                        </h:commandLink>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup id="cancel-btn4">
+                                                        <h:commandLink  rendered="#{not loginBean.logOutUser}" class=""
+                                                                        actionListener="#{loginBean.cancelChangePassword()}">
+                                                            <div>#{msgs.cancel}</div>
+                                                            <f:ajax  onevent="hideOverlayOnComplete" 
+                                                                     render=":change-password:error_mess :change-password:confirm-pass :change-password:old-pass :change-password:new-pass :change-password:cancel-btn4"/>
+                                                        </h:commandLink>
+                                                    </h:panelGroup>
+                                                </li>
+                                                <li class="active"><h:commandLink value="#{msgs.save}"
+                                                                                  styleClass="active" action="#{loginBean.changePassword(false)}">
+                                                        <f:ajax execute="@form" 
+                                                                render=":change-password:change-pass-form-panel :change-password:error_mess :change-password:cancel-btn1 :change-password:cancel-btn2 :change-password:cancel-btn3 :change-password:cancel-btn4" />
+                                                    </h:commandLink></li>
+                                            </ul>
+                                        </div>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </h:panelGroup>
+    </h:form>
+
+</ui:composition>

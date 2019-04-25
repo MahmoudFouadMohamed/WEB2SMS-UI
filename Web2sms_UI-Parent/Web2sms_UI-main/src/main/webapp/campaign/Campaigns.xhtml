@@ -1,0 +1,346 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <body>
+        <ui:composition
+            template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+
+            <ui:define name="content">
+                <h:outputScript library="javax.faces" name="jsf.js" target="head" />
+
+                <script>
+                    //<![CDATA[
+                    function loadPending() {
+                        $(".tefa_content_loads_here").empty();
+                        $.get("../campaign/pending-campaigns.xhtml", function (data) {
+                            $(".loading-img").css('display', 'none');
+                            $(".tefa_content_loads_here").append(data);
+                        });
+                    }
+                    function getUrlVars()
+                    {
+                        var vars = [], hash;
+                        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                        for (var i = 0; i < hashes.length; i++)
+                        {
+                            hash = hashes[i].split('=');
+                            vars.push(hash[0]);
+                            vars[hash[0]] = hash[1];
+                        }
+                        return vars;
+                    }
+
+                    $(document).ready(function (e) {
+                        var statusParam = getUrlVars()['status'];
+                        if (statusParam !== 'pending') {
+                            $.get("../campaign/active-camapaigns.xhtml",
+                                    function (data) {
+                                        $(".loading-img").css('display', 'none');
+                                        $(".tefa_content_loads_here").append(data);
+
+                                    });
+                        } else if (statusParam === 'pending') {
+                            loadPending();
+                        }
+
+
+                        $('.main-button').click(function (e) {
+                        	if(#{mainBean.canCreateCampaign}===false){
+                                showOverlay('payment_methods_overlay_11');
+                          }else{
+                            $(".tefa_content_loads_here").empty();
+                            $('#mmagd_2sms_wrapper').css('display', 'none');
+
+                            $.get("../campaign/add-campaign-include.xhtml", function (data) {
+                                $(".tefa_content_loads_here").append(data);
+                                updateCountdown();
+                                $('.message').change(updateCountdown);
+                                $('.message').keyup(updateCountdown);
+                                /* $('.SubmitForm').keypress(function() {
+                                 preventEnterSubmit();
+                                 }); */
+                                $(".tabs").tabs();
+
+                            });
+                          }
+                        });
+
+                        $('.main-button2').click(function (e) {
+                            $(".tefa_content_loads_here").empty();
+                            $.get("../campaign/history.xhtml", function (data) {
+                                $(".tefa_content_loads_here").append(data);
+                            });
+                        });
+
+//                        $('.main-button3').click(function (e) {
+//                            loadPending();
+//                        });
+
+                        /* $.get("../campaign/active-camapaigns.xhtml",function(data) {
+                         $(".loading-img").css('display','none');
+                         $(".tefa_content_loads_here").append(data);
+                         
+                         
+                         $('.main-button2').click(function(e) {
+                         $(".tefa_content_loads_here").empty();
+                         $.get("../campaign/history.xhtml",function(data) {
+                         $(".tefa_content_loads_here").append(data);
+                         });
+                         });
+                         }); */
+
+                        $('.dial').knob({
+                            min: '0',
+                            max: '#{mainBean.totalSms}',
+                            width: 106,
+                            height: 106,
+                            thickness: .20,
+                            displayInput: false,
+                            fgColor: "#ff9900",
+                            bgColor: "#ebebeb",
+                            readOnly: true
+                        });
+                        $({
+                            value: 0
+                        }).animate(
+                                {
+                                    value: #{mainBean.consumedQuota} + #{mainBean.reservedQuota}
+                                },
+                        {
+                            duration: 950,
+                            easing: 'swing',
+                            progress: function () {
+                                $('.dial').val(Math.round(this.value))
+                                        .trigger('change');
+                            }
+                        });
+                        $('.dial2').knob({
+                            min: '0',
+                            max: '100',
+                            width: 106,
+                            height: 106,
+                            thickness: .20,
+                            displayInput: false,
+                            fgColor: "#ff9900",
+                            bgColor: "#ebebeb",
+                            readOnly: true
+                        });
+                        $({
+                            value: 0
+                        }).animate(
+                                {
+                                    value: 99
+                                },
+                        {
+                            duration: 950,
+                            easing: 'swing',
+                            progress: function () {
+                                $('.dial2').val(Math.round(this.value))
+                                        .trigger('change');
+                            }
+                        });
+
+
+                    });
+
+
+                    function updateCountdown() {
+                        var a = smsCharCount(jQuery('.message').val());
+                        if (${localeBean.language == 'ar'}) {
+                            jQuery('.countdown').text(
+                                    a[1] + ' رسالة ' + '- ' + a[0] + ' حرف باقى ');
+                        } else {
+                            jQuery('.countdown').text(
+                                    a[1] + ' Message ' + '- ' + a[0] + ' characters left ');
+                        }
+                        // jQuery('.numMess').text(a[2]);
+                        var input = document.getElementById('add-campaign-form:numMess');
+                        input.value = a[2];
+                    }
+
+                    var gsm7bitChars = "[]{}@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+
+                    var gsm2bitsChars = "\f^{}\\[~]|€";
+
+                    function smsCharCount(message) {
+                        var engMsg = true;
+                        var messageLen = message.length;
+                        var totalSeg = 1;
+                        var remaining = 160;
+                        var maxMsgLen = 160;
+                        var extraMsgLen = 0;
+
+                        for (var i = 0; i < messageLen; i++) {
+                            if (engMsg || messageLen == 1) {
+                                if (gsm7bitChars.indexOf(message.charAt(i)) > -1) {
+                                    engMsg = true;
+                                } else {
+                                    engMsg = false;
+                                }
+                            }
+                        }
+
+                        for (var i = 0; i < messageLen; i++)
+                        {
+                            if (gsm2bitsChars.indexOf(message.charAt(i)) > -1)
+                            {
+                                extraMsgLen++;
+                            }// end if
+                        }// end for
+
+                        messageLen += extraMsgLen;
+
+                        if (engMsg) {
+                            if (messageLen > 160) {
+                                maxMsgLen = 153;
+                            }
+
+                        } else {
+                            if (messageLen > 70) {
+                                maxMsgLen = 67;
+                            } else {
+                                maxMsgLen = 70;
+                            }
+                        }
+                        if (messageLen > 0) {
+                            totalSeg = Math.ceil(messageLen / maxMsgLen);
+                            remaining = maxMsgLen * totalSeg - messageLen;
+
+                            // totalSeg = totalSeg > 0 ? totalSeg : 1;
+                            // remaining = remaining > 0 ? remaining : maxMsgLen;
+                        }
+
+                        return [remaining, totalSeg, engMsg];
+                    }
+                    //]]>
+                </script>
+                <f:view locale="#{localeBean.language}">
+                    <h:outputScript library="js" name="jsapi.js" />
+                    <div class="AEthemeContainer">
+                        <ui:include src="/logout/logout-panel.xhtml"/>
+                        <h:form id="form" style="width:950px;">
+                            <ui:remove>
+                                <h:commandLink style="display: none;" class="update-notification"
+                                               actionListener="#{mainBean.refreshWaitingApprovalCount}">
+                                    <f:ajax render=":form:pending_campaign_notification_count" execute="@this" />
+                                </h:commandLink> 
+                            </ui:remove>
+                            <h1>#{msgs.main_page_title}</h1>
+                            <div class="canvas_Right">
+                                <div class="pay_as_you_go_progresses_200mb_gift_pic">
+                                    <div>
+                                        <canvas width="0" height="0"></canvas>
+                                        <input class="dial small" value="0" />
+                                    </div>
+                                    <div
+                                        class="pay_as_you_go_progresses_gift_200_mb_pro_pic_text_all">
+                                        <div class="pay_as_you_go_progresses_200mb_gift_pic_text_num">#{mainBean.reservedAndConsumed}</div>
+                                        <div class="pay_as_you_go_progresses_200mb_gift_pic_text_unit">#{msgs.of}
+                                            #{mainBean.totalSms}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="tefa_welocme_member">#{msgs.welcome}
+                                #{mainBean.user.username}</span>
+                            <br />
+                            <br />
+                            <span class="tefa_current_plan">#{msgs.plan}<span>
+                                    #{mainBean.userAcc.account.tier.tierName} </span></span>
+
+                            <br />
+                            <h:panelGroup id="pending_campaign_notification_count">
+                                <h:panelGroup rendered="#{mainBean.canShowPendingNotification and mainBean.waitingApprovalCount ne 0}">
+                                    <a href="/web2sms/campaign/Campaigns.xhtml?status=pending"><span class="tefa_current_plan main-button3" style="font-style: normal; font-weight: normal;text-decoration: underline;cursor: pointer; font-size: 12pt;">
+                                            #{msgs.you_have}<span> #{mainBean.waitingApprovalCount} #{msgs.campaigns_lower_case} </span> #{msgs.campaigns_to_be_approved}
+                                        </span></a>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:form>
+                        <div class="newtabs">
+                            <ul>
+                                <li class="#{mainBean.tabsClass} tab activeone"><a href="Campaigns.xhtml">
+                                        #{msgs.campaigns} </a></li>
+                                <li class="#{mainBean.tabsClass} tab2"><a href="/web2sms/list/Contacts.xhtml">
+                                        #{msgs.contacts}</a></li>
+                                <li class="#{mainBean.tabsClass} tab3"><a href="/web2sms/template/Template.xhtml">
+                                        #{msgs.templates}</a></li>
+                                <li class="#{mainBean.tabsClass} tab4"><a href="/web2sms/report/Reports.xhtml">
+                                        #{msgs.reports}</a></li>
+                                <h:panelGroup rendered="#{mainBean.showUsersTab}">
+                                    <li class="#{mainBean.tabsClass} tab5"><a href="/web2sms/user/Users.xhtml">#{msgs.users}</a></li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{mainBean.showGroupsTab}">
+                                    <li class="#{mainBean.tabsClass} tab6"><a href="/web2sms/group/Groups.xhtml">#{msgs.groups}</a></li>
+                                </h:panelGroup>
+                            </ul>
+                        </div>
+                        <div id="mmagd_2sms_wrapper">
+                            <a style="color: #333333; text-decoration: none;" href="#"
+                               class="main-button">
+                                <div class="mmagd_2sms_addcampain">
+                                    <div class="mmagd_2sms_addcampain_icon"></div>
+                                    <div class="mmagd_2sms_addcampain_title">#{msgs.create_new_campaign}</div>
+                                    <span>#{msgs.create_your_campaign}</span>
+                                </div>
+                            </a> <a style="color: #333333; text-decoration: none;" href="#"
+                                    class="main-button2">
+                                <div class="mmagd_2sms_campain mmagd_2sms_campainHistory1">
+                                    <div class="mmagd_2sms_addcampain_icon"></div>
+                                    <div class="mmagd_2sms_addcampain_title">#{msgs.campaign_history}</div>
+                                    <span>#{msgs.review_your_campaign_history}</span>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="tefa_content_loads_here">
+                            <div class="loading-img">
+                                <div>
+                                    <span style="color: gray; font-weight: bold; margin-left: 80px;">#{msgs.loading}</span>
+                                </div>
+                                <h:graphicImage library="images" name="Loading_bar.gif" />
+                            </div>
+                        </div>
+                    </div>
+				<h:form>
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="payment_methods_overlay_11">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="payment_methods_overlay_content_11"
+									style="left: 400px;">
+									<div class="modalDetails" style="display: block;">
+										<div class="paymentoption">
+											<br /> <span class="mmagd_txt_confirm">#{msgs.ineligble_to_create_campaign}
+											</span>
+										</div>
+
+										<div class="confirm_to_charge_withcredit_card">
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><a href="#" title="#" class="overlayClose black"
+													onclick="hideoverlay('payment_methods_overlay_11');">
+														<div>
+															<div>#{msgs.close}</div>
+														</div>
+												</a></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+
+			</f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

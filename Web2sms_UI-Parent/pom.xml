@@ -1,0 +1,112 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>Web2sms_UI-Parent</artifactId>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>com.edafa.web2sms</groupId>
+		<artifactId>Web2sms_Parent</artifactId>
+		<version>2.5B</version>
+	</parent>
+
+	<modules>
+		<module>Web2sms_UI-Utils</module>
+		<module>Web2sms_UI-main</module>
+		<module>Web2sms_UI-EAR</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.oracle.coherence</groupId>
+			<artifactId>coherence</artifactId>
+			<version>12.1.2-0-0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.edafa.web2sms.lib</groupId>
+			<artifactId>csv_parser</artifactId>
+			<version>0.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>7.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.edafa.web2sms</groupId>
+			<artifactId>EncyrptionUtil</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                    <version>2.6.2</version>
+                </dependency>        
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
+                    <version>2.6.2</version>
+                </dependency>  
+                
+                <dependency>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-web</artifactId>
+                    <version>2.6.2</version>
+                </dependency>
+                    
+                <dependency>
+                    <groupId>com.lmax</groupId>
+                    <artifactId>disruptor</artifactId>
+                    <version>3.3.4</version>
+                </dependency>
+                 <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+            <version>1.60</version>
+        </dependency>
+        
+
+		<dependency>
+			<groupId>com.edafa.web2sms.lib</groupId>
+			<artifactId>ini4j</artifactId>
+			<version>0.5.2</version>
+		</dependency>
+                
+                <dependency>
+                    <groupId>com.edafa.jee</groupId>
+                    <artifactId>app-error-manager</artifactId>
+                    <version>0.2.2</version>
+                    <type>ejb</type>
+                    <scope>provided</scope>
+                </dependency>
+                
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.2</version>
+				<configuration>
+					<source>1.7</source>
+					<target>1.7</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

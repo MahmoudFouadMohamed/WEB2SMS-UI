@@ -1,0 +1,422 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+<body>
+
+    <f:view locale="#{localeBean.language}">
+		<div class="mmagd_2sms_currentcampain_content">
+			<script type="text/javascript">
+				<![CDATA[
+
+				$(function() {
+					$('.mmagd_2sms_campain_full_Reports > ul').click(
+							function(e) {
+								$('.mmagd_2sms_campain_full_Reports > ul')
+										.removeClass('active');
+								$(this).addClass('active');
+							});
+
+					$('.mmagd_2sms_campain_full_Reports ul').click(
+							function(e) {
+								$('.mmagd_2sms_campain_full_Reports ul')
+										.removeClass('active');
+
+								$(this).addClass('active');
+
+							});
+				});
+
+				var timerReference;
+				
+				timerReference = setInterval(function() { updateJobsTable(); }, ${campaignActiveBean.refreshSec} * 1000); // call on interval
+				
+				function updateJobsTable() 
+				{
+					$(".UpdateJobsTableCommandButtonID").click();
+				}// end of function updateJobsTable
+
+				function checkAjaxStatus(data) 
+				{
+					var ajaxStatus = data.status;
+					
+					switch (ajaxStatus) 
+					{
+						case "begin": // This is called right before ajax request is been sent.
+						{
+							clearInterval(timerReference);
+							break;
+						}// end case
+						case "complete":
+						{
+							timerReference = setInterval(function() { updateJobsTable(); }, ${campaignActiveBean.refreshSec} * 1000); // call on interval
+							break;
+						}// end case
+					}// end switch
+				}// end of function checkAjaxStatus
+
+				]]>
+			</script>
+
+			<h:form id="active-campaign-form" style="min-width: 700px">
+
+				<div class="mmagd_2sms_campain_full_title">#{msgs.active_campaigns}</div>
+				<h:panelGroup id="error_mess">
+					<div class="#{general.facesSeverity}">
+						<span> </span>
+						<h:panelGroup
+							rendered="#{(general.facesSeverity == 'disclaimer error')}">
+							<h3>#{msgs.error}</h3>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{(general.facesSeverity == 'disclaimer success')}">
+							<h3>#{msgs.success}</h3>
+						</h:panelGroup>
+
+						<h:messages layout="table" showSummary="false" showDetail="true"
+							infoClass="disclaimer success" errorClass="disclaimer error"
+							style="border-collapse:inherit !important;"
+							styleClass="messages-ui" />
+
+					</div>
+				</h:panelGroup>
+				<h:panelGroup id="active-list">
+					<script>
+						$('.mmagd_2sms_campain_full_Reports > ul').click(
+								function(e) {
+									$('.mmagd_2sms_campain_full_Reports > ul')
+											.removeClass('active');
+									$(this).addClass('active');
+								});
+					</script>
+					<div class="mmagd_2sms_campain_full_Reports">
+						<ui:repeat value="#{campaignActiveBean.activeCampaignList}"
+							var="bean" rendered="#{campaignActiveBean.tableFlag}">
+							<ul>
+								<li>
+									<div class="mmagd_2sms_full_campain_percentage">
+										<ul>
+											<li><span
+												class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.campaign_name}</span>
+												<span
+												style="overflow: hidden; text-overflow: ellipsis; max-width: 109px; white-space: nowrap;"
+												class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignName}</span>
+												<div>
+													<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.creation_date}</span>
+													<span
+														style="overflow: hidden; text-overflow: ellipsis; max-width: 109px; white-space: nowrap;"
+														class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.creationTimestamp}
+													</span>
+												</div>
+												<div>
+													<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.start_date}</span>
+													<span class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.scheduleStartTimestamp}</span>
+												</div>
+												<div>
+													<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.end_date}</span>
+													<span class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.scheduleEndTimestamp}</span>
+												</div></li>
+
+											<li><span
+												class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.sender_name}</span>
+												<span
+												style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+												class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.senderName}</span>
+												<div>
+													<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.recipient_count}</span>
+													<span
+														style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+														class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.recipientCount}</span>
+												</div>
+												<div>
+													<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.number_of_messages}</span>
+													<span
+														style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+														class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.smsCount}</span>
+												</div>
+												<div>
+													<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.number_of_characters}</span>
+													<span
+														style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+														class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.smsText.length()}</span>
+												</div></li>
+											<li><span
+												class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.sms_sent}</span>
+												<span class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.submittedSMSSegCount}
+													#{msgs.of} #{bean.smsSegCount}</span>
+												<div id="piecharts">
+													<div class="deliverd">
+														<span> #{msgs.delivered} <span>#{bean.deliveredSMSSegCount}
+														</span>
+														</span>
+													</div>
+													<div class="pending">
+														<span> #{msgs.pending} <span>#{bean.pendingSMSSegCount + bean.unDeliveredSMSSegCount}
+														</span>
+														</span>
+													</div>
+													<div class="failed">
+														<span> #{msgs.failed} <span>#{bean.failedSMSSegCount}
+														</span>
+														</span>
+													</div>
+												</div></li>
+											<li style="margin-bottom: 2px;"><span
+												class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.status}
+											</span> <h:outputText
+													styleClass="mmagd_2sms_full_campain_percentage_txt_bold_green"
+													value="#{bean.status}"
+													rendered="#{campaignActiveBean.checkFlag(bean.status,'pause')}" />
+												<h:outputText
+													styleClass="mmagd_2sms_full_campain_percentage_txt_bold_red"
+													value="#{bean.status}"
+													rendered="#{campaignActiveBean.checkFlag(bean.status,'resume')}" />
+												<h:outputText
+													styleClass="mmagd_2sms_full_campain_percentage_txt_bold_red"
+													value="#{bean.status}"
+													rendered="#{campaignActiveBean.checkFlag(bean.status,'partial-run')}" />
+												<h:outputText
+													styleClass="mmagd_2sms_full_campain_percentage_txt_bold_green"
+													value="#{bean.status}"
+													rendered="#{campaignActiveBean.checkFlag(bean.status,'new')}" />
+												<h:outputText
+													styleClass="mmagd_2sms_full_campain_percentage_txt_bold_red"
+													value="#{bean.status}"
+													rendered="#{campaignActiveBean.checkFlag(bean.status,'onHold')}" />
+												<h:outputText
+													styleClass="mmagd_2sms_full_campain_percentage_txt_bold_red"
+													value="#{bean.status}"
+													rendered="#{campaignActiveBean.checkFlag(bean.status,'waiting_approval')}" />
+												<div style="color: #f4f4f4;">jjjjjjjjjjjjjjjjjjjjjjjjjjjjj</div>
+												<div style="color: #f4f4f4; height: 27px;">jjjjjjjjjjjjjjjjjjjjjjjjjjjjj</div>
+												<ul class="actionsList flipped">
+													<li class=""><h:commandLink value="#{msgs.resume}"
+															rendered="#{campaignActiveBean.checkFlag(bean.status,'resume')}"
+															onclick="showOverlay('payment_methods_overlay_1');">
+															<f:setPropertyActionListener
+																target="#{campaignActiveBean.resumeObj}" value="#{bean}" />
+															<f:ajax render="@this" />
+														</h:commandLink> <h:commandLink value="#{msgs.pause}"
+															rendered="#{campaignActiveBean.checkFlag(bean.status,'pause')}"
+															onclick="showOverlay('payment_methods_overlay_22');">
+															<f:setPropertyActionListener
+																target="#{campaignActiveBean.pauseObj}" value="#{bean}" />
+															<f:ajax render="@this" />
+														</h:commandLink></li>
+
+
+													<li class=""><h:commandLink value="#{msgs.cancel}"
+															onclick="showOverlay('payment_methods_overlay_33');">
+															<f:setPropertyActionListener
+																target="#{campaignActiveBean.cancelObj}" value="#{bean}" />
+															<f:ajax render="@this" />
+														</h:commandLink></li>
+
+													<li><h:commandLink value="#{msgs.edit}"
+															styleClass="black"
+															action="#{campaignActiveBean.populateEditObj}"
+															rendered="#{(((bean.status == 'WAITING_APPROVAL') or (bean.status == 'NEW')) and (mainBean.canEditCampaign)) ? true : false}">
+															<f:setPropertyActionListener
+																target="#{campaignActiveBean.campaignObj}"
+																value="#{bean}" />
+															<f:ajax execute="@form" onevent="editTest"
+																render=":edit-campaign-form :choose-edit-list" />
+														</h:commandLink></li>
+
+												</ul></li>
+										</ul>
+									</div>
+									<div class="mmagd_2sms_full_campain_percentage" />
+								</li>
+							</ul>
+						</ui:repeat>
+					</div>
+					<h:panelGroup rendered="#{campaignActiveBean.tableFlag}"
+						id="pagination-buttons">
+						<ul class="actionsList3">
+							<li><h:commandLink value="#{msgs.first}"
+									disabled="#{campaignActiveBean.firstRow == 0}"
+									rendered="#{campaignActiveBean.tableFlag}"
+									actionListener="#{campaignActiveBean.pageFirst}"
+									styleClass="black">
+									<f:ajax
+										render=":active-campaign-form:active-list :active-campaign-form:pagination-buttons" />
+								</h:commandLink></li>
+
+							<t:dataList value="#{campaignActiveBean.pages}" var="page">
+								<li><h:commandLink value="#{page}"
+										actionListener="#{campaignActiveBean.page}"
+										rendered="#{page != campaignActiveBean.currentPage}">
+										<f:ajax
+											render=":active-campaign-form:active-list :active-campaign-form:pagination-buttons"
+											execute="@form" />
+									</h:commandLink> <h:outputText value="#{page}" escape="false"
+										rendered="#{page == campaignActiveBean.currentPage}" /></li>
+							</t:dataList>
+							<li><h:commandLink value="#{msgs.last}"
+									disabled="#{campaignActiveBean.firstRow + campaignActiveBean.rowsPerPage >= campaignActiveBean.totalRows}"
+									rendered="#{campaignActiveBean.tableFlag}"
+									actionListener="#{campaignActiveBean.pageLast}"
+									styleClass="black">
+									<f:ajax
+										render=":active-campaign-form:active-list :active-campaign-form:pagination-buttons" />
+								</h:commandLink></li>
+						</ul>
+					</h:panelGroup>
+				</h:panelGroup>
+				<h:commandButton styleClass="UpdateJobsTableCommandButtonID"
+					actionListener="#{campaignActiveBean.call}" style="display:none">
+					<f:ajax
+						render=":active-campaign-form:active-list :active-campaign-form:error_mess"
+						onevent="checkAjaxStatus" />
+				</h:commandButton>
+			</h:form>
+
+			<h:form>
+				<div class="overlayBG"></div>
+				<div class="overlaydiv" id="payment_methods_overlay_1">
+					<div class="overlayContainerOuter">
+						<div class="overlayContainerInner">
+							<div class="overlayContent"
+								id="payment_methods_overlay_content_1" style="left: 400px;">
+								<a href="#" class="overlayClose overlayClose_iconed"
+									onclick="hideoverlay('payment_methods_overlay_1');">Close</a>
+
+								<div class="modalDetails" style="display: block;">
+									<span class="mmagd_right_icon"></span>
+									<h2>#{msgs.confirmation}</h2>
+									<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+									<div class="paymentoption">
+										<br /> <span class="mmagd_txt_confirm">#{msgs.resume_confirm}</span>
+										<br />
+									</div>
+
+									<div class="confirm_to_charge_withcredit_card">
+
+										<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+											<li><h:commandLink styleClass="overlayClose black"
+													onclick="hideoverlay('payment_methods_overlay_1');"
+													value="#{msgs.no}">
+													<f:ajax render=":active-campaign-form:error_mess" />
+												</h:commandLink></li>
+										</ul>
+
+										<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+											<li><h:commandLink styleClass="overlayClose active"
+													onclick="hideoverlay('payment_methods_overlay_1');"
+													value="#{msgs.yse}"
+													actionListener="#{campaignActiveBean.changeJobStatus('RESUME')}">
+													<f:ajax event="action"
+														render=":active-campaign-form:active-list :active-campaign-form:error_mess" />
+												</h:commandLink></li>
+										</ul>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<h:form>
+				<div class="overlayBG"></div>
+				<div class="overlaydiv" id="payment_methods_overlay_22">
+					<div class="overlayContainerOuter">
+						<div class="overlayContainerInner">
+							<div class="overlayContent"
+								id="payment_methods_overlay_content_22" style="left: 400px;">
+								<a href="#" class="overlayClose overlayClose_iconed"
+									onclick="hideoverlay('payment_methods_overlay_22');">Close</a>
+
+								<div class="modalDetails" style="display: block;">
+									<span class="mmagd_right_icon"></span>
+									<h2>#{msgs.confirmation}</h2>
+									<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+									<div class="paymentoption">
+										<br /> <span class="mmagd_txt_confirm">#{msgs.pause_confirm}</span>
+										<br />
+									</div>
+
+									<div class="confirm_to_charge_withcredit_card">
+
+										<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+											<li><h:commandLink styleClass="overlayClose black"
+													onclick="hideoverlay('payment_methods_overlay_22');"
+													value="#{msgs.no}">
+													<f:ajax render=":active-campaign-form:error_mess" />
+												</h:commandLink></li>
+										</ul>
+
+										<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+											<li><h:commandLink styleClass="overlayClose active"
+													onclick="hideoverlay('payment_methods_overlay_22');"
+													value="#{msgs.yse}"
+													actionListener="#{campaignActiveBean.changeJobStatus('PAUSE')}">
+													<f:ajax event="action"
+														render=":active-campaign-form:active-list :active-campaign-form:error_mess" />
+												</h:commandLink></li>
+										</ul>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+			<h:form>
+				<div class="overlayBG"></div>
+				<div class="overlaydiv" id="payment_methods_overlay_33">
+					<div class="overlayContainerOuter">
+						<div class="overlayContainerInner">
+							<div class="overlayContent"
+								id="payment_methods_overlay_content_33" style="left: 400px;">
+								<a href="#" class="overlayClose overlayClose_iconed"
+									onclick="hideoverlay('payment_methods_overlay_33');">Close</a>
+
+								<div class="modalDetails" style="display: block;">
+									<span class="mmagd_right_icon"></span>
+									<h2>#{msgs.confirmation}</h2>
+									<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+									<div class="paymentoption">
+										<br /> <span class="mmagd_txt_confirm">#{msgs.cancel_confirm}</span>
+										<br />
+									</div>
+
+									<div class="confirm_to_charge_withcredit_card">
+
+										<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+											<li><h:commandLink styleClass="overlayClose black"
+													onclick="hideoverlay('payment_methods_overlay_33');"
+													value="#{msgs.no}">
+													<f:ajax render=":active-campaign-form:error_mess" />
+												</h:commandLink></li>
+										</ul>
+
+										<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+											<li><h:commandLink styleClass="overlayClose active"
+													onclick="hideoverlay('payment_methods_overlay_33');"
+													value="#{msgs.yse}"
+													actionListener="#{campaignActiveBean.changeJobStatus('CANCEL')}">
+													<f:ajax event="action"
+														render=":active-campaign-form:active-list :active-campaign-form:error_mess" />
+												</h:commandLink></li>
+										</ul>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</h:form>
+
+		</div>
+		<ui:include src="edit-campaign.xhtml" />
+
+	</f:view>
+</body>
+</html>

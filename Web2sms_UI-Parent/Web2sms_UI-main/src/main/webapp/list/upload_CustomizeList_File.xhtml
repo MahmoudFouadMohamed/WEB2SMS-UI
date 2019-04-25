@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	dir="#{localeBean.direction}">
+<f:view locale="#{localeBean.language}">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="refresh" content="1812" />
+		<h:outputScript library="js" name="jquery-1.9.1.js" />
+		<h:outputScript library="js" name="jquery-ui-1.10.1.custom.js" />
+		<h:outputScript library="js" name="Over.js" />
+
+		<h:outputStylesheet library="Styles" name="Style_en.css"
+			rendered="#{localeBean.langEnFlag}" />
+		<h:outputStylesheet library="smoothness"
+			name="jquery-ui-1.10.1.custom.css" />
+		<h:outputStylesheet library="Styles" name="Style_ar.css"
+			rendered="#{localeBean.langArFlag}" />
+	</h:head>
+	<body>
+		<h:form id="uploadForm" enctype="multipart/form-data">
+			<script>
+				$(document).ready(function(e) {
+					$('.mmagd_quation_mark_overlay').mouseover(function(e) {
+						$('.everydaydisc').css('display', 'block');
+					});
+					$('.mmagd_quation_mark_overlay').mouseout(function(e) {
+						$('.everydaydisc').css('display', 'none');
+					});
+
+				});
+			</script>
+
+			<h:panelGroup id="error_mess">
+				<div class="#{general.facesSeverity}">
+					<span> </span>
+					<h:panelGroup
+						rendered="#{(general.facesSeverity == 'disclaimer error')}">
+						<h3>#{msgs.error}</h3>
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{(general.facesSeverity == 'disclaimer success')}">
+						<h3>#{msgs.success}</h3>
+					</h:panelGroup>
+
+					<h:messages layout="table" showSummary="false" showDetail="true"
+						infoClass="disclaimer success" errorClass="disclaimer error"
+						style="border-collapse:inherit !important;"
+						styleClass="messages-ui" />
+
+				</div>
+			</h:panelGroup>
+
+			<div class="mmagd_2sms_contact_list_list_view">
+				<div class="mmagd_2sms_conatct_import_from_file_div_title">
+					<h2>#{msgs.import_contacts_from_file}</h2>
+					<i class="popup"></i>
+					<div class="popup_pop" style="display: none;">#{msgs.choose_file_mess_forCustom}</div>
+					<div class="sclemer everydaydisc">
+						<span class="mmagd_2sms_contact_desclimer_overlay_icon"></span>
+						<div class="mmagd_2sms_contact_list_title_import">#{msgs.just_so_you_know}</div>
+						<span>#{msgs.choose_file_mess}</span>
+					</div>
+				</div>
+				<div class="mmagd_2sms_contact_select_file">
+
+					<div class="mmagd_2sms_contact_sub_title_select">#{msgs.select_file_you_want_to_use}</div>
+					<div class="mmagd_2sms_contact_list_list_select_file">
+						<div class="fm-select left">
+
+
+							<h:selectOneMenu class="mmagd_2sms_campain_select_4"
+								value="#{viewListBean.choosenUploadFileType}"
+								valueChangeListener="#{viewListBean.getSelectedFileType}">
+								<f:ajax event="valueChange" execute="@this" />
+
+								<f:selectItem itemLabel="#{msgs.select_form_list}"
+									itemValue="none" />
+								<f:selectItem itemLabel="#{msgs.excel_file_xls}" itemValue="xls" />
+								<f:selectItem itemLabel="#{msgs.excel_file_xlsx}"
+									itemValue="xlsx" />
+								
+							</h:selectOneMenu>
+							<span class="arrow-css" style="top: -11px !important;"><i
+								class="i-arrow-down-grey-lrg"></i> </span>
+						</div>
+					</div>
+
+				</div>
+
+				<div class="upload-div">
+
+					<div id="title-file">
+						<h:outputText value="#{msgs.test}"
+							styleClass="mmagd_2sms_contact_sub_title_select" />
+					</div>
+
+					<div id="file-div">
+						<h:inputText styleClass="replace-upload" id="fake-input"
+							value="#{viewListBean.fileUploadName}" />
+						<div class="browse-img">
+							<span class="browse-button">#{msgs.select}</span>
+						</div>
+						<t:inputFileUpload value="#{viewListBean.uploadedFile}"
+							onchange="changeFakeFile()"
+							style="z-index :2;opacity:0;position:relative;width:250px"
+							styleClass="file-real" allow=".xls,.xlsx,.csv,.vcf" />
+
+					</div>
+					<div id="button-file">
+
+
+						<h:commandLink value="#{msgs.upload}"
+							actionListener="#{viewListBean.submit}" styleClass="myButton1"
+							onclick="changeUploadType()" />
+
+					</div>
+				</div>
+				<span class="mmagd_2sms_contact_select_red_txt">#{msgs.select_note}</span>
+				<div class="mmagd_2sms_contact_select_list_table_info">
+
+					<h:panelGroup rendered="#{viewListBean.uploadTableFalg}">
+						<div class="table-div-upload" style="width: 100%;">
+							<table id="records-view-table" style="width: 100%;">
+								<tr bgcolor="#cccccc" style="background: #cccccc;">
+									<ui:repeat var="bean" value="#{viewListBean.columnsId}"
+										id="records-form-table">
+										<h:panelGroup>
+											<td width="18%"><h:inputHidden value="#{bean}" />
+												<div class="fm-select left">
+													<h:selectOneMenu
+														class="mmagd_2sms_campain_select_1 mapType"
+														value="#{viewListBean.selectedMapValue}" id="test"
+														onchange="getMappingcontactId(this,${bean})">
+														<!--  
+														<f:selectItem itemValue="none" itemLabel="#{msgs.none}" />\<f:selectItem itemValue="name" itemLabel="#{msgs.name}" />
+														<f:selectItem itemValue="mobile" itemLabel="#{msgs.mobile}" /><f:selectItem itemValue="Value1" itemLabel="#{msgs.value1}" />
+														<f:selectItem itemValue="Value2" itemLabel="#{msgs.value2}" /><f:selectItem itemValue="Value3" itemLabel="#{msgs.value3}" />
+														<f:selectItem itemValue="Value4" itemLabel="#{msgs.value4}" /><f:selectItem itemValue="Value5" itemLabel="#{msgs.value5}" /> -->
+														<f:selectItems
+															value="#{viewListBean.valuesMap.entrySet()}" var="entry"
+															itemValue="#{entry.key}" itemLabel="#{entry.value}" />
+													</h:selectOneMenu>
+													<span class="arrow-css" style="top: 7px !important;"><i
+														class="i-arrow-down-grey-lrg"></i> </span>
+												</div></td>
+										</h:panelGroup>
+									</ui:repeat>
+								</tr>
+
+								<ui:repeat id="record-table" var="c"
+									value="#{viewListBean.myNewList}">
+									<tr>
+										<ui:repeat var="key" value="#{c}">
+											<td>#{key}</td>
+										</ui:repeat>
+									</tr>
+								</ui:repeat>
+
+							</table>
+							<h:inputHidden value="#{viewListBean.nameMap}"
+								styleClass="map-name" id="test-name-map" />
+
+							<h:inputHidden value="#{viewListBean.msisdnMap}"
+								styleClass="map-value" id="test-msisdn-map" />
+
+							<h:inputHidden value="#{viewListBean.value1Map}"
+								styleClass="map-value" id="test-value1-map" />
+
+							<h:inputHidden value="#{viewListBean.value2Map}"
+								styleClass="map-value" id="test-value2-map" />
+
+							<h:inputHidden value="#{viewListBean.value3Map}"
+								styleClass="map-value" id="test-value3-map" />
+
+							<h:inputHidden value="#{viewListBean.value4Map}"
+								styleClass="map-value" id="test-value4-map" />
+
+							<h:inputHidden value="#{viewListBean.value5Map}"
+								styleClass="map-value" id="test-value5-map" />
+
+						</div>
+					</h:panelGroup>
+					<ul class="actionsList flipped">
+						<li class="mmagd_2sms_action_btn_top"><h:commandLink
+								styleClass="overlayClose active" value="#{msgs.import_selected}"
+								actionListener="#{viewListBean.createListFromUpload(true)}" /></li>
+					</ul>
+				</div>
+			</div>
+			<script>
+			$(function() {
+				parent.document.getElementById("contact-form:newListName").value='#{sessionScope.listName}';
+			});
+				$(".popup").mouseover(function() {
+					$('.popup_pop').css('display', 'block');
+				});
+
+				$('.popup').mouseout(function(e) {
+					$('.popup_pop').css('display', 'none');
+				});
+			</script>
+		</h:form>
+	</body>
+</f:view>
+</html>

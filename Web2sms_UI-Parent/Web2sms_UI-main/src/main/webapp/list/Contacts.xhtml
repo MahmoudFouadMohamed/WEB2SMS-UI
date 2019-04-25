@@ -1,0 +1,1408 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+
+</h:head>
+<body>
+	<ui:composition
+            template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+		<ui:define name="content">
+			<script>
+			//<![CDATA[
+			        
+		function checkEnter(e) {
+			if (e.keyCode == 13) {
+				return false;
+			}
+		}
+
+		function checkEnter1(e) {
+			if (e.keyCode == 13) {
+				document.getElementById('contact-form:search-hidden-button')
+						.click();
+				return false;
+			}
+		}
+		
+	
+
+		function pressRefreshButton() {
+					document.getElementById('contact-form:refreshButton')
+							.click();
+			}
+				$(document).ready(function(e) {
+					
+					$('.dial').knob({
+						min : '0',
+						max : '#{mainBean.totalSms}',
+						width : 106,
+						height : 106,
+						thickness : .20,
+						displayInput : false,
+						fgColor : "#ff9900",
+						bgColor : "#ebebeb",
+						readOnly : true
+					});
+					$({
+						value : 0
+					}).animate(
+							{
+								value : #{mainBean.consumedQuota} + #{mainBean.reservedQuota}
+							},
+							{
+								duration : 950,
+								easing : 'swing',
+								progress : function() {
+									$('.dial').val(Math.round(this.value))
+											.trigger('change');
+								}
+							});
+					$('.dial2').knob({
+						min : '0',
+						max : '100',
+						width : 106,
+						height : 106,
+						thickness : .20,
+						displayInput : false,
+						fgColor : "#ff9900",
+						bgColor : "#ebebeb",
+						readOnly : true
+					});
+					$({
+						value : 0
+					}).animate(
+							{
+								value : 0
+							},
+							{
+								duration : 950,
+								easing : 'swing',
+								progress : function() {
+									$('.dial2').val(Math.round(this.value))
+											.trigger('change');
+								}
+							});
+					
+					$('.Custom_List_name').attr('placeholder',"${msgs.list_name_placeholder}");
+					
+					$(
+					'.addnewContactbtn')
+					.click(
+							function(
+									e) {
+								$(
+										'.mmagd_SubList')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div')
+										.css(
+												'display',
+												'block');
+
+							});
+
+			$('.removeaddnew')
+					.click(
+							function(
+									e) {
+								$(
+										'.mmagd_SubList')
+										.css(
+												'display',
+												'block');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div2')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_2sms_contact_list_asset_contacts')
+										.css(
+												'display',
+												'none');
+							});
+
+			$('.selectfrommenu')
+					.change(
+							function() {
+								$(
+										'.mmagd_contact_list_aad_new_contact_div')
+										.css(
+												'display',
+												'none');
+
+								$(
+										'.mmagd_contact_list_aad_new_contact_div2')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagdinnergroup')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div2')
+										.css(
+												'display',
+												'none');
+
+								var thevalue = $(
+										this)
+										.val(); // get
+								// selected
+								// value
+								// alert(thevalue)
+
+								$(
+										'.Databasesource')
+										.css(
+												'display',
+												'none');
+								$(
+										'.anotherList')
+										.css(
+												'display',
+												'none');
+								$(
+										'.fromfile')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_SubList')
+										.css(
+												'display',
+												'none');
+
+								$(
+										'.mmagd_2sms_contact_list_list_view')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div')
+										.css(
+												'display',
+												'none');
+								$(
+										'.mmagd_contact_list_aad_new_contact_div2')
+										.css(
+												'display',
+												'none');
+								if (thevalue == "0") {
+									// require
+									// a
+									// URL
+									$(
+											'.mmagd_contact_list_aad_new_contact_div')
+											.css(
+													'display',
+													'block');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div2')
+											.css(
+													'display',
+													'none');
+
+									$(
+											'.mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'block');
+
+									$(
+											'.anotherList')
+											.css(
+													'display',
+													'none');
+									$(
+											'.fromfile')
+											.css(
+													'display',
+													'none');
+									
+									$('.mmagd_2sms_contact_list_list_view').css('width', 50 + '%');
+									$('.full_width').css('width', 429 + "px");
+									$('.mmagd_2sms_conatct_list_search_icon').css('right', 4 + "px");
+									$('.sub_list').css('right', 12 + "px");
+									$('.sub_list').css('top', 40 + "px");
+									$('.mmagd_2sms_conatct_list_check_list_conatct').css('float', 'left');
+									
+									
+								} else if (thevalue == "anotherList") {
+
+									$(
+											'.mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'none');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div')
+											.css(
+													'display',
+													'none');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div2')
+											.css(
+													'display',
+													'none');
+									$(
+											'.anotherList')
+											.css(
+													'display',
+													'block');
+									$(
+											'.anotherList .mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'block');
+								} else if (thevalue == "fromfile") {
+									$(
+											'.mmagd_quation_mark_overlay')
+											.mouseover(
+													function(
+															e) {
+														$(
+																'.everydaydisc')
+																.css(
+																		'display',
+																		'block');
+													});
+									$(
+											'.mmagd_quation_mark_overlay')
+											.mouseout(
+													function(
+															e) {
+														$(
+																'.everydaydisc')
+																.css(
+																		'display',
+																		'none');
+													});
+
+									$(
+											'.mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'none');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div')
+											.css(
+													'display',
+													'none');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div2')
+											.css(
+													'display',
+													'none');
+									$(
+											'.fromfile')
+											.css(
+													'display',
+													'block');
+									$(
+											'.fromfile .mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'block');
+									$(
+											'.fromfile .mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'block');
+
+								} else if (thevalue == "Database") {
+
+									$(
+											'.mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'none');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div')
+											.css(
+													'display',
+													'none');
+									$(
+											'.mmagd_contact_list_aad_new_contact_div2')
+											.css(
+													'display',
+													'none');
+									$(
+											'.Databasesource')
+											.css(
+													'display',
+													'block');
+									$(
+											'.Databasesource .mmagd_2sms_contact_list_list_view')
+											.css(
+													'display',
+													'block');
+								}
+
+							});
+			$(
+					'.mmagd_2sms_contact_list_btn_add')
+					.click(
+							function(
+									e) {
+
+								$(
+										'.mmagd_2sms_contact_list_list_select_source')
+										.css(
+												'display',
+												'block');
+								$(
+										'.mmagd_2sms_contact_list_list_name_field')
+										.css(
+												'display',
+												'block');
+							});
+
+			$(
+					'.mmagd_2sms_contact_sub_contact li')
+					.click(
+							function(
+									e) {
+
+								$(
+										'.mmagd_2sms_contact_sub_contact li')
+										.removeClass(
+												'activesubcont');
+
+								$(
+										this)
+										.addClass(
+												'activesubcont');
+
+							});
+		});
+
+					
+
+					
+					//]]>
+				
+					</script>
+
+                    <f:view locale="#{localeBean.language}">
+				<div class="AEthemeContainer">
+                                        
+                                        <ui:include src="/logout/logout-panel.xhtml"/>
+
+
+					<h:form id="choose-list">
+						<div class="overlayBG"></div>
+						<div class="overlaydiv" id="payment_methods_overlay">
+							<h:commandLink actionListener="#{viewListBean.pageNextIntra}"
+								styleClass="loadButton">
+								<f:ajax execute="@this" render=":choose-list:individual-contact-list" />
+							</h:commandLink>
+							<div class="overlayContainerOuter">
+
+				
+								<div class="overlayContainerInner">
+
+									<div class="overlayContent"
+										id="payment_methods_overlay_content" style="left: 400px;">
+										<a href="#" class="overlayClose overlayClose_iconed"
+											onclick="hideoverlay('payment_methods_overlay');">#{msgs.close}</a>
+										<h4>#{msgs.Intra_List_Contacts}</h4>
+										<div class="tabs" style="overflow: hidden; border: none;">
+
+											<div id="contacts">
+												<h:panelGroup id="individual-contact-list">
+														<script>
+							$(function() {
+								$('#myscroll').scroll(
+									function() {
+										var scroll = $('#myscroll');
+										if (scroll[0].scrollHeight- scroll.scrollTop() == scroll.height()) //scrollTop is 0 based
+									{
+										$(".loadButton").click();
+									}
+												});
+										});
+						</script>
+													<div id="myscroll"
+														class="mmagd_2sms_conatct_list_check_list_conatct_overlay tmohamed-contact-list">
+														<ul>
+															<h:dataTable value="#{viewListBean.intraContactsList}"
+																var="con" styleClass="jsfTable"
+																id="all-contact-list-table">
+																<h:column>
+																	<li>
+																		<div
+																			class="ss-choice-item mmagd_2sms_campian_check_box">
+																			<label> <span
+																				class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+																				<h:selectBooleanCheckbox
+																					value="#{viewListBean.intraContactsSelected[con.msisdn]}"
+																					styleClass="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"
+																					id="group_1434836598_188">
+																					<f:ajax event="valueChange" execute="@this" />
+																				</h:selectBooleanCheckbox> <label
+																				class="ss-choice-label mmagd_label_check_list  list_label_test"
+																				for="" onclick="getId(this)"> <span></span></label></label>
+																		</div> <span class="mmagd_2sms_campain_text_field"
+																		style="color: #444444; font-size: 12px">#{con.msisdn}
+																			<h:outputText value="- #{con.firstName}"
+																				rendered="#{con.firstName != null}" escape="false" />
+																	</span>
+																	</li>
+																</h:column>
+															</h:dataTable>
+														</ul>
+													</div>
+												</h:panelGroup>
+											</div>
+
+										</div>
+										<div class="confirm_to_charge_withcredit_card arabic-style"
+											style="width: auto">
+											<ul class="actionsList flipped web2sms-list"
+												style="width: 80px">
+												<li><h:commandLink value="#{msgs.cancel}"
+														onclick="hideoverlay('payment_methods_overlay');"
+														styleClass="overlayClose">
+														<f:ajax />
+													</h:commandLink></li>
+											</ul>
+											<ul class="actionsList flipped web2sms-list arabic-ul-width"
+												style="width: auto">
+												<li><h:commandLink value="#{msgs.done}"
+														styleClass="overlayClose active arbic-width"
+														onclick="hideoverlay('payment_methods_overlay');"
+														action="#{viewListBean.addSubIntraContact}">
+														<f:ajax execute="@this"
+															render=":contact-form:all-lists :contact-form:sub-contact-table :contact-form:error_mess :edit-contact-form:edit-contact-list-panel" />
+
+													</h:commandLink></li>
+											</ul>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</h:form>
+
+
+
+
+
+
+					<h:form style="width:950px;">
+						<h1>#{msgs.main_page_title}</h1>
+						<div class="canvas_Right">
+							<div class="pay_as_you_go_progresses_200mb_gift_pic">
+								<div>
+									<canvas width="0" height="0"></canvas>
+									<input class="dial small" value="0" />
+								</div>
+								<div
+									class="pay_as_you_go_progresses_gift_200_mb_pro_pic_text_all">
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_num">#{mainBean.reservedAndConsumed}</div>
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_unit">#{msgs.of}
+										#{mainBean.totalSms}</div>
+								</div>
+							</div>
+						</div>
+
+						<span class="tefa_welocme_member">#{msgs.welcome}
+							#{mainBean.user.username}</span>
+						<br />
+						<br />
+                                                <span class="tefa_current_plan">#{msgs.plan}<span>
+								#{mainBean.userAcc.account.tier.tierName} </span></span>
+
+
+                                                <h:panelGroup rendered="#{mainBean.canShowPendingNotification and mainBean.waitingApprovalCount ne 0}">
+                                                    <a href="/web2sms/campaign/Campaigns.xhtml?status=pending"><span class="tefa_current_plan main-button3" style="font-style: normal; font-weight: normal;text-decoration: underline;cursor: pointer; font-size: 12pt;">
+                                                            #{msgs.you_have}<span> #{mainBean.waitingApprovalCount} #{msgs.campaigns_lower_case} </span> #{msgs.campaigns_to_be_approved}
+                                                        </span></a>
+                                                </h:panelGroup>
+					</h:form>
+				<div class="newtabs">
+						<ul>
+							<li class="#{mainBean.tabsClass} tab"><a
+								href="/web2sms/campaign/Campaigns.xhtml">#{msgs.campaigns} </a></li>
+							<li class="#{mainBean.tabsClass} tab2 activeone"><a href="/web2sms/list/Contacts.xhtml">
+									#{msgs.contacts}</a></li>
+							<li class="#{mainBean.tabsClass} tab3"><a href="/web2sms/template/Template.xhtml">
+									#{msgs.templates}</a></li>
+							<li class="#{mainBean.tabsClass} tab4"><a href="/web2sms/report/Reports.xhtml">
+									#{msgs.reports}</a></li>
+							<h:panelGroup rendered="#{mainBean.showUsersTab}">
+                               <li class="#{mainBean.tabsClass} tab5"><a href="/web2sms/user/Users.xhtml">#{msgs.users}</a></li>
+                            </h:panelGroup>
+                           <h:panelGroup rendered="#{mainBean.showGroupsTab}">
+                               <li class="#{mainBean.tabsClass} tab6"><a href="/web2sms/group/Groups.xhtml">#{msgs.groups}</a></li>
+                            </h:panelGroup>
+						</ul>
+					</div>
+				</div>
+				<h:form id="view-contact-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="View_current_contact1">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="" style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('View_current_contact1');">#{msgs.close}</a>
+									<div class="modalDetails" style="display: block;">
+										<h2>#{msgs.view}</h2>
+										<hr class="deactivate_bundel_overlay_hrline" />
+										<div class="">
+											<h:panelGroup id="view-contact-list-panel">
+												<table style="margin-top: 10px;">
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.first_name}</span>
+														</td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.contactFirstName}" /></td>
+													</tr>
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.contact_number}</span></td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.contactMsisdn}" /></td>
+													</tr>
+
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value1}</span></td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.value1}" /></td>
+													</tr>
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value2}</span></td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.value2}" /></td>
+													</tr>
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value3}</span></td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.value3}" /></td>
+													</tr>
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value4}</span></td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.value4}" /></td>
+													</tr>
+													<tr>
+														<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value5}</span></td>
+														<td><h:inputText readonly="true"
+																style="margin-bottom:13px;"
+																class="mmagd_2sms_campain_txt_field_erea" size="25"
+																value="#{viewListBean.value5}" /></td>
+													</tr>
+												</table>
+
+												<ul class="actionsList flipped">
+													<li class=""><a href="#" class=""
+														onclick="hideoverlay('View_current_contact1');">
+															<div>#{msgs.close}</div>
+													</a></li>
+												</ul>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="edit-contact-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="Edit_current_contact1">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="" style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('Edit_current_contact1');">#{msgs.close}</a>
+									<div class="modalDetails" style="display: block;">
+										<h2>#{msgs.edit}</h2>
+										<hr class="deactivate_bundel_overlay_hrline" />
+										<div class="">
+											<h:panelGroup id="edit-contact-list-panel">
+												<h:panelGroup rendered="#{not viewListBean.customizedlist}">
+													<table style="margin-top: 10px;">
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.first_name}</span>
+															</td>
+															<td><h:inputText
+																	class="mmagd_2sms_campain_txt_field_erea"
+																	value="#{viewListBean.contactFirstName}" size="25"
+																	style="margin-bottom:10px;" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field">#{msgs.contact_number}</span></td>
+															<td><h:inputText
+																	class="mmagd_2sms_campain_txt_field_erea"
+																	value="#{viewListBean.contactMsisdn}" size="25" /></td>
+														</tr>
+													</table>
+												</h:panelGroup>
+												<h:panelGroup rendered="#{viewListBean.customizedlist}">
+													<table style="margin-top: 10px;">
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.first_name}</span>
+															</td>
+															<td><h:inputText
+																	class="mmagd_2sms_campain_txt_field_erea"
+																	value="#{viewListBean.contactFirstName}" size="25"
+																	style="margin-bottom:13px;" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.contact_number}</span></td>
+															<td><h:inputText style="margin-bottom:13px;"
+																	class="mmagd_2sms_campain_txt_field_erea"
+																	value="#{viewListBean.contactMsisdn}" size="25" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value1}</span></td>
+															<td><h:inputText style="margin-bottom:13px;"
+																	class="mmagd_2sms_campain_txt_field_erea" size="25"
+																	value="#{viewListBean.value1}" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value2}</span></td>
+															<td><h:inputText style="margin-bottom:13px;"
+																	class="mmagd_2sms_campain_txt_field_erea" size="25"
+																	value="#{viewListBean.value2}" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value3}</span></td>
+															<td><h:inputText style="margin-bottom:13px;"
+																	class="mmagd_2sms_campain_txt_field_erea" size="25"
+																	value="#{viewListBean.value3}" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value4}</span></td>
+															<td><h:inputText style="margin-bottom:13px;"
+																	class="mmagd_2sms_campain_txt_field_erea" size="25"
+																	value="#{viewListBean.value4}" /></td>
+														</tr>
+														<tr>
+															<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.value5}</span></td>
+															<td><h:inputText style="margin-bottom:13px;"
+																	class="mmagd_2sms_campain_txt_field_erea" size="25"
+																	value="#{viewListBean.value5}" /></td>
+														</tr>
+													</table>
+												</h:panelGroup>
+												<ul class="actionsList flipped">
+													<li class=""><a href="#" class=""
+														onclick="hideoverlay('Edit_current_contact1');">
+															<div>#{msgs.cancel}</div>
+													</a></li>
+													<li class="active"><h:commandLink value="#{msgs.save}"
+															styleClass="active"
+															actionListener="#{viewListBean.changeContact}"
+															onclick="hideoverlay('Edit_current_contact1');">
+															<f:ajax execute="@form"
+																render=":contact-form:sub-contact-table :contact-form:error_mess :edit-contact-form:edit-contact-list-panel" />
+														</h:commandLink></li>
+												</ul>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="change-list-name-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="Edit_current_contact">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="" style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('Edit_current_contact');">#{msgs.close}</a>
+									<div class="modalDetails" style="display: block;">
+										<h2>#{msgs.edit}</h2>
+										<hr class="deactivate_bundel_overlay_hrline" />
+										<div class="">
+											<div class="clearfix"></div>
+											<div class="mmagd_2sms_contact_add_new_txt_field List_name">
+												<span class="mmagd_2sms_campain_text_field">#{msgs.list_name}:
+												</span>
+												<h:inputText styleClass="mmagd_2sms_campain_txt_field_erea"
+													size="25" value="#{viewListBean.changedListName}"
+													onkeypress="return checkEnter(event)" />
+											</div>
+											<div class="clearfix"></div>
+
+											<script>
+												function clickOnLoadButton() {
+													$('.loadButton5').click();
+												}
+											</script>
+
+											<ul class="actionsList flipped">
+												<li class=""><a href="#" class=""
+													onclick="hideoverlay('Edit_current_contact');">
+														<div>#{msgs.cancel}</div>
+												</a></li>
+												<li class="active"><h:commandLink value="#{msgs.save}"
+														styleClass="active"
+														actionListener="#{viewListBean.changeListName}"
+														onclick="hideoverlay('Edit_current_contact');">
+														<f:ajax execute="@form"
+															render=":contact-form:error_mess :contact-form:all-lists :contact-form:update-list-name"
+															onevent="clickOnLoadButton()" />
+													</h:commandLink></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="confirm-delete-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="payment_methods_overlay_1">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="IntraListOverlayDivContent_1"
+									style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('payment_methods_overlay_1');">#{msgs.close}</a>
+
+									<div class="modalDetails" style="display: block;">
+										<span class="mmagd_right_icon"></span>
+										<h2>#{msgs.confirmation}</h2>
+										<hr id="paymentoptihr"
+											class="deactivate_bundel_overlay_hrline" />
+										<div class="paymentoption">
+
+											<br /> <span class="mmagd_txt_confirm">#{msgs.continue_process}</span>
+											<br />
+										</div>
+
+										<div class="confirm_to_charge_withcredit_card">
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><a href="#" title="#" class="overlayClose black"
+													onclick="hideoverlay('payment_methods_overlay_1');">
+														<div>
+															<div>#{msgs.no}</div>
+														</div>
+												</a></li>
+											</ul>
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose active"
+														onclick="hideoverlay2('payment_methods_overlay_1');"
+														value="#{msgs.yse}"
+														actionListener="#{viewListBean.deleteList}">
+														<f:ajax event="action"
+															render=":contact-form:error_mess :contact-form:all-lists :contact-form:bank-panel2"
+															execute="confirm-delete-form" />
+													</h:commandLink></li>
+											</ul>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="confirm-delete-contact-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="payment_methods_overlay_8">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="IntraListOverlayDivContent_8"
+									style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('payment_methods_overlay_8');">#{msgs.close}</a>
+
+									<div class="modalDetails" style="display: block;">
+										<span class="mmagd_right_icon"></span>
+										<h2>#{msgs.confirmation}</h2>
+										<hr id="paymentoptihr"
+											class="deactivate_bundel_overlay_hrline" />
+										<div class="paymentoption">
+
+											<br /> <span class="mmagd_txt_confirm">#{msgs.continue_process}</span>
+											<br />
+										</div>
+
+										<div class="confirm_to_charge_withcredit_card">
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose black"
+														onclick="hideoverlay('payment_methods_overlay_8');"
+														value="#{msgs.no}">
+														<f:ajax event="action"
+															render=":contact-form:error_mess :contact-form:sub-contact-table :contact-form:all-lists" />
+													</h:commandLink></li>
+											</ul>
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose active"
+														onclick="hideoverlay('payment_methods_overlay_8');"
+														value="#{msgs.yse}"
+														actionListener="#{viewListBean.deleteContactsFromList}">
+														<f:ajax event="action"
+															render=":contact-form:error_mess :contact-form:sub-contact-table :contact-form:all-lists"
+															execute="confirm-delete-contact-form" />
+													</h:commandLink></li>
+											</ul>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="export-confirmation">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="payment_methods_overlay_9">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="IntraListOverlayDivContent_9"
+									style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('payment_methods_overlay_9');">#{msgs.close}</a>
+
+									<div class="modalDetails" style="display: block;">
+										<span class="mmagd_right_icon"></span>
+										<h2>#{msgs.confirmation}</h2>
+										<hr id="paymentoptihr"
+											class="deactivate_bundel_overlay_hrline" />
+										<div class="paymentoption">
+
+											<br /> <span class="mmagd_txt_confirm">#{msgs.continue_process}</span>
+											<br />
+										</div>
+
+										<div class="confirm_to_charge_withcredit_card">
+
+											<script>
+												function openTab() {
+													document
+															.getElementById(
+																	'export-confirmation:export-list-button')
+															.click();
+													window
+															.open('#{request.contextPath}/DownloadLists');
+												}
+											</script>
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose black"
+														onclick="hideoverlay('payment_methods_overlay_9');"
+														value="#{msgs.no}">
+														<f:ajax render=":contact-form:error_mess" />
+													</h:commandLink></li>
+											</ul>
+
+											<h:panelGroup id="export-panel">
+												<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+													<li><h:commandLink styleClass="overlayClose active"
+															onclick="hideoverlay('payment_methods_overlay_9');"
+															value="#{msgs.yse}"
+															actionListener="#{viewListBean.showErroMessage}"
+															rendered="#{viewListBean.errorButton}">
+															<f:ajax render=":contact-form:error_mess" />
+														</h:commandLink> <h:commandLink styleClass="overlayClose active"
+															onclick="hideoverlay('payment_methods_overlay_9');"
+															value="#{msgs.yse}"
+															rendered="#{viewListBean.exportButton}">
+															<f:ajax onevent="openTab()" />
+														</h:commandLink></li>
+													<h:commandLink style="dispaly:hidden"
+														styleClass="export-list-button"
+														actionListener="#{viewListBean.readFileFromServer}"
+														id="export-list-button">
+														<f:ajax />
+													</h:commandLink>
+												</ul>
+											</h:panelGroup>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<div id="mmagd_2sms_wrapper">
+					<h:form id="contact-form">
+						<div class="mmagd_2sms_contact_list_content">
+
+							<div class="mmagd_2sms_contact_add_list_btn">
+								<ul class="actionsList">
+									<li><a href="#"
+										class="mmagd_2sms_contact_list_btn_add arabic-style5"
+										onclick="">
+											<div class="mmagd_2sms_contact_list_add_icon"></div>
+											<div>#{msgs.add_new_list}</div>
+									</a></li>
+								</ul>
+								<ul class="actionsList">
+									<li><h:commandLink
+											styleClass="arabic-style-viewIntraButton"
+											action="#{viewListBean.viewAllIntraLists}">
+											<div>#{msgs.View_Intera}</div>
+										</h:commandLink></li>
+								</ul>
+							</div>
+
+							<div
+								class="mmagd_2sms_contact_list_list_select_source fm-select aligntoright">
+								<span class="mmagd_2sms_ccontact_list_select_source_txt">#{msgs.select_source}</span>
+								<h:selectOneMenu
+									styleClass="mmagd_2sms_campain_select_3 selectfrommenu"
+									value="#{viewListBean.selectedType}">
+									<f:selectItem itemLabel="#{msgs.select_form_list}"
+										itemValue="-1" />
+									<f:selectItem itemLabel="#{msgs.blank_list}" itemValue="0" />
+									<f:selectItem itemLabel="#{msgs.import_from_another_list}"
+										itemValue="anotherList" />
+									<f:selectItem itemLabel="#{msgs.import_from_file}"
+										itemValue="fromfile" />
+									<f:selectItem itemLabel="#{msgs.create_customize}"
+										itemValue="customizeList" />
+									<f:ajax
+										render="contact-form:error_mess 
+										:contact-form:newListName
+										:contact-form:choosing-panel"
+										execute="@this"
+										listener="#{viewListBean.getSelectedTypeOfCreation}" />
+								</h:selectOneMenu>
+								<span class="arrow-css"><i class="i-arrow-down-grey-lrg"></i></span>
+							</div>
+
+							<div id="listName"
+								class="mmagd_2sms_contact_list_list_name_field">
+								<h:inputText id="newListName" value="#{viewListBean.listName}"
+									styleClass="mmagd_2sms_campain_txt_field_erea Custom_List_name">
+									<f:ajax event="keyup"
+										listener="#{viewListBean.getListNameToFile}" />
+								</h:inputText>
+							</div>
+
+
+
+
+						</div>
+
+						<h:panelGroup id="error_mess">
+							<div class="#{general.facesSeverity}">
+								<span> </span>
+								<h:panelGroup
+									rendered="#{(general.facesSeverity == 'disclaimer error')}">
+									<h3>#{msgs.error}</h3>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{(general.facesSeverity == 'disclaimer success')}">
+									<h3>#{msgs.success}</h3>
+								</h:panelGroup>
+
+								<h:messages layout="table" showSummary="false" showDetail="true"
+									infoClass="disclaimer success" errorClass="disclaimer error"
+									style="border-collapse:inherit !important;"
+									styleClass="messages-ui" />
+
+							</div>
+						</h:panelGroup>
+
+
+						<div class="mmagd_2sms_contact_list_list_view">
+
+							<div class="mmagd_2sms_contact_list_search_area">
+								<div
+									class="mmagd_2sms_conatct_list_search_icon main_list_search"></div>
+								<h:inputText name="" class="full_width" type="text" size="150"
+									value="#{viewListBean.listNameSearch}"
+									style="height:30px;padding-left:12px;padding-right:12px">
+									<f:ajax event="keyup" listener="#{viewListBean.searchForList}"
+										render=":contact-form:all-lists :contact-form:pagination-buttons" />
+								</h:inputText>
+							</div>
+
+							<div class="mmagd_2sms_conatct_list_check_list_conatct">
+								<h:dataTable layout="unorderedList"
+									value="#{viewListBean.listofLists}" var="bean"
+									styleClass="mmagd_2sms_contact_sub_contact"
+									itemStyleClass="mmagd_2sms_conatct_list_check_box_list_sub_link"
+									id="all-lists">
+									<h:column>
+										<li class="listItem" onclick="clickOnUpdate(this)">
+											<div>
+												<div class="ss-choice-item mmagd_2sms_campian_check_box">
+													<label><span
+														class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+														<h:selectBooleanCheckbox
+															value="#{viewListBean.checked[bean.listId]}"
+															styleClass="ss-q-checkbox" id="group_1434836598_12">
+															<f:ajax event="valueChange" execute="@this" />
+														</h:selectBooleanCheckbox><label
+														class="ss-choice-label mmagd_label_check_list list_label_test"
+														for="" onclick="getId(this)"><span></span></label></label>
+												</div>
+												<span class="mmagd_2sms_campain_text_field"
+													style="overflow: hidden; text-overflow: ellipsis; max-width: 150px; white-space: nowrap; display: inline-block;">#{bean.listName}</span>
+												<span class="mmagd_2sms_contact_list_no_of_contact">(#{bean.contactsCount}
+													#{msgs.contacts} )</span>
+
+											</div>
+										</li>
+										<h:commandLink style="display:none"
+											actionListener="#{viewListBean.getUpdateListId(bean.listId)}">
+											<f:ajax
+												render=":contact-form:update-list-name :contact-form:sub-contact-table  :change-list-name-form :contact-form:error_mess :contact-form:editRefreshPanel  :contact-form:deleteAddContactInList  :contact-form:bank-panel2" />
+										</h:commandLink>
+									</h:column>
+									<f:facet name="footer">
+										<div class="">
+											<h:panelGroup rendered="#{viewListBean.viewButtonsFlag}">
+												<ul class="actionsList flipped ">
+													<li class=""><h:commandLink styleClass="black"
+															onclick="showOverlay('payment_methods_overlay_1');"
+															value="#{msgs.delete_selected}">
+															<f:ajax render="@this :contact-form:pagination-buttons " />
+														</h:commandLink></li>
+
+													<li class=""><h:commandLink styleClass="active"
+															onclick="showOverlay('payment_methods_overlay_9');"
+															value="#{msgs.export_selected}"
+															actionListener="#{viewListBean.checkIfUserChecked}">
+															<f:ajax
+																render=":export-confirmation:export-panel :contact-form:error_mess" />
+														</h:commandLink></li>
+												</ul>
+											</h:panelGroup>
+										</div>
+									</f:facet>
+								</h:dataTable>
+							</div>
+							<h:commandLink actionListener="#{viewListBean.populateList}"
+								styleClass="loadButton5">
+								<f:ajax execute="@this"
+									render=":contact-form:all-lists :contact-form:sub-contact-table" />
+							</h:commandLink>
+
+							<h:panelGroup id="pagination-buttons">
+								<h:panelGroup rendered="#{viewListBean.tableFlag}"
+									id="pagination-buttons-internal" style="float:left;width:auto"
+									styleClass="mmagd_2sms_contact_list_list_view arabic-style">
+									<ul class="actionsList3">
+										<li class="arabic-style"><h:commandLink
+												value="#{msgs.first}"
+												disabled="#{viewListBean.firstRow3 == 0}"
+												rendered="#{viewListBean.tableFlag}"
+												actionListener="#{viewListBean.pageFirst3}"
+												styleClass="black">
+												<f:ajax
+													render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form:error_mess" />
+											</h:commandLink></li>
+
+										<t:dataList value="#{viewListBean.pages3}" var="page">
+											<li class="arabic-style"><h:commandLink value="#{page}"
+													actionListener="#{viewListBean.page3}"
+													rendered="#{page != viewListBean.currentPage3}">
+													<f:ajax
+														render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form:error_mess"
+														execute="@form" />
+												</h:commandLink> <h:outputText value="#{page}" escape="false"
+													rendered="#{page == viewListBean.currentPage3}" /></li>
+										</t:dataList>
+										<li class="arabic-style"><h:commandLink
+												value="#{msgs.last}"
+												disabled="#{viewListBean.firstRow3 + viewListBean.rowsPerPage3 >= viewListBean.totalRows3}"
+												rendered="#{viewListBean.tableFlag}"
+												actionListener="#{viewListBean.pageLast3}"
+												styleClass="black">
+												<f:ajax
+													render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form:error_mess" />
+											</h:commandLink></li>
+									</ul>
+								</h:panelGroup>
+							</h:panelGroup>
+						</div>
+						<ui:include src="new-contact-to-list.xhtml" />
+						<div class="mmagd_2sms_contact_list_asset_contacts mmagd_SubList">
+							<div class="mmagd_2sms_contact_list_title_contacts_list_choose">
+
+								<div class="mmagd_2sms_contact_list_search_area">
+									<div class="mmagd_2sms_contact_list_title_lists">
+										<h:panelGroup id="update-list-name">
+											<h:outputText value="#{viewListBean.subListName}"
+												style="overflow: hidden; text-overflow: ellipsis; max-width: 210px; white-space: nowrap; display: inline-block;" />
+											<span>#{msgs.contacts}</span>
+										</h:panelGroup>
+										<h:panelGroup id="editRefreshPanel">
+											<h:panelGroup
+												rendered="#{viewListBean.deleteContactFromList}">
+												<ul class="actionsList flipped">
+													<li style="margin-top: 0px;"><a href="#" title="#"
+														class="Edit_Contacts"
+														onclick="showOverlay('Edit_current_contact')">
+															<div>
+																<div>
+																	<i> </i>#{msgs.edit}
+																</div>
+															</div>
+													</a></li>
+												</ul>
+											</h:panelGroup>
+											<h:panelGroup rendered="#{!viewListBean.editFlag}">
+												<ul class="actionsList flipped">
+													<li style="margin-top: 0px;"><a href="#" title="#"
+														class="Edit_Contacts" onclick="pressRefreshButton()">
+															<div>
+																<div>
+																	<i> </i>#{msgs.refresh}
+																</div>
+															</div>
+													</a></li>
+												</ul>
+
+											</h:panelGroup>
+											<h:commandButton id="refreshButton"
+												action="#{viewListBean.getIntraLists}" style="display:none;" />
+										</h:panelGroup>
+
+									</div>
+
+									<div class="mmagd_2sms_conatct_list_search_icon sub_list"></div>
+									<h:inputText
+										styleClass="mmagd_2sms_campain_txt_field_erea mmagd_2sms_contact_page_input_padding"
+										type="text" size="47" value="#{viewListBean.searchMsisdn}"
+										onkeypress="return checkEnter1(event)">
+										<f:ajax event="keyup"
+											listener="#{viewListBean.searchForMsisdn}"
+											render=":contact-form:sub-contact-table :contact-form:script-panel" />
+									</h:inputText>
+								</div>
+
+								<h:commandLink id="search-hidden-button" style="display:hidden">
+									<f:ajax listener="#{viewListBean.searchForMsisdn}"
+										render=":contact-form:sub-contact-table :contact-form:script-panel" />
+								</h:commandLink>
+
+							</div>
+
+
+							<div
+								class="mmagd_2sms_conatct_list_check_list_conatct mmagdinnergroup"
+								id="scroll-contact-div">
+								<ul>
+									<h:dataTable var="par" value="#{viewListBean.contactsList}"
+										id="sub-contact-table">
+										<h:column>
+											<li
+												class="mmagd_2sms_conatct_list_check_box_list_sub_link listItem"
+												style="cursor: auto;"><div>
+													<div class="ss-choice-item mmagd_2sms_campian_check_box">
+														<label><span
+															class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+															<h:selectBooleanCheckbox
+																value="#{viewListBean.checkedSubList[par.msisdn]}"
+																styleClass="ss-q-checkbox" id="group_1434836598_13">
+																<f:ajax event="valueChange" execute="@this" />
+															</h:selectBooleanCheckbox> <label
+															class="ss-choice-label mmagd_label_check_list list_label_test"
+															for="" onclick="getId(this)"><span></span></label></label>
+													</div>
+													<span class="mmagd_2sms_campain_text_field"
+														style="overflow: hidden; text-overflow: ellipsis; max-width: 240px; white-space: nowrap; display: inline-block;">#{par.msisdn}
+														<h:outputText value="- #{par.firstName}"
+															rendered="#{par.firstName != null and par.firstName != '' ? true : false}"
+															escape="false" />
+													</span>
+
+													<h:commandLink value="#{msgs.edit}" style="float:right;"
+														action="#{viewListBean.populateEditContactObj}"
+														styleClass="arabic-style4"
+														rendered="#{viewListBean.editContactFlag}">
+														<f:setPropertyActionListener
+															target="#{viewListBean.contactEditObj}" value="#{par}" />
+														<f:ajax
+															render=":edit-contact-form:edit-contact-list-panel"
+															onevent="showOverlay('Edit_current_contact1')"
+															execute="@this" />
+													</h:commandLink>
+
+													<h:commandLink value="#{msgs.view}"
+														style="float:right;margin-right: 10px;"
+														action="#{viewListBean.populateEditContactObj}"
+														styleClass="arabic-style4"
+														rendered="#{viewListBean.customizedlist}">
+														<f:setPropertyActionListener
+															target="#{viewListBean.contactEditObj}" value="#{par}" />
+														<f:ajax
+															render=":view-contact-form:view-contact-list-panel"
+															onevent="showOverlay('View_current_contact1')"
+															execute="@this" />
+													</h:commandLink>
+												</div></li>
+										</h:column>
+									</h:dataTable>
+								</ul>
+							</div>
+
+							<h:panelGroup id="script-panel">
+								<script>
+										var searchMode = ${viewListBean.searchMode};
+										var lastScrollPos = 0;
+
+											/*	$("#scroll-contact-div").load(function(this) {
+													alert(lastScrollPos);
+													$(this).scrollTop(lastScrollPos);
+												});*/
+
+											$('#scroll-contact-div')
+													.scroll(
+															function() {
+																lastScrollPos = this.scrollTop;
+																var scroll = $('#scroll-contact-div');
+																if (scroll[0].scrollHeight
+																		- scroll
+																				.scrollTop() == scroll
+																		.height()) //scrollTop is 0 based
+																{
+																	if (searchMode == false) {
+																		$(
+																				".loadButton2")
+																				.click();
+																	}
+																}
+															});
+										
+									</script>
+
+							</h:panelGroup>
+							<h:panelGroup id="deleteAddContactInList">
+								<h:panelGroup rendered="#{viewListBean.addContactflag}">
+									<div class="">
+										<ul class="actionsList flipped custom-list custom-flipped">
+											<li class=""><h:commandLink
+													styleClass="overlayClose active"
+													onclick="showOverlay('payment_methods_overlay_8');"
+													value="#{msgs.delete_selected}">
+													<f:ajax render="@this" />
+												</h:commandLink></li>
+
+											<li class=""><a href="#" title="#"
+												class="overlayClose addnewContactbtn2"
+												onclick="showAddNewContact()">
+													<div>
+														<div>#{msgs.add_new}</div>
+													</div>
+											</a></li>
+										</ul>
+
+									</div>
+								</h:panelGroup>
+
+								<h:panelGroup rendered="#{viewListBean.intraSubListChoosen}">
+									<div class="">
+										<ul class="actionsList flipped custom-list custom-flipped">
+											<li class=""><h:commandLink
+													styleClass="overlayClose active"
+													onclick="showOverlay('payment_methods_overlay_8');"
+													value="#{msgs.delete_selected}">
+													<f:ajax render="@this" />
+												</h:commandLink></li>
+
+											<li class=""><h:commandLink id="addnew_inSubIntra"
+													styleClass="overlayClose addnewContactbtn2"
+													onclick="showOverlay('payment_methods_overlay');"
+													value="#{msgs.add_new}">
+													<f:ajax render="@this" />
+												</h:commandLink></li>
+										</ul>
+
+									</div>
+								</h:panelGroup>
+
+
+
+								<!--  
+								<h:panelGroup rendered="#{viewListBean.customizedlist}">
+									<div class="">
+										<ul class="actionsList flipped custom-list custom-flipped">
+											<li class=""><h:commandLink
+													styleClass="overlayClose active"
+													onclick="showOverlay('payment_methods_overlay_8');"
+													value="#{msgs.delete_selected}">
+													<f:ajax render="@this" />
+												</h:commandLink></li>
+										</ul>
+
+									</div>
+								</h:panelGroup> -->
+							</h:panelGroup>
+
+							<h:commandLink actionListener="#{viewListBean.pageNext}"
+								styleClass="loadButton2" style="display:none;">
+								<f:ajax execute="@this"
+									render=":contact-form:sub-contact-table :contact-form:error_mess" />
+							</h:commandLink>
+						</div>
+						<ui:include src="blank_list.xhtml" />
+						<div id="toshowthevalue">
+							<h:panelGroup id="choosing-panel">
+								<h:panelGroup rendered="#{viewListBean.createCustomizeList}">
+									<ui:include src="create_customize_list.xhtml" />
+								</h:panelGroup>
+								<h:panelGroup rendered="#{viewListBean.importFromListFlag}">
+									<ui:include src="import_from_another_list.xhtml" />
+								</h:panelGroup>
+								<h:panelGroup rendered="#{viewListBean.importFromFileFlag}">
+									<ui:include src="import_from_file.xhtml" />
+
+								</h:panelGroup>
+
+							</h:panelGroup>
+						</div>
+					</h:form>
+				</div>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

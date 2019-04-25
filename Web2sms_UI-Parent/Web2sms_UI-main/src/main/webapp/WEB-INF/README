@@ -1,0 +1,6 @@
+use iReport IDE version 5.5.0 while dealing with jasper report.
+
+downloadLink : https://sourceforge.net/projects/ireport/files/iReport/iReport-5.5.0/iReport-5.5.0.tar.gz/download
+
+CampaingReport.jasper --> last updated version of pdf report - the live one.
+CampaignReport.jasper_beforeAddingOperators --> one version a before live one.

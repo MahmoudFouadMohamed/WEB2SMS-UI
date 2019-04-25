@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</h:head>
+<body>
+	<div class="anotherList">
+
+		<div class="mmagd_2sms_contact_list_content">
+			<div class="mmagd_2sms_contact_list_list_view">
+				<div class="mmagd_2sms_contact_list_title_lists">#{msgs.import_contacts_from_another_list}</div>
+				<div class="mmagd_2sms_contact_list_search_area_2">
+					<div class="mmagd_2sms_contacts_sub_title_text_field_3">#{msgs.select_the_list_you_want_to_copy_from}</div>
+					<div class="fm-select left">
+						<h:selectOneMenu class="mmagd_2sms_campain_select_3"
+							value="#{viewListBean.choosenList}"
+							valueChangeListener="#{viewListBean.getChoosenListId}">
+							<f:ajax
+								render=":contact-form:list-contact-table :contact-form:error_mess"
+								execute="@this" event="valueChange" />
+							<f:selectItem itemValue="" itemLabel="#{msgs.select}" />
+							<f:selectItems value="#{viewListBean.userList}" var="l"
+								itemLabel="#{l.listName}" itemValue="#{l.listId}" />
+						</h:selectOneMenu>
+						<span class="arrow-css"><i class="i-arrow-down-grey-lrg"></i>
+						</span>
+					</div>
+				</div>
+				<br /> <br />
+
+				<script>
+					$(function() {
+						$('#myscroll').scroll(
+								function() {
+									var scroll = $('#myscroll');
+									if (scroll[0].scrollHeight
+											- scroll.scrollTop() == scroll
+											.height()) //scrollTop is 0 based
+									{
+										$(".loadButton").click();
+									}
+								});
+					});
+				</script>
+				<div class="mmagd_2sms_contact_list_import_list" id="myscroll">
+					<div class="mmagd_2sms_conatct_list_list_import_file">
+
+						<ul>
+							<h:dataTable var="bean" value="#{viewListBean.listContact}"
+								id="list-contact-table">
+								<h:column>
+									<li class="mmagd_2sms_conatct_list_import_file_conatct"><div>
+											<div class="ss-choice-item mmagd_2sms_campian_check_box">
+												<label><span
+													class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+													<h:selectBooleanCheckbox
+														value="#{viewListBean.checked2[bean.msisdn]}"
+														styleClass="ss-q-checkbox" id="group_1434836598_13">
+														<f:ajax event="valueChange" execute="@this" />
+													</h:selectBooleanCheckbox> <label
+													class="ss-choice-label mmagd_label_check_list list_label_test"
+													for="" onclick="getId(this)"><span></span></label></label>
+											</div>
+											<span class="mmagd_2sms_campain_text_field"
+												style="overflow: hidden; text-overflow: ellipsis; max-width: 540px; white-space: nowrap; display: inline-block;">#{bean.msisdn}<h:outputText
+													value="- #{bean.firstName}"
+													rendered="#{bean.firstName != null and bean.firstName != '' ? true : false}"
+													escape="false" /></span>
+										</div></li>
+								</h:column>
+							</h:dataTable>
+						</ul>
+
+					</div>
+				</div>
+				<h:commandLink actionListener="#{viewListBean.pageNext2}"
+					styleClass="loadButton">
+					<f:ajax execute="@this" render=":contact-form:list-contact-table" />
+				</h:commandLink>
+			</div>
+
+			<div class="">
+				<ul
+					class="actionsList flipped mmagd_contact_list_update_list_action_btn_2">
+					<li class="mmagd_2sms_action_btn_top"><h:commandLink
+							styleClass="overlayClose active" value="#{msgs.import_selected}"
+							actionListener="#{viewListBean.copyContacts}">
+							<f:ajax event="action" execute="@form"
+								render=":contact-form:error_mess" />
+						</h:commandLink></li>
+					<li class="mmagd_2sms_action_btn_top"><h:commandLink
+							styleClass="overlayClose black" value="#{msgs.import_all}"
+							actionListener="#{viewListBean.copyAllContacts}">
+							<f:ajax event="action" execute="@form"
+								render=":contact-form:error_mess" />
+						</h:commandLink></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<faces-config xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
+	version="2.1">
+	<application>
+		<message-bundle>resources.application</message-bundle>
+		<locale-config>
+			<default-locale>en</default-locale>
+		</locale-config>
+		<resource-bundle>
+			<base-name>com.edafa.web2sms.ui.locale.message</base-name>
+			<var>msgs</var>
+		</resource-bundle>
+	</application>
+	
+	<navigation-rule>
+		<navigation-case>
+			<from-outcome>outcomeUserHomeIndex</from-outcome>
+			<to-view-id>/main/index.xhtml</to-view-id>
+			<redirect />
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>outcomeUserTest</from-outcome>
+			<to-view-id>/error.html</to-view-id>
+			<redirect />
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<from-view-id>/template/Template.xhtml</from-view-id>
+		<navigation-case>
+			<description></description>
+			<from-outcome>campaign</from-outcome>
+			<to-view-id>/campaign/Campaigns.xhtml</to-view-id>
+		</navigation-case>
+		
+	</navigation-rule>
+	
+	 <factory>
+	  <exception-handler-factory>
+	    com.edafa.web2sms.ui.locale.Web2smsExceptionHandlerFactory
+	  </exception-handler-factory>
+	</factory>
+	<factory>
+ 		 <external-context-factory>
+ 		 com.edafa.web2sms.ui.locale.ExternalContextFactory
+ 		 </external-context-factory>
+	</factory>
+	
+	<lifecycle>
+		    <phase-listener id="nocache">
+		    	com.edafa.web2sms.ui.locale.Web2smsCacheControlPhaseListener
+		    </phase-listener>
+	</lifecycle>
+</faces-config>

@@ -1,0 +1,22 @@
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+	background: #ffffff
+		url("../resources/smoothness/images/ui-bg_glass_65_ffffff_1x400.png")
+		repeat-x scroll 50% 50% !important;
+	color: #333 !important;
+	text-decoration: underline !important;
+}
+
+.tabs.tablist,.tabs.ui-state-default,.tabs.ui-widget-content .ui-state-default,.tabs.ui-widget-header .ui-state-default
+	{
+	width: 248px !important;
+	margin: 0 !important;
+	background-color: #767676 !important;
+	border-left: 1px solid #ccc !important;
+	border-right: 1px solid #ccc !important;
+	border-top: 1px solid #ccc !important;
+	border-top-left-radius: 3px !important;
+	border-top-right-radius: 3px !important;
+	float: left !important;
+	height: 50px !important;
+	background: #767676 !important;
+}

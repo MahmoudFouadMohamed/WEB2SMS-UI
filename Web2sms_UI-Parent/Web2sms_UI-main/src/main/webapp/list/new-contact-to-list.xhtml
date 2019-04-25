@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+
+
+<body>
+
+	<div class="mmagd_contact_list_aad_new_contact_div2">
+		<h:panelGroup id="bank-panel2">
+			<div class="mmagd_2sms_contact_list_title_lists">#{msgs.add_new_contact}</div>
+			<table style="clear: both;">
+				<tr>
+					<td style="margin: 0 2px;"><span
+						class="mmagd_2sms_campain_text_field_3"
+						style="margin-bottom: 13px;">#{msgs.first_name}</span></td>
+					<td><h:inputText value="#{viewListBean.firstName}"
+							styleClass="mmagd_2sms_campain_txt_field_erea" id="first-name2" />
+					</td>
+				</tr>
+				<tr>
+					<td><span class="mmagd_2sms_campain_text_field_3"
+						style="margin-bottom: 13px;">#{msgs.contact_number}</span></td>
+					<td><h:inputText value="#{viewListBean.msisdn}"
+							styleClass="mmagd_2sms_campain_txt_field_erea" id="msisdn2" /></td>
+				</tr>
+				<h:panelGroup rendered="#{viewListBean.customizedlist}">
+					<tr>
+						<td><span class="mmagd_2sms_campain_text_field_3"
+							style="margin-bottom: 13px;">#{msgs.value1}</span></td>
+						<td><h:inputText value="#{viewListBean.value1}"
+								styleClass="mmagd_2sms_campain_txt_field_erea" id="value1" /></td>
+					</tr>
+					<tr>
+						<td><span class="mmagd_2sms_campain_text_field_3"
+							style="margin-bottom: 13px;">#{msgs.value2}</span></td>
+						<td><h:inputText value="#{viewListBean.value2}"
+								styleClass="mmagd_2sms_campain_txt_field_erea" id="value2" /></td>
+					</tr>
+					<tr>
+						<td><span class="mmagd_2sms_campain_text_field_3"
+							style="margin-bottom: 13px;">#{msgs.value3}</span></td>
+						<td><h:inputText value="#{viewListBean.value3}"
+								styleClass="mmagd_2sms_campain_txt_field_erea" id="value3" /></td>
+					</tr>
+					<tr>
+						<td><span class="mmagd_2sms_campain_text_field_3"
+							style="margin-bottom: 13px;">#{msgs.value4}</span></td>
+						<td><h:inputText value="#{viewListBean.value4}"
+								styleClass="mmagd_2sms_campain_txt_field_erea" id="value4" /></td>
+					</tr>
+					<tr>
+						<td><span class="mmagd_2sms_campain_text_field_3"
+							style="margin-bottom: 13px;">#{msgs.value5}</span></td>
+						<td><h:inputText value="#{viewListBean.value5}"
+								styleClass="mmagd_2sms_campain_txt_field_erea" id="value5" /></td>
+					</tr>
+				</h:panelGroup>
+			</table>
+
+			<div class="mmagd_2sms_campain_template_btn_save">
+				<ul class="actionsList">
+					<li class=""><h:commandLink value="#{msgs.add_another}"
+							actionListener="#{viewListBean.saveContact}">
+							<f:ajax event="action" execute="@form"
+								render=":contact-form:bank-panel2 :contact-form:error_mess" />
+						</h:commandLink></li>
+
+
+					<li class="removeaddnew"><h:commandLink styleClass="black"
+							value="#{msgs.done}" actionListener="#{viewListBean.addContact}"
+							onclick="hideBlankList">
+							<f:ajax event="action" execute="@form"
+								render=":contact-form:bank-panel2 :contact-form:error_mess :contact-form:all-lists" />
+						</h:commandLink></li>
+				</ul>
+			</div>
+		</h:panelGroup>
+
+	</div>
+</body>
+</html>

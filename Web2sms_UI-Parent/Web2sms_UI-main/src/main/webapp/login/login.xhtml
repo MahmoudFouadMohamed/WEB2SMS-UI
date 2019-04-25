@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+    </h:head>
+    <body>
+        <ui:composition template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+            <ui:define name="content">
+                <script>
+                    function checkEnter(e)
+                    {
+                        if (e.keyCode == 13)
+                        {
+                            e.preventDefault();
+                            $(".submit-button").click();
+                        }// end if
+                    }// end of function checkEnter
+                    
+                    $(document).ready(function (e) {
+                        $(".user-name").attr("placeholder", "#{msgs.user_name_hint}");
+                    });
+                </script>
+                <f:view locale="#{localeBean.language}">
+                    <div id="v-homepage-slideshow">
+                        <div id="mmagd_2sms_wrapper" style="width: 100%;">
+                            <h:form id="user-form" style="width: 100%;">
+                                <a class="goToCampaigns" style="display: none;" 
+                                   href="/web2sms/campaign/Campaigns.xhtml"/>
+                                <h:panelGroup id="redirect-panel">
+                                    <script>
+                                        if (#{loginBean.goToCampaigns} === true) {
+                                            $(".goToCampaigns").get(0).click();
+                                        }
+                                    </script>
+                                </h:panelGroup>
+                                <h:panelGroup id="form-panel">
+                                    <h:panelGroup id="error_mess">
+                                        <div class="#{general.facesSeverity}">
+                                            <span> </span>
+                                            <h:panelGroup
+                                                rendered="#{(general.facesSeverity == 'disclaimer error')}">
+                                                <h3>#{msgs.error}</h3>
+                                            </h:panelGroup>
+                                            <h:panelGroup
+                                                rendered="#{(general.facesSeverity == 'disclaimer success')}">
+                                                <h3>#{msgs.success}</h3>
+                                            </h:panelGroup>
+                                            <h:messages layout="table" showSummary="false" showDetail="true"
+                                                        infoClass="disclaimer success"  errorClass="disclaimer error"
+                                                        style="border-collapse:inherit !important;"
+                                                        styleClass="messages-ui" />
+                                        </div>
+                                    </h:panelGroup>
+                                    <div class="mmagd_contact_list_aad_new_contact_div2 login-box" >
+                                        <div style="padding: 10px;">
+                                            <h2 class="login-title">
+                                                #{msgs.login_to_elen}</h2>
+                                        </div>
+                                        <table class="login-table">
+                                            <tbody>
+                                                <h:panelGroup id="user-panel" rendered="#{loginBean.step == 1}">
+                                                    <tr>
+                                                        <td class="login-user-label-td">
+                                                            <span class="mmagd_2sms_campain_text_field_3 login-user-label">#{msgs.user_name_user_form}</span>
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><h:inputText value="#{loginBean.userName}"
+                                                                         required="true" requiredMessage="#{msgs.mandatory_field}" onkeypress="checkEnter(event)" 
+                                                                         class="mmagd_2sms_campain_txt_field_erea user-name"/></td>
+                                                    </tr>
+                                                </h:panelGroup>
+                                                <h:panelGroup id="password-panel" rendered="#{loginBean.step == 2}" >
+                                                    <tr>
+                                                        <td class="login-user-label-td">
+                                                            <span class="mmagd_2sms_campain_text_field_3  login-user-label" style="margin-bottom: 13px;">#{msgs.password}</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><h:inputSecret value="#{loginBean.password}" onkeypress="checkEnter(event)" 
+                                                                           class="mmagd_2sms_campain_txt_field_erea password"/></td>
+                                                    </tr>
+
+                                                    <h:panelGroup id="forget-password-panel" rendered="#{loginBean.showForgetPassword}">
+                                                        <tr>
+                                                            <td class="login-user-label-td">
+                                                                <h:commandLink class="mmagd_2sms_campain_text_field_3  login-link" style="margin-bottom: 13px;"
+                                                                               value="#{msgs.forget_password}" actionListener="#{loginBean.handleForgetPassword()}">
+                                                                    <f:ajax execute="@form" render=":user-form:form-panel"/>
+                                                                </h:commandLink>
+                                                            </td>
+                                                        </tr>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup id="resend-code-panel" rendered="#{loginBean.showResendCode}">
+                                                        <tr>
+                                                            <td class="login-user-label-td">
+                                                                <h:commandLink class="mmagd_2sms_campain_text_field_3  login-link" style="margin-bottom: 13px;"
+                                                                               value="#{msgs.resend_code}" actionListener="#{loginBean.resendCode()}">
+                                                                    <f:ajax execute="@form" render=":user-form:form-panel"/>
+                                                                </h:commandLink>
+                                                            </td>
+                                                        </tr>
+                                                    </h:panelGroup>
+                                                </h:panelGroup>
+
+                                                <h:panelGroup id="change-password-panel" rendered="#{loginBean.step == 3}" >
+                                                    <h:panelGroup id="old-password-panel" rendered="#{loginBean.requestOldPasswrod}">
+                                                        <tr>
+                                                            <td  class="login-user-label-td">
+                                                                <span class="mmagd_2sms_campain_text_field_3  login-user-label" style="margin-bottom: 13px;">#{msgs.old_password}</span></td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td><h:inputSecret value="#{loginBean.oldPassword}" 
+                                                                               class="mmagd_2sms_campain_txt_field_erea old-pass"/></td>
+                                                        </tr>
+                                                    </h:panelGroup>
+                                                    <tr>
+                                                        <td class="login-user-label-td">
+                                                            <span class="mmagd_2sms_campain_text_field_3  login-user-label" style="margin-bottom: 13px;">#{msgs.new_password}</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><h:inputSecret value="#{loginBean.newPassword}" onkeypress="checkEnter(event)" 
+                                                                           class="mmagd_2sms_campain_txt_field_erea new-pass"/></td>
+                                                    </tr>
+                                                    
+                                                    <tr>
+                                                        <td class="login-user-label-td">
+                                                            <span class="mmagd_2sms_campain_text_field_3  login-user-label" style="margin-bottom: 13px;">#{msgs.confirm_password}</span></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td><h:inputSecret value="#{loginBean.confirmPassword}" onkeypress="checkEnter(event)" 
+                                                                           class="mmagd_2sms_campain_txt_field_erea confirm-pass"/></td>
+                                                    </tr>
+                                                </h:panelGroup>
+                                            </tbody>
+                                        </table>
+
+                                        <script>
+                                            if (#{loginBean.step} === 1) {
+                                                $(".user-name").focus();
+                                            }
+                                            if (#{loginBean.step} === 2) {
+                                                $(".password").focus();
+                                            }
+                                            if (#{loginBean.step ==3 and loginBean.requestOldPasswrod}) {
+                                                $(".old-pass").focus();
+                                            }
+                                            if (#{loginBean.step ==3 and not loginBean.requestOldPasswrod}) {
+                                                $(".new-pass").focus();
+                                            }
+                                        </script>
+                                        <div class="mmagd_2sms_campain_template_btn_save login-btns">
+                                            <ul class="actionsList">
+                                                <li><h:panelGroup id="next-panel" class="login-btns-panel" rendered="#{loginBean.step == 1}">
+                                                    <h:commandLink class="submit-button" actionListener="#{loginBean.checkUser}" value="#{msgs.next}">
+                                                            <f:ajax execute="@form" render=":user-form:form-panel"/>
+                                                        </h:commandLink>
+                                                </h:panelGroup></li>
+                                                <li><h:panelGroup id="login-panel"  class="login-btns-panel" rendered="#{loginBean.step == 2}">
+                                                    <h:commandLink  class="submit-button"  actionListener="#{loginBean.login}" value="#{msgs.login}">
+                                                            <f:ajax execute="@form" render=":user-form:redirect-panel :user-form:form-panel"/>
+                                                        </h:commandLink>
+                                                </h:panelGroup></li>
+                                                <li><h:panelGroup id="change-pass-panel"  class="login-btns-panel"  rendered="#{loginBean.step == 3}">
+                                                    <h:commandLink class="submit-button" actionListener="#{loginBean.changePassword(true)}" value="#{msgs.change_password}">
+                                                            <f:ajax execute="@form" render=":user-form:redirect-panel :user-form:form-panel"/>
+                                                        </h:commandLink>
+                                                </h:panelGroup></li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </h:panelGroup>
+                            </h:form>
+                        </div>
+                    </div>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

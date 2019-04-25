@@ -1,0 +1,25 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>Web2sms_UI-Utils</artifactId>
+
+
+	<parent>
+		<artifactId>Web2sms_UI-Parent</artifactId>
+		<groupId>com.edafa.web2sms</groupId>
+		<version>2.5B</version>
+	</parent>
+        <dependencies>
+            <dependency>
+                <groupId>com.edafa.utils</groupId>
+                <artifactId>jcommons</artifactId>
+                <version>1.0.5</version>
+            </dependency>
+            <dependency>
+				<groupId>com.edafa.web2sms.clients</groupId>
+				<artifactId>ConfigsManagementService</artifactId>
+				<version>1-SNAPSHOT</version>
+			</dependency>
+        </dependencies>
+
+</project>

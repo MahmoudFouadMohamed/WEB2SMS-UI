@@ -1,0 +1,1236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+<body>
+	<ui:composition
+            template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+		<ui:define name="content">
+			<script>
+			//<![CDATA[
+			           function openDownloadTab(data) {
+			        	 
+			        	   if(data.status == "success"){
+									
+										window.open('#{request.contextPath}/DownloadPDFReport');
+								}
+						}
+			           
+			           function openDownloadTabForSMS(data) {
+				        	 
+			        	   if(data.status == "success"){
+									
+										window.open('#{request.contextPath}/DownloadSmsApiReport');
+								}
+						}
+			           
+			           
+			           
+			           function openExporrtServlet(data){
+			        	   if(data.status == "success"){
+			        	  	 window.open("#{request.contextPath}/DownloadReport");
+			        	   }
+			           }
+			           
+			          function checkEnter(e)
+			          {
+						 if (e.keyCode == 13) 
+						 { 
+							 e.preventDefault();
+							 $('.getReportHistoryClass').click();
+			 			 }// end if
+					  }// end of function checkEnter
+			          
+			          function smsApiCheckEnter(e)
+			          {
+			        	  if (e.keyCode == 13) 
+							 {
+			        		  	e.preventDefault();
+								$('.getSmsReportHistoryClass').click();
+				 			 }// end if
+			          }// end of function smsApiCheckEnter
+			          
+				$(document).ready(function(e) {
+					
+					Animate_progressbar('progressbar4', #{mainBean.consumedRatio});
+					
+					
+					
+					$(
+					'.mmagd_2sms_campain_full_Reports > ul')
+					.click(
+							function(e) {
+								$(
+										'.mmagd_2sms_campain_full_Reports > ul')
+										.removeClass(
+												'active');
+								$(this).addClass(
+										'active');
+							});
+					
+					$('.mmagd_2sms_campain_full_Requested_Reports > ul').click(
+						function(e) {$('.mmagd_2sms_campain_full_Requested_Reports > ul').removeClass('active');
+						$(this).addClass('active');});
+					$('.camp_name').attr('placeholder',"${msgs.campaign_name_placeholder}");
+					$('.toDateInput').attr('placeholder',"${msgs.to}");
+					$('.fromDateInput').attr('placeholder',"${msgs.from}");
+					$('.sender_name').attr('placeholder',"${msgs.sender_name_placeholder}");
+					$('.sms_search_field').attr('placeholder',"${msgs.sms_search_field_placeholder}");
+					
+					var jan = ${reportBean.quotaHistory.jan};
+					var feb = ${reportBean.quotaHistory.feb};
+					var mar = ${reportBean.quotaHistory.mar};
+					var apr = ${reportBean.quotaHistory.apr};
+					var may = ${reportBean.quotaHistory.may};
+					var jun = ${reportBean.quotaHistory.june};
+					var july = ${reportBean.quotaHistory.july};
+					var aug = ${reportBean.quotaHistory.aug};
+					var sept = ${reportBean.quotaHistory.sept};
+					var oct = ${reportBean.quotaHistory.oct};
+					var nov = ${reportBean.quotaHistory.nov};
+					var dec = ${reportBean.quotaHistory.dec};
+					
+					var monthArray = [];
+					monthArray.push(jan);
+					monthArray.push(feb);
+					monthArray.push(mar);
+					monthArray.push(apr);
+					monthArray.push(may);
+					monthArray.push(jun);
+					monthArray.push(july);
+					monthArray.push(aug);
+					monthArray.push(sept);
+					monthArray.push(oct);
+					monthArray.push(nov);
+					monthArray.push(dec);
+					
+					var max = monthArray[0]; 
+					
+					for(index=0;index < monthArray.length ; index++)
+					{
+						if(monthArray[index] > max)
+						{
+							max = monthArray[index];
+						}// end if
+					}// end for
+					
+					$('.month1').animate({height:Math.round(jan / max * 92) == 0 && jan > 0 ? 2 : Math.round(jan / max * 92)}, 2000, function() {});
+					$('.month2').animate({height:Math.round(feb / max * 92) == 0 && feb > 0 ? 2 : Math.round(feb / max * 92)}, 2000, function() {});
+					$('.month3').animate({height:Math.round(mar / max * 92) == 0 && mar > 0 ? 2 : Math.round(mar / max * 92)}, 2000, function() {});
+					$('.month4').animate({height:Math.round(apr / max * 92) == 0 && apr > 0 ? 2 : Math.round(apr / max * 92)}, 2000, function() {});
+					$('.month5').animate({height:Math.round(may / max * 92) == 0 && may > 0 ? 2 : Math.round(may / max * 92)}, 2000, function() {});
+					$('.month6').animate({height:Math.round(jun / max * 92) == 0 && jun > 0 ? 2 : Math.round(jun / max * 92)}, 2000, function() {});
+					$('.month7').animate({height:Math.round(july / max * 92) == 0 && july > 0 ? 2 : Math.round(july / max * 92)}, 2000, function() {});
+					$('.month8').animate({height:Math.round(aug / max * 92) == 0 && aug > 0 ? 2 : Math.round(aug / max * 92)}, 2000, function() {});
+					$('.month9').animate({height:Math.round(sept / max * 92) == 0 && sept > 0 ? 2 : Math.round(sept / max * 92)}, 2000, function() {});
+					$('.month10').animate({height:Math.round(oct / max * 92) == 0 && oct > 0 ? 2 : Math.round(oct / max * 92)}, 2000, function() {});
+					$('.month11').animate({height:Math.round(nov / max * 92) == 0 && nov > 0 ? 2 : Math.round(nov / max * 92)}, 2000, function() {});
+					$('.month12').animate({height:Math.round(dec / max * 92) == 0 && dec > 0 ? 2 : Math.round(dec / max * 92)}, 2000, function() {});
+					
+					
+					$('.dial').knob({
+						min : '0',
+						max : '#{mainBean.totalSms}',
+						width : 106,
+						height : 106,
+						thickness : .20,
+						displayInput : false,
+						fgColor : "#ff9900",
+						bgColor : "#ebebeb",
+						readOnly : true
+					});
+					$({
+						value : 0
+					}).animate(
+							{
+								 value : #{mainBean.consumedQuota} + #{mainBean.reservedQuota}
+							},
+							{
+								duration : 950,
+								easing : 'swing',
+								progress : function() {
+									$('.dial').val(Math.round(this.value))
+											.trigger('change');
+								}
+							});
+					$('.dial2').knob({
+						min : '0',
+						max : '#{mainBean.totalSms}',
+						width : 106,
+						height : 106,
+						thickness : .20,
+						displayInput : false,
+						fgColor : "#ff9900",
+						bgColor : "#ebebeb",
+						readOnly : true
+					});
+					$({
+						value : 0
+					}).animate(
+							{
+								value : 0
+							},
+							{
+								duration : 950,
+								easing : 'swing',
+								progress : function() {
+									$('.dial2').val(Math.round(this.value))
+											.trigger('change');
+								}
+							});
+					
+					$('.navigationTabs > div').click(function(e) 
+						{
+				          $('.navigationTabs div').removeClass('active');
+						  $(this).addClass('active');  
+						  
+						  if($(this).hasClass('History'))
+						  {
+						  	$('.tefa_History_Section_container').css('display','block');
+					  		$('.hist').css('display','block');
+							$('.api').css('display','none')
+	
+				  			/* $('.Campain_or_Api').attr('placeholder','Campaign name')
+				  			$('.Advanced_Search').css('display','none'); */
+					  	  }// end if
+					  
+						  if($(this).hasClass('API'))
+						  { 	  
+							$('.tefa_History_Section_container').css('display','none');
+							$('.hist').css('display','none');
+					  		/* $('.Campain_or_Api').attr('placeholder','Sender name') */
+	
+							$('.api').css('display','block')
+						  }// end if
+						 
+						});// end function
+						
+					
+				}); // end of ready function
+				
+				
+				
+					//]]>
+				
+					</script>
+
+                    <f:view locale="#{localeBean.language}">
+                        <h:outputStylesheet library="Styles" name="report_#{localeBean.language}.css" />
+				
+				<div class="AEthemeContainer">
+                                        
+                                        <ui:include src="/logout/logout-panel.xhtml"/>
+					<h:form style="width:950px;">
+					<h1>#{msgs.main_page_title}</h1>
+						<div class="canvas_Right">
+							<div class="pay_as_you_go_progresses_200mb_gift_pic">
+								 <div>
+									<canvas width="0" height="0"></canvas>
+									<input class="dial small" value="0" />
+								</div>
+								<div
+									class="pay_as_you_go_progresses_gift_200_mb_pro_pic_text_all">
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_num">#{mainBean.reservedAndConsumed}</div>
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_unit">#{msgs.of}
+										#{mainBean.totalSms}</div>
+								</div>
+							</div>
+						</div>
+
+						<span class="tefa_welocme_member">#{msgs.welcome}
+							#{mainBean.user.username}</span>
+						<br />
+						<br />
+                                                <span class="tefa_current_plan">#{msgs.plan}<span>
+								#{mainBean.userAcc.account.tier.tierName} </span></span>
+
+
+                                                <h:panelGroup rendered="#{mainBean.canShowPendingNotification and mainBean.waitingApprovalCount ne 0}">
+                                                    <a href="/web2sms/campaign/Campaigns.xhtml?status=pending"><span class="tefa_current_plan main-button3" style="font-style: normal; font-weight: normal;text-decoration: underline;cursor: pointer; font-size: 12pt;">
+                                                            #{msgs.you_have}<span> #{mainBean.waitingApprovalCount} #{msgs.campaigns_lower_case} </span> #{msgs.campaigns_to_be_approved}
+                                                        </span></a>
+                                                </h:panelGroup>
+					</h:form>
+					<div class="newtabs">
+						<ul>
+							<li class="#{mainBean.tabsClass} tab"><a
+								href="/web2sms/campaign/Campaigns.xhtml">#{msgs.campaigns} </a></li>
+							<li class="#{mainBean.tabsClass} tab2"><a href="/web2sms/list/Contacts.xhtml">
+									#{msgs.contacts}</a></li>
+							<li class="#{mainBean.tabsClass} tab3"><a href="/web2sms/template/Template.xhtml">
+									#{msgs.templates}</a></li>
+							<li class="#{mainBean.tabsClass} tab4 activeone"><a href="/web2sms/report/Reports.xhtml">
+									#{msgs.reports}</a></li>
+							<h:panelGroup rendered="#{mainBean.showUsersTab}">
+                               <li class="#{mainBean.tabsClass} tab5"><a href="/web2sms/user/Users.xhtml">#{msgs.users}</a></li>
+                            </h:panelGroup>
+                           <h:panelGroup rendered="#{mainBean.showGroupsTab}">
+                               <li class="#{mainBean.tabsClass} tab6"><a href="/web2sms/group/Groups.xhtml">#{msgs.groups}</a></li>
+                            </h:panelGroup>
+						</ul>
+					</div>
+				</div>
+				<h:form id="export-report">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv_1" id="payment_methods_overlay_10">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent"
+									id="payment_methods_overlay_content_1" style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('payment_methods_overlay_10');">#{msgs.close}</a>
+
+									<div class="modalDetails" style="display: block;">
+										<span class="mmagd_right_icon"></span>
+										<h2>#{msgs.confirmation}</h2>
+										<hr id="paymentoptihr"
+											class="deactivate_bundel_overlay_hrline" />
+
+										<div class="paymentoption">
+											<br /> <span class="mmagd_txt_confirm">#{msgs.continue_process}</span>
+											<br />
+										</div>
+
+
+										<div class="confirm_to_charge_withcredit_card">
+
+											<script>
+												/* function openTab() {
+													document.getElementById('export-report:export-report-button').click();
+												} */
+											</script>
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose black"
+														onclick="hideoverlay('payment_methods_overlay_10');"
+														value="#{msgs.no}">
+														<f:ajax render=":reports-form:error_mess" />
+													</h:commandLink></li>
+											</ul>
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose active"
+														value="#{msgs.yse}"
+														onclick="hideoverlay('payment_methods_overlay_10')"
+														action="#{reportBean.requestDetailedReportForCampaign}">
+														<f:ajax render=":reports-form:error_mess :requestedReports-form:requestedreports-list
+														:requestedReports-form:pagination-buttons" />
+													</h:commandLink></li>
+											</ul>
+
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<div id="mmagd_2sms_wrapper">
+					<h:form id="reports-form">
+						<div class="mmagd_2sms_Report_content">
+							<div class="mmagd_2sms_reports_quta_area">
+								<div class="mmagd_2sms_reports_quta_chart">
+									<div id="Currentyear">
+
+										<div class="month1 sent"
+											title="#{reportBean.quotaHistory.jan}"></div>
+
+										<div class="month2 sent"
+											title="#{reportBean.quotaHistory.feb}"></div>
+
+										<div class="month3 sent"
+											title="#{reportBean.quotaHistory.mar}"></div>
+
+										<div class="month4 sent"
+											title="#{reportBean.quotaHistory.apr}"></div>
+
+										<div class="month5 sent"
+											title="#{reportBean.quotaHistory.may}"></div>
+
+										<div class="month6 sent"
+											title="#{reportBean.quotaHistory.june}"></div>
+
+										<div class="month7 sent"
+											title="#{reportBean.quotaHistory.july}"></div>
+
+										<div class="month8 sent"
+											title="#{reportBean.quotaHistory.aug}"></div>
+
+										<div class="month9 sent"
+											title="#{reportBean.quotaHistory.sept}"></div>
+
+										<div class="month10 sent"
+											title="#{reportBean.quotaHistory.oct}"></div>
+										<div class="month11 sent"
+											title="#{reportBean.quotaHistory.nov}"></div>
+										<div class="month12 sent"
+											title="#{reportBean.quotaHistory.dec}"></div>
+
+									</div>
+								</div>
+								<div class="VFRed_Main_Details_Progress_Bar" style = "width: 227px !important;">
+									<div class="VFRed_Progress_Bar_QuotaAndRenewal">
+										<div class="VFRed_Progress_Bar_QuotaAndRenewal_TXT_Left" 
+											style = "width:auto !important; margin-left:3px !important; ">
+											<div class="QuotaAndRenewal_TXT_Title">#{msgs.consumed}</div>
+											<div class="QuotaAndRenewal_TXT_Description">
+												<span>#{mainBean.consumedQuota}</span> #{msgs.sms}
+											</div>
+										</div>
+										<div class="VFRed_Progress_Bar_QuotaAndRenewal_TXT_right"
+										style = "width:auto !important; float:left !important; margin-left:3px !important; ">
+											<div class="QuotaAndRenewal_TXT_Title">#{msgs.remained}</div>
+											<div class="QuotaAndRenewal_TXT_Description">
+												<span>#{mainBean.remainingQuota}</span> #{msgs.sms}
+											</div>
+										</div>
+									</div>
+									<div class="UBD_Small_Progress_Bar">
+										<div class="Loading_Bar">
+
+											<div class="Loading_Bar_Animation">
+												<div class="Loading_Bar_Rulers"></div>
+
+												<div id="progressbar4" class="UDB_progressbar"></div>
+											</div>
+										</div>
+									</div>
+									<ul class="inandoutofbundle">
+										<li><span></span>#{msgs.consumed_sms}</li>
+
+									</ul>
+								</div>
+
+							</div>
+							<div class="mmagd_2sms_full_capmain_area_content">
+								<span class="mmagd_2sms_campain_full_title reports_span">#{msgs.reports}</span>
+
+								<h:panelGroup id="error_mess">
+									<div class="#{general.facesSeverity}">
+										<span> </span>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer error')}">
+											<h3>#{msgs.error}</h3>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer success')}">
+											<h3>#{msgs.success}</h3>
+										</h:panelGroup>
+
+										<h:messages layout="table" showSummary="false"
+											showDetail="true" infoClass="disclaimer success"
+											errorClass="disclaimer error"
+											style="border-collapse:inherit !important;"
+											styleClass="messages-ui" />
+
+									</div>
+								</h:panelGroup>
+
+								<h:panelGroup id="reports-list">
+									<h:panelGroup rendered="#{reportBean.tableFlag}">
+										<script>
+											$('.mmagd_2sms_campain_full_Reports > ul')
+													.click(function(e) {
+																$('.mmagd_2sms_campain_full_Reports > ul').removeClass('active');
+																$(this).addClass('active');
+											});
+										</script>
+										<div class="mmagd_2sms_campain_full_Reports">
+											<ui:repeat value="#{reportBean.reportsList}" var="bean">
+												<ul>
+													<li>
+														<div class="mmagd_2sms_full_campain_percentage">
+															<ul>
+																<li><span
+																	class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.campaign_name}</span>
+																	<span
+																	class="mmagd_2sms_full_campain_percentage_txt_bold"
+																	style="overflow: hidden; text-overflow: ellipsis; max-width: 105px; white-space: nowrap;">#{bean.campaignReportObj.campaignName}</span>
+<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.vfSMSs}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 160px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.vfSentSms
+																			+ bean.campaignReportObj.vfDeliveredSms + bean.campaignReportObj.vfNotDeliveredSms} #{msgs.sms}</span>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.creation_date}</span>
+																		<div
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 117px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.creationTimestamp}</div>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.start_date}</span>
+																		<div
+																			class="mmagd_2sms_full_campain_percentage_txt_bold"
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 117px; white-space: nowrap;">#{bean.campaignReportObj.startTimestamp}</div>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.stop_date}</span>
+																		<div
+																			class="mmagd_2sms_full_campain_percentage_txt_bold"
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 117px; white-space: nowrap;">
+																			#{empty bean.campaignReportObj.endTimestamp? '&nbsp;' : bean.campaignReportObj.endTimestamp}</div>
+																	</div>
+																	</li>
+																<li><span
+																	class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.sender_name}: </span>
+																	<span
+																	class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.sender}</span>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.ogSMSs}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 160px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.ogSentSms
+																			+ bean.campaignReportObj.ogDeliveredSms + bean.campaignReportObj.ogNotDeliveredSms} #{msgs.sms}</span>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.recipient_count}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.recipientCount}</span>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.number_of_messages}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.smsCount}</span>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.number_of_characters}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.smsText.length()}</span>
+																	</div>
+																	
+																	</li>
+																<li><span
+																	class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.sms_sent}</span>
+																	<span
+																	class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.submittedSMSSegCount}
+																		#{msgs.of} #{bean.campaignReportObj.smsSegCount}</span>
+														<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.etSMSs}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 160px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignReportObj.etSentSms
+																			+ bean.campaignReportObj.etDeliveredSms + bean.campaignReportObj.etNotDeliveredSms} #{msgs.sms}</span>
+																	</div>
+															
+																	<div id="piecharts">
+																		<div class="deliverd" >
+																			<span> #{msgs.delivered} <span>#{bean.campaignReportObj.deliverdSMSSegCount}
+																			</span>
+																			</span>
+																		</div>
+																		<div class="pending" >
+																			<span> #{msgs.pending} <span>
+																					#{bean.campaignReportObj.pendingSMSSegCount +
+																					bean.campaignReportObj.unDeliverdSMSSegCount} </span>
+																			</span>
+																		</div>
+																		<div class="failed" >
+																			<span> #{msgs.failed} <span>#{bean.campaignReportObj.failedSMSSegCount}
+																			</span>
+																			</span>
+																		</div>
+																	</div>
+																	
+																	</li>
+
+																<li><span
+																	class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.status}</span>
+																	<h:outputText
+																		styleClass="mmagd_2sms_full_campain_percentage_txt_bold_green"
+																		value="#{bean.campaignReportObj.campaignStatus}"
+																		rendered="#{reportBean.checkFlag(bean.campaignReportObj.campaignStatus)}" />
+																	<h:outputText
+																		styleClass="mmagd_2sms_full_campain_percentage_txt_bold_red"
+																		value="#{bean.campaignReportObj.campaignStatus}"
+																		rendered="#{reportBean.checkFlag(bean.campaignReportObj.campaignStatus) != 'true'}" />
+																	<h:panelGroup
+																		class="mmagd_2sms_campain_fulll_persentage_bar"
+																		rendered="#{reportBean.checkFlag(bean.campaignReportObj.campaignStatus)}"
+																		layout="block">
+																		<div
+																			class="mmagd_2sms_campain_fulll_persentage_bar_green"
+																			style="width: ${bean.remaingSmsRatio}px"></div>
+
+																	</h:panelGroup> <h:panelGroup
+																		class="mmagd_2sms_campain_fulll_persentage_bar"
+																		rendered="#{reportBean.checkFlag(bean.campaignReportObj.campaignStatus) != 'true'}"
+																		layout="block">
+																		<div
+																			class="mmagd_2sms_campain_fulll_persentage_bar_orange"
+																			style="width: ${bean.remaingSmsRatio}px"></div>
+																	</h:panelGroup>
+																	<div class = "tmohamed-campaign-list-name-container">
+																		<span class="mmagd_2sms_full_campain_percentage_txt_ campaign-owner">#{msgs.weSMSs}</span>
+																		<span
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 160px; white-space: nowrap; margin-top:2px;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold tmohamed-campaign-owner">#{bean.campaignReportObj.weSentSms
+																			+ bean.campaignReportObj.weDeliveredSms + bean.campaignReportObj.weNotDeliveredSms} #{msgs.sms}</span>
+																	</div>
+																	<div class="tmohamed-campaign-owner-container">
+																		<span
+																			class="mmagd_2sms_full_campain_percentage_txt_ campaign-owner">#{msgs.user_name}:
+																		</span>
+																		<div
+																			class="mmagd_2sms_full_campain_percentage_txt_bold tmohamed-campaign-owner">#{bean.campaignReportObj.username}</div>
+																	</div>
+																	<div class="tmohamed-campaign-list-name-container">
+																		<span
+																			class="mmagd_2sms_full_campain_percentage_txt_ campaing-list-name">#{msgs.list_name}:</span>
+																		<div
+																			class="mmagd_2sms_full_campain_percentage_txt_bold tmohamed-campaign-list-name">
+																			<ui:repeat
+																				value="#{bean.campaignReportObj.contactListName}"
+																				var="page">
+																				<h:outputText value="#{page}" />
+																				<h:outputText value=","
+																					rendered="#{fn:length(bean.campaignReportObj.contactListName) == 1 ? 'false' : 'true'}" />
+																			</ui:repeat>
+																		</div>
+																	</div>
+																
+																	<ul
+																		class="actionsList flipped tmohamed-export-button-clear resendCamps " style="width:270px !important;">
+
+																		<li class="rightFloatAR"><h:commandLink
+																				value="#{msgs.request_report}"
+																				action="#{reportBean.requestDetailedReportForCampaign(bean.campaignReportObj.campaignId)}"
+																				style="background:white; font-size: 11.5px;">
+																				<f:ajax execute="@this" render=":reports-form:error_mess 
+																								:requestedReports-form:requestedreports-list
+																								:requestedReports-form:pagination-buttons" />
+																			</h:commandLink></li>
+
+																		<li class="active rightFloatAR"><h:commandLink
+																				rendered="#{bean.campaignReportObj.resentFailedFlag}"
+																				styleClass="active" style="font-size: 11.5px;"
+																				value="#{msgs.resend}"
+																				actionListener="#{reportBean.resendFailedSMSs(bean.campaignReportObj.campaignId)}">
+
+																				<f:ajax execute="@this" render="@form" />
+																			</h:commandLink></li>
+																	</ul></li>
+															</ul>
+														</div>
+														<div class="mmagd_2sms_full_campain_percentage" />
+													</li>
+												</ul>
+											</ui:repeat>
+										</div>
+									</h:panelGroup>
+								</h:panelGroup>
+							</div>
+							<h:panelGroup id="pagination-buttons">
+								<h:panelGroup rendered="#{reportBean.tableFlag}">
+									<ul class="actionsList3">
+										<li><h:commandLink value="#{msgs.first}"
+												disabled="#{reportBean.firstRow == 0}"
+												rendered="#{reportBean.tableFlag}"
+												actionListener="#{reportBean.pageFirst}" styleClass="black">
+												<f:ajax
+													render=":reports-form:reports-list :reports-form:pagination-buttons" />
+											</h:commandLink></li>
+
+										<t:dataList value="#{reportBean.pages}" var="page">
+											<li><h:commandLink value="#{page}"
+													actionListener="#{reportBean.page}"
+													rendered="#{page != reportBean.currentPage}">
+													<f:ajax
+														render=":reports-form:reports-list :reports-form:pagination-buttons"
+														execute="@this" />
+												</h:commandLink> <h:outputText value="#{page}" escape="false"
+													rendered="#{page == reportBean.currentPage}" /></li>
+										</t:dataList>
+										<li><h:commandLink value="#{msgs.last}"
+												disabled="#{reportBean.firstRow + reportBean.rowsPerPage >= reportBean.totalRows}"
+												rendered="#{reportBean.tableFlag}"
+												actionListener="#{reportBean.pageLast}" styleClass="black">
+												<f:ajax
+													render=":reports-form:reports-list :reports-form:pagination-buttons" />
+											</h:commandLink></li>
+									</ul>
+								</h:panelGroup>
+							</h:panelGroup>
+						</div>
+					</h:form>
+			<div id="mmagd_2sms_wrapper">
+					<h:form id="requestedReports-form">
+
+						<div class="mmagd_2sms_full_capmain_area_content">
+							<span class="mmagd_2sms_campain_full_title reports_span">#{msgs.requested_reports}</span>
+
+							<h:panelGroup id="error_mess">
+								<div class="#{general.facesSeverity}">
+									<span> </span>
+									<h:panelGroup
+										rendered="#{(general.facesSeverity == 'disclaimer error')}">
+										<h3>#{msgs.error}</h3>
+									</h:panelGroup>
+									<h:panelGroup
+										rendered="#{(general.facesSeverity == 'disclaimer success')}">
+										<h3>#{msgs.success}</h3>
+									</h:panelGroup>
+
+									<h:messages layout="table" showSummary="false"
+										showDetail="true" infoClass="disclaimer success"
+										errorClass="disclaimer error"
+										style="border-collapse:inherit !important;"
+										styleClass="messages-ui" />
+
+								</div>
+							</h:panelGroup>
+
+							<h:panelGroup id="requestedreports-list">
+								<h:panelGroup rendered="#{reportBean.requestedReportsTableFlag}">
+									<script>
+											$('.mmagd_2sms_campain_full_Requested_Reports > ul').click(
+												function(e) {$('.mmagd_2sms_campain_full_Requested_Reports > ul').removeClass('active');
+												$(this).addClass('active');});
+										</script>
+									<div class="mmagd_2sms_campain_full_Requested_Reports">
+										<ui:repeat value="#{reportBean.requestedReports}" var="beanR">
+											<ul>
+												<li>
+													<div class="mmagd_2sms_full_campain_percentage">
+														<ul>
+															<li>
+															<div>
+																	<span class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR">#{msgs.request_date}</span>
+																	<div
+																		style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 150px; white-space: nowrap;"
+																		class="mmagd_2sms_full_campain_percentage_txt_bold">#{beanR.requestDate}</div>
+																</div>
+																<div>
+															<span
+																class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR">#{msgs.report_type}</span>
+																<span
+																class="mmagd_2sms_full_campain_percentage_txt_bold"
+																style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 150px; white-space: nowrap;">#{beanR.type}</span>
+
+																</div>
+															</li>
+														
+															<li>
+																
+																<h:panelGroup rendered="#{beanR.type == 'SMS_API'}">
+															
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR">#{msgs.From}</span>
+																		<span
+																			style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{beanR.from}</span>
+																	</div>
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR">#{msgs.To}</span>
+																		<span
+																			style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{beanR.to}</span>
+																	</div>
+																</h:panelGroup></li>
+																	<li>
+																<div>
+																	<span class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR">#{msgs.status}</span>
+																	<div
+																		class="mmagd_2sms_full_campain_percentage_txt_bold"
+																		style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 117px; white-space: nowrap;">#{beanR.status}</div>
+																</div> 
+																<h:panelGroup rendered="#{beanR.type == 'CAMPAIGN'}">
+																	<span class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR"
+																		style="overflow: hidden; text-overflow: ellipsis; max-width: 150px;">#{msgs.campaign_name}</span>
+																	<span
+																		class="mmagd_2sms_full_campain_percentage_txt_bold" style="width:100px; max-width:100px;">#{beanR.campaignName}</span>
+																</h:panelGroup>
+																
+																
+																<h:panelGroup rendered="#{beanR.type == 'SMS_API'}">
+																	<div>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_ rightFloatAR">#{msgs.sender_name}:</span>
+																		<span
+																			style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 90px; white-space: nowrap;"
+																			class="mmagd_2sms_full_campain_percentage_txt_bold">#{	empty beanR.senderName ? "NA" : beanR.senderName }</span>
+																	</div>
+																</h:panelGroup>
+															</li>
+															<li>
+															<div>
+															<h:panelGroup rendered="#{beanR.type == 'CAMPAIGN'}">
+															<span class="mmagd_2sms_full_campain_percentage_txt_ ">&nbsp; </span>
+																	<span
+																		style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																		class="mmagd_2sms_full_campain_percentage_txt_bold"> &nbsp;</span>
+																		<span class="mmagd_2sms_full_campain_percentage_txt_ ">&nbsp; </span>
+																	<span
+																		style="display:inline!important; overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																		class="mmagd_2sms_full_campain_percentage_txt_bold"> &nbsp;</span>
+															</h:panelGroup>
+															</div>
+															</li>	
+															<li>
+																
+																<div>
+																	<span class="mmagd_2sms_full_campain_percentage_txt_">&nbsp; </span>
+																	<span
+																		style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+																		class="mmagd_2sms_full_campain_percentage_txt_bold"> &nbsp;</span>
+																</div>
+																<ul
+																	class="actionsList flipped tmohamed-export-button-clear resendCamps"
+																	style="width: 270px !important;">
+																<li style="margin-top: 3.5px !important;" class="rightFloatAR">
+															
+															<h:panelGroup><h:commandLink styleClass="overlayClose active" value="#{msgs.download}"  
+																action="#{reportBean.downloadSMSapi(beanR.fileName)}"
+																rendered="#{beanR.status == 'SUCCESS'}" >
+																		<f:ajax onevent="openDownloadTabForSMS" />
+																	</h:commandLink>
+																	<h:commandLink styleClass="overlayClose active" value="#{msgs.cancel}"  
+																action="#{reportBean.cancelReport(beanR.id)}" 
+																rendered="#{beanR.status =='PENDING'}">
+																	</h:commandLink>
+																	</h:panelGroup>	
+																</li>
+
+																</ul>
+															</li>
+														</ul>
+													</div>
+													<div class="mmagd_2sms_full_campain_percentage" />
+												</li>
+											</ul>
+										</ui:repeat>
+									</div>
+								</h:panelGroup>
+							</h:panelGroup>
+						</div>
+						<h:panelGroup id="pagination-buttons">
+							<h:panelGroup rendered="#{reportBean.requestedReportsTableFlag}">
+								<ul class="actionsList3">
+									<li><h:commandLink value="#{msgs.first}"
+											disabled="#{reportBean.requestedReportsFirstRow == 0}"
+											rendered="#{reportBean.requestedReportsTableFlag}"
+											actionListener="#{reportBean.pageRequestedReportsFirst}" styleClass="black">
+											<f:ajax
+												render=":requestedReports-form:requestedreports-list :requestedReports-form:pagination-buttons" />
+										</h:commandLink></li>
+
+									<t:dataList value="#{reportBean.requestedReportsPages}" var="page">
+										<li><h:commandLink value="#{page}"
+												actionListener="#{reportBean.pageRequestedReports}"
+												rendered="#{page != reportBean.requestedReportsCurrentPage}">
+												<f:ajax
+													render=":requestedReports-form:requestedreports-list :requestedReports-form:pagination-buttons"
+													execute="@this" />
+											</h:commandLink> <h:outputText value="#{page}" escape="false"
+												rendered="#{page == reportBean.requestedReportsCurrentPage}" /></li>
+									</t:dataList>
+									<li><h:commandLink value="#{msgs.last}"
+											disabled="#{reportBean.requestedReportsFirstRow + reportBean.requestedReportsRowsPerPage >= reportBean.requestedReportsTotalRows}"
+											rendered="#{reportBean.requestedReportsTableFlag}"
+											actionListener="#{reportBean.pageRequestedReportsLast}" styleClass="black">
+											<f:ajax
+												render=":requestedReports-form:requestedreports-list :requestedReports-form:pagination-buttons" />
+										</h:commandLink></li>
+								</ul>
+							</h:panelGroup>
+						</h:panelGroup>
+				</h:form>
+</div>
+				<h:form id="history_form">
+						<script>
+								
+						</script>
+					
+						<div class="History_Section">
+							<div class="mmagd_2sms_campain_full_title historytitle">#{msgs.reports_history}
+							</div>
+							<div class="navigationTabs">
+								<div class="History active">#{msgs.history}</div>
+								<div class="API"> API </div>
+							</div>
+
+							<div class="tefa_History_Section_container"
+								style="display: block !important;">
+								
+								<h:panelGroup id="error_mess2">
+									<div class="#{general.facesSeverity}">
+										<span> </span>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer error')}">
+											<h3>#{msgs.error}</h3>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer success')}">
+											<h3>#{msgs.success}</h3>
+										</h:panelGroup>
+	
+										<h:messages layout="table" showSummary="false"
+											showDetail="true" infoClass="disclaimer success"
+											errorClass="disclaimer error"
+											style="border-collapse:inherit !important;"
+											styleClass="messages-ui" />
+	
+									</div>
+								</h:panelGroup>
+								
+								<div class="tmohamed-report-history-search-criteria">
+									<div class="mmagd_2sms_contact_list_search_area extrasearch">
+										<h:inputText styleClass="small dPickerFrom fromDateInput"
+											size="150" value="#{reportBean.fromDate}"
+											onkeypress="checkEnter(event)" id="fromDateInput" />
+									</div>
+									
+									<div class="mmagd_2sms_contact_list_search_area extrasearch">
+										<h:inputText styleClass="small dPickerFrom toDateInput"
+											size="150" value="#{reportBean.toDate}"
+											onkeypress="checkEnter(event)" id="toDateInput" />
+									</div>
+									
+									<div class="mmagd_2sms_contact_list_search_area extrasearch">
+										<div class="mmagd_2sms_conatct_list_search_icon report-filter"></div>
+	
+										<h:inputText styleClass="small Campain_or_Api camp_name"
+											size="150" value="#{reportBean.campaignNameSearch}"
+											onkeypress="checkEnter(event)" id="camp_name" />
+									</div>
+								</div>
+								
+								<div class="tefa_campaigns_content">
+									<h:panelGroup id="reportHistoryTable">
+										<h:dataTable rendered="#{reportBean.reportHistoryFlag}"
+											var="repHis"
+											value="#{reportBean.reportsHistoryList}"
+											style="margin-bottom:10px;">
+											<h:column>
+												<div class="tefa_history_tab my_history_tab" style="height: auto !important;">
+													<table cellspacing="0" cellpadding="0" border="0" style="word-wrap:break-word;">
+														<tbody>
+															<tr>
+																<td style="width:158px; max-width: 158px;">#{msgs.campaign_name}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.start_date}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.stop_date}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.total_sms}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.delivered_sms}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.pending_sms}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.failed_sms}</td>
+															</tr>
+															<tr>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.campaignName}</td>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.startTimestamp}</td>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.endTimestamp}</td>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.smsCount}</td>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.deliverdSMSCount}</td>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.unDeliverdSMSCount + repHis.campaignReportObj.pendingSMSCount}</td>
+																<td style="width:158px; max-width: 158px;">#{repHis.campaignReportObj.failedSMSCount}</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<f:facet name="footer">
+													<table cellpadding="0" cellspacing="0" border="0"
+														style="border-top: 1px solid #ccc;">
+														<tbody>
+															<tr>
+	
+																<td style="width:158px; max-width: 158px;"></td>
+																<td style="width:158px; max-width: 158px;"></td>
+																<td style="width:158px; max-width: 158px;"></td>
+																<td style="width:158px; max-width: 158px;">#{msgs.total_sent}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.delivered}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.undelivered}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.failed}</td>
+															</tr>
+															<tr>
+																<td style="font-size: 14px; width:158px; max-width: 158px;"><b>#{msgs.grand_total}</b></td>
+																<td style="font-size: 14px; width:158px; max-width: 158px;"></td>
+																<td style="font-size: 14px; width:158px; max-width: 158px;"></td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.grandTotal.totalSMSCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.grandTotal.deliverdSMSSegCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.grandTotal.unDeliverdSMSSegCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.grandTotal.failedSMSSegCount}</td>
+	
+															</tr>
+														</tbody>
+													</table>
+												</f:facet>
+											</h:column>
+										</h:dataTable>
+									</h:panelGroup>
+									
+									<h:panelGroup id="pagination-buttons">
+										<h:panelGroup rendered="#{reportBean.reportHistoryFlag}">
+											<ul class="actionsList3">
+												<li><h:commandLink value="#{msgs.first}"
+														disabled="#{reportBean.firstRepHistoryRow == 0}"
+														rendered="#{reportBean.reportHistoryFlag}"
+														actionListener="#{reportBean.pageRepHisFirst}"
+														styleClass="black">
+														<f:ajax
+															execute="@this"
+															render=":history_form:reportHistoryTable :history_form:pagination-buttons" />
+													</h:commandLink></li>
+	
+												<t:dataList value="#{reportBean.pagesRepHistory}" var="page">
+													<li><h:commandLink value="#{page}"
+															actionListener="#{reportBean.pageRepHis}"
+															rendered="#{page != reportBean.currentRepHistoryPage}">
+															<f:ajax
+																render=":history_form:reportHistoryTable :history_form:pagination-buttons"
+																execute="@this" />
+														</h:commandLink> <h:outputText value="#{page}" escape="false"
+															rendered="#{page == reportBean.currentRepHistoryPage}" /></li>
+												</t:dataList>
+												<li><h:commandLink value="#{msgs.last}"
+														disabled="#{reportBean.firstRepHistoryRow + reportBean.rowsRepHistoryPerPage >= reportBean.totalRepHistoryRows}"
+														rendered="#{reportBean.reportHistoryFlag}"
+														actionListener="#{reportBean.pageRepHisLast}"
+														styleClass="black">
+														<f:ajax
+															execute="@this"
+															render=":history_form:reportHistoryTable :history_form:pagination-buttons" />
+													</h:commandLink></li>
+												<li><h:commandLink value="#{msgs.export_pdf}"
+														action="#{reportBean.PDF}">
+														<f:ajax onevent="openDownloadTab" />
+													</h:commandLink> <h:commandLink actionListener="#{reportBean.PDF}"
+														style="display:none;" id="downpdf">
+	
+													</h:commandLink></li>
+	
+											</ul>
+										</h:panelGroup>
+									</h:panelGroup>
+								</div>
+
+							</div>
+
+							<div class="api" style="display:none;">
+								<h:panelGroup id="error_mess3">
+									<div class="#{general.facesSeverity}">
+										<span> </span>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer error')}">
+											<h3>#{msgs.error}</h3>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer success')}">
+											<h3>#{msgs.success}</h3>
+										</h:panelGroup>
+	
+										<h:messages layout="table" showSummary="false"
+											showDetail="true" infoClass="disclaimer success"
+											errorClass="disclaimer error"
+											style="border-collapse:inherit !important;"
+											styleClass="messages-ui" />
+	
+									</div>
+								</h:panelGroup>
+							
+								<div class="tmohamed-report-history-search-criteria">
+									<div class="fm-select left margin_right extrasearch">
+										<h:selectOneMenu styleClass="mmagd_2sms_campain_select_6"
+											id="api_search_field"
+											value="#{reportBean.smsSearchField}">
+											<f:selectItem itemLabel="#{msgs.sender_name}" 
+												itemValue="SENDER_NAME"/>
+										</h:selectOneMenu>
+						              <span>
+						              	<i class="i-arrow-down-grey-lrg"></i> 
+						              </span>
+									</div>
+									
+									<div class="mmagd_2sms_contact_list_search_area extrasearch">
+										<div class="mmagd_2sms_conatct_list_search_icon report-filter"></div>
+	
+										<h:inputText styleClass="small Campain_or_Api sms_search_field"
+											size="150" value="#{reportBean.smsSearchValue}"
+											onkeypress="smsApiCheckEnter(event)" id="api_search_value" />
+									</div>
+								
+									<div class="mmagd_2sms_contact_list_search_area extrasearch">
+										<h:inputText styleClass="small dPickerFrom fromDateInput"
+											size="150" value="#{reportBean.smsFromDateStr}"
+											onkeypress="smsApiCheckEnter(event)" id="apiFromDateInput" />
+									</div>
+									
+									<div class="mmagd_2sms_contact_list_search_area extrasearch">
+										<h:inputText styleClass="small dPickerFrom toDateInput"
+											size="150" value="#{reportBean.smsToDateStr}"
+											onkeypress="smsApiCheckEnter(event)" id="apiToDateInput" />
+									</div>
+								</div>
+								
+								<div class="tefa_campaigns_content">
+									<h:panelGroup id="smsReportHistoryTable">
+										<h:dataTable rendered="#{reportBean.smsReportHistoryFlag}"
+											var="smsReportHistory"
+											value="#{reportBean.smsReportsHistoryList}"
+											style="margin-bottom:10px;">
+											<h:column>
+												<div class="tefa_history_tab my_history_tab" style="height: auto !important;">
+													<table cellspacing="0" cellpadding="0" border="0" style="word-wrap:break-word;">
+														<tbody>
+															<tr>
+																<td style="width:158px; max-width: 158px;">#{msgs.sender_name}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.total_messages_}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.delivered_messages}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.undelivered_messages}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.pending_messages}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.failed_messages}</td>
+															</tr>
+															<tr>
+																<td style="width:158px; max-width: 158px;">#{smsReportHistory.smsReportObj.senderName}</td>
+																<td style="width:158px; max-width: 158px;">#{smsReportHistory.smsReportObj.totalSMSSegment}</td>
+																<td style="width:158px; max-width: 158px;">#{smsReportHistory.smsReportObj.deliveredSMSSegment}</td>
+																<td style="width:158px; max-width: 158px;">#{smsReportHistory.smsReportObj.unDeliveredSMSSegment}</td>
+																<td style="width:158px; max-width: 158px;">#{smsReportHistory.smsReportObj.pendingSMSSegment}</td>
+																<td style="width:158px; max-width: 158px;">#{smsReportHistory.smsReportObj.failedSMSSegment}</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<f:facet name="footer">
+													<table cellpadding="0" cellspacing="0" border="0"
+														style="border-top: 1px solid #ccc;">
+														<tbody>
+															<tr>
+																<td style="width:158px; max-width: 158px;"></td>
+																<td style="width:158px; max-width: 158px;">#{msgs.total_messages_}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.delivered_messages}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.undelivered_messages}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.pending_messages}</td>
+																<td style="width:158px; max-width: 158px;">#{msgs.failed_messages}</td>
+															
+<!-- 																<td width="158"></td> -->
+<!-- 																<td width="158"></td> -->
+<!-- 																<td width="158"></td> -->
+<!-- 																<td width="158"></td> -->
+<!-- 																<td width="158">#{msgs.total_messages_}</td> -->
+<!-- 																<td width="158">#{msgs.delivered}</td> -->
+<!-- 																<td width="158">#{msgs.undelivered}</td> -->
+<!-- 																<td width="158">#{msgs.pending}</td> -->
+<!-- 																<td width="158">#{msgs.failed}</td> -->
+															</tr>
+															<tr>
+																<td style="font-size: 14px; width:158px; width:158px; max-width: 158px;"><b>#{msgs.grand_total}</b></td>
+																
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.smsReportGrandTotal.totalSMSSegCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.smsReportGrandTotal.deliverdSMSSegCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.smsReportGrandTotal.unDeliverdSMSSegCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.smsReportGrandTotal.pendingSMSSegCount}</td>
+																<td style="font-size: 14px; font-weight: bold; width:158px; max-width: 158px;">#{reportBean.smsReportGrandTotal.failedSMSSegCount}</td>
+	
+															</tr>
+														</tbody>
+													</table>
+												</f:facet>
+											</h:column>
+										</h:dataTable>
+									</h:panelGroup>
+									
+									<h:panelGroup id="sms-api-pagination-buttons">
+										<h:panelGroup rendered="#{reportBean.smsReportHistoryFlag}">
+											<ul class="actionsList3">
+												<li><h:commandLink value="#{msgs.first}"
+														disabled="#{reportBean.firstSmsReportHistoryRow == 0}"
+														rendered="#{reportBean.smsReportHistoryFlag}"
+														actionListener="#{reportBean.pageSmsReportHisFirst}"
+														styleClass="black">
+														<f:ajax
+															execute="@this"
+															render=":history_form:smsReportHistoryTable :history_form:sms-api-pagination-buttons" />
+													</h:commandLink></li>
+	
+												<t:dataList value="#{reportBean.pagesSmsReportHistory}" var="page">
+													<li><h:commandLink value="#{page}"
+															actionListener="#{reportBean.pageSmsReportHistory}"
+															rendered="#{page != reportBean.currentSmsReportHistoryPage}">
+															<f:ajax
+																execute="@this"
+																render=":history_form:smsReportHistoryTable :history_form:sms-api-pagination-buttons" />
+														</h:commandLink> 
+														<h:outputText value="#{page}" escape="false"
+															rendered="#{page == reportBean.currentSmsReportHistoryPage}" /></li>
+												</t:dataList>
+												<li><h:commandLink value="#{msgs.last}"
+														disabled="#{reportBean.firstSmsReportHistoryRow + reportBean.rowsSmsReportHistoryPerPage >= reportBean.totalSmsReportHistoryRows}"
+														rendered="#{reportBean.smsReportHistoryFlag}"
+														actionListener="#{reportBean.pageSmsReportHistoryLast}"
+														styleClass="black">
+														<f:ajax
+															execute="@this"
+															render=":history_form:smsReportHistoryTable :history_form:sms-api-pagination-buttons" />
+													</h:commandLink></li>
+													
+													
+													
+													<li><h:commandLink value="#{msgs.request_report}"
+														action="#{reportBean.requestExportSMSapi()}">
+														<f:ajax execute="@this" render=":reports-form:error_mess 
+																								:requestedReports-form:requestedreports-list
+																								:requestedReports-form:pagination-buttons" />
+													</h:commandLink> 
+												</li>
+											</ul>
+										</h:panelGroup>
+									</h:panelGroup>
+								</div>
+								
+							</div>
+
+						</div>
+
+						<h:commandButton action="#{reportBean.loadSmsReportsHistory}"
+							styleClass="getSmsReportHistoryClass" style="display:none;">
+							<f:ajax execute=":history_form:api_search_field :history_form:api_search_value :history_form:apiFromDateInput :history_form:apiToDateInput" 
+								render=":history_form:smsReportHistoryTable :history_form:sms-api-pagination-buttons :history_form:error_mess3" />
+						</h:commandButton>
+
+						<h:commandButton action="#{reportBean.loadReportsHistory}"
+							styleClass="getReportHistoryClass" style="display:none;">
+							<f:ajax execute=":history_form:fromDateInput :history_form:toDateInput :history_form:camp_name" 
+								render=":history_form:reportHistoryTable :history_form:pagination-buttons :history_form:error_mess2" />
+						</h:commandButton>
+
+						<script>
+						$(function() {
+							$('.dTimePickerFrom')
+									.datetimepicker(
+											{
+												showOn : "button",
+												timeFormat: 'HH:00',
+												dateFormat : 'dd/mm/yy',
+												buttonImage : "/web2sms/resources/images/calender_icon.png",
+												buttonImageOnly : true,
+												showButtonPanel : true,
+												showMinute: false
+											});
+						});
+						$(function() {
+							$('.dPickerFrom')
+									.datepicker(
+											{
+												showOn : "button",
+												dateFormat : 'dd/mm/yy',
+												buttonImage : "/web2sms/resources/images/calender_icon.png",
+												buttonImageOnly : true,
+												showButtonPanel : true
+											});
+						});
+					</script>
+					</h:form>
+				</div>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

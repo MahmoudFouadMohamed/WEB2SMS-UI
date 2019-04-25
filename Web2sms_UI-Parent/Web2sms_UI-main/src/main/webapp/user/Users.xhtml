@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <h:head>
+
+    </h:head>
+    <body>
+        <ui:composition
+            template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+            <ui:define name="content">
+
+                <script>
+
+                    $(document).ready(function (e) {
+
+                        $(".dial").knob({
+                            min: "0",
+                            max: "#{mainBean.totalSms}",
+                            width: 106,
+                            height: 106,
+                            thickness: .20,
+                            displayInput: false,
+                            fgColor: "#ff9900",
+                            bgColor: "#ebebeb",
+                            readOnly: true
+                        });
+                        $({
+                            value: 0
+                        }).animate(
+                                {
+                                    value: #{mainBean.consumedQuota} + #{mainBean.reservedQuota}
+                                },
+                        {
+                            duration: 950,
+                            easing: "swing",
+                            progress: function () {
+                                $(".dial").val(Math.round(this.value))
+                                        .trigger("change");
+                            }
+                        });
+                        $(".dial2").knob({
+                            min: "0",
+                            max: "100",
+                            width: 106,
+                            height: 106,
+                            thickness: .20,
+                            displayInput: false,
+                            fgColor: "#ff9900",
+                            bgColor: "#ebebeb",
+                            readOnly: true
+                        });
+                        $({
+                            value: 0
+                        }).animate(
+                                {
+                                    value: 0
+                                },
+                        {
+                            duration: 950,
+                            easing: "swing",
+                            progress: function () {
+                                $(".dial2").val(Math.round(this.value))
+                                        .trigger("change");
+                            }
+                        });
+
+                        $(".removeaddnew")
+                                .click(
+                                        function (e) {
+                                            $(".mmagd_SubList")
+                                                    .css("display", "block");
+                                            $(".mmagd_contact_list_aad_new_contact_div")
+                                                    .css("display", "none");
+                                            $(".mmagd_contact_list_aad_new_contact_div2")
+                                                    .css("display", "none");
+                                            $(".mmagd_2sms_contact_list_asset_contacts")
+                                                    .css("display", "none");
+                                        });
+                        $(".full_width").attr("placeholder", "#{msgs.search_by_user_name}");
+
+                    });
+
+                </script>
+
+                <f:view locale="#{localeBean.language}">
+                    <div class="AEthemeContainer">
+                        <ui:include src="/logout/logout-panel.xhtml"/>
+                        <h:form style="width:950px;">
+                            <h1>#{msgs.main_page_title}</h1>
+                            <div class="canvas_Right">
+                                <div class="pay_as_you_go_progresses_200mb_gift_pic">
+                                    <div>
+                                        <canvas width="0" height="0"></canvas>
+                                        <input class="dial small" value="0" />
+                                    </div>
+                                    <div
+                                        class="pay_as_you_go_progresses_gift_200_mb_pro_pic_text_all">
+                                        <div class="pay_as_you_go_progresses_200mb_gift_pic_text_num">#{mainBean.reservedAndConsumed}</div>
+                                        <div class="pay_as_you_go_progresses_200mb_gift_pic_text_unit">#{msgs.of}
+                                            #{mainBean.totalSms}</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <span class="tefa_welocme_member">#{msgs.welcome}
+                                #{mainBean.user.username}</span>
+                            <br />
+                            <br />
+                            <span class="tefa_current_plan">#{msgs.plan}<span>
+                                    #{mainBean.userAcc.account.tier.tierName} </span></span>
+
+
+                            <h:panelGroup rendered="#{mainBean.canShowPendingNotification and mainBean.waitingApprovalCount ne 0}">
+                                <a href="/web2sms/campaign/Campaigns.xhtml?status=pending"><span class="tefa_current_plan main-button3" style="font-style: normal; font-weight: normal;text-decoration: underline;cursor: pointer; font-size: 12pt;">
+                                        #{msgs.you_have}<span> #{mainBean.waitingApprovalCount} #{msgs.campaigns_lower_case} </span> #{msgs.campaigns_to_be_approved}
+                                    </span></a>
+                            </h:panelGroup>
+
+                        </h:form>
+                        <div class="newtabs">
+                            <ul>
+                                <li class="#{mainBean.tabsClass} tab"><a
+                                        href="/web2sms/campaign/Campaigns.xhtml">#{msgs.campaigns} </a></li>
+                                <li class="#{mainBean.tabsClass} tab2"><a href="/web2sms/list/Contacts.xhtml">
+                                        #{msgs.contacts}</a></li>
+                                <li class="#{mainBean.tabsClass} tab3"><a href="/web2sms/template/Template.xhtml">
+                                        #{msgs.templates}</a></li>
+                                <li class="#{mainBean.tabsClass} tab4"><a href="/web2sms/report/Reports.xhtml">
+                                        #{msgs.reports}</a></li>
+                                <h:panelGroup rendered="#{mainBean.showUsersTab}">
+                                    <li class="#{mainBean.tabsClass} tab5 activeone"><a href="/web2sms/user/Users.xhtml">#{msgs.users}</a></li>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{mainBean.showGroupsTab}">
+                                    <li class="#{mainBean.tabsClass} tab6"><a href="/web2sms/group/Groups.xhtml">#{msgs.groups}</a></li>
+                                </h:panelGroup>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <div id="mmagd_2sms_wrapper">
+                        <h:form id="user-form">
+
+                            <h:panelGroup id="error_mess">
+                                <div class="#{general.facesSeverity}">
+                                    <span> </span>
+                                    <h:panelGroup
+                                        rendered="#{(general.facesSeverity == 'disclaimer error')}">
+                                        <h3>#{msgs.error}</h3>
+                                    </h:panelGroup>
+                                    <h:panelGroup
+                                        rendered="#{(general.facesSeverity == 'disclaimer success')}">
+                                        <h3>#{msgs.success}</h3>
+                                    </h:panelGroup>
+
+                                    <h:messages layout="table" showSummary="false" showDetail="true"
+                                                infoClass="disclaimer success" errorClass="disclaimer error"
+                                                style="border-collapse:inherit !important;"
+                                                styleClass="messages-ui" />
+
+                                </div>
+                            </h:panelGroup>
+
+
+                            <div class="mmagd_2sms_contact_list_list_view">
+
+                                <div class="mmagd_2sms_contact_list_search_area">
+                                    <div
+                                        class="mmagd_2sms_conatct_list_search_icon main_list_search users-search"></div>
+                                    <h:inputText  class="full_width"  size="150" 
+                                                  value="#{usersBean.userNameSearch}"
+                                                  style="height:30px;padding-left:12px;padding-right:12px">
+                                        <f:ajax event="keyup" listener="#{usersBean.searchForUser}"
+                                                render=":user-form:all-users :user-form:pagination-buttons" />
+                                    </h:inputText>
+                                </div>
+
+                                <div class="mmagd_2sms_conatct_list_check_list_conatct">
+                                    <h:dataTable layout="unorderedList"
+                                                 value="#{usersBean.usersListData}" var="user"
+                                                 styleClass="mmagd_2sms_contact_sub_contact"
+                                                 itemStyleClass="mmagd_2sms_conatct_list_check_box_list_sub_link"
+                                                 id="all-users">
+                                        <h:column>
+                                            <li class="listItem" onclick="showSideForm(this)">
+                                                <div>
+                                                    <span class="mmagd_2sms_campain_text_field"
+                                                          style="overflow: hidden; text-overflow: ellipsis; max-width: 150px; white-space: nowrap; display: inline-block;">
+                                                        #{user.username}</span>
+
+                                                    <h:panelGroup rendered="#{usersBean.user.username.equals(user.username)}">
+                                                        <span class="mmagd_2sms_contact_list_no_of_contact">( #{msgs.current_user} )</span>
+                                                    </h:panelGroup>
+                                                </div>
+                                            </li>
+                                            <h:commandLink style="display:none"
+                                                           actionListener="#{usersBean.loadUser(usersBean.usersListData.rowIndex)}">
+                                                <f:ajax execute="@form" render=":user-form:error_mess :user-form:bank-panel2 :user-form:user-form-panel" />
+                                            </h:commandLink>
+
+                                        </h:column>
+                                    </h:dataTable>
+                                </div>
+
+                                <h:panelGroup id="pagination-buttons">
+                                    <h:panelGroup rendered="#{usersBean.showPagination}"
+                                                  id="pagination-buttons-internal" style="float:left;width:auto"
+                                                  styleClass="mmagd_2sms_contact_list_list_view arabic-style">
+                                        <ul class="actionsList3">
+                                            <li class="arabic-style">
+                                                <h:commandLink
+                                                    value="#{msgs.first}"
+                                                    disabled="#{usersBean.firstRow == 0}"
+                                                    rendered="#{usersBean.showPagination}"
+                                                    actionListener="#{usersBean.goToFirstPage}"
+                                                    styleClass="black">
+                                                    <f:ajax
+                                                        render=":user-form:all-users :user-form:pagination-buttons :user-form:error_mess" />
+                                                </h:commandLink></li>
+
+                                            <t:dataList value="#{usersBean.pages}" var="page">
+                                                <li class="arabic-style">
+                                                    <h:commandLink value="#{page}" actionListener="#{usersBean.goToPage}" 
+                                                                   rendered="#{page != usersBean.currentPage}">
+                                                        <f:ajax render=":user-form:all-users :user-form:pagination-buttons :user-form:error_mess"
+                                                                execute="@form" />
+                                                    </h:commandLink> <h:outputText value="#{page}" escape="false"
+                                                                                   rendered="#{page == usersBean.currentPage}" /></li>
+                                            </t:dataList>
+                                            <li class="arabic-style">
+                                                <h:commandLink
+                                                    value="#{msgs.last}"
+                                                    disabled="#{usersBean.firstRow+ usersBean.rowsPerPage >= usersBean.totalRows}"
+                                                    rendered="#{usersBean.showPagination}"
+                                                    actionListener="#{usersBean.goToLastPage}"
+                                                    styleClass="black">
+                                                    <f:ajax 
+                                                        render=":user-form:all-users :user-form:pagination-buttons :user-form:error_mess" />
+                                                </h:commandLink></li>
+                                        </ul>
+                                    </h:panelGroup>
+                                </h:panelGroup>
+                            </div>
+                            <h:panelGroup id="user-form-panel">
+                                <h:panelGroup id="show-user-form" rendered="#{usersBean.showUserForm}">
+                                    <ui:include src="user-form.xhtml" />
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        </h:form>
+                    </div>
+                </f:view>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,452 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+<h:head>
+
+</h:head>
+<body>
+	<ui:composition
+            template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+		<ui:define name="content">
+			<script>
+		//<![CDATA[
+
+		function updateCountdownForTem() {
+			var a = smsCharCounttem(jQuery('.tem_message').val());
+			
+			if(${localeBean.language == 'ar'}){
+				jQuery('.countdowntem').text(a[1] + ' رسالة ');
+				jQuery('.countDownChar').text('- ' + a[0] + ' حرف باقى ');
+			}else{
+				jQuery('.countdowntem').text(a[1] + ' Message ');
+				jQuery('.countDownChar').text('- ' + a[0] + ' characters left ');
+			}
+			
+			var input = document.getElementById('template-form:numMess');
+			input.value = a[2];
+		}
+
+		var gsm7bitCharstemp = "\f|~^€[]{}@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?\\¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+		var gsm2bitsChars = "\f^{}\\[~]|€";
+		
+		function smsCharCounttem(message) 
+		{
+			var engMsg = true;
+			var messageLen = message.length;
+			var totalSeg = 1;
+			var remaining = 160;
+			var maxMsgLen = 160;
+			var extraMsgLen = 0;
+
+			for ( var i = 0; i < messageLen; i++) 
+			{
+				if (engMsg || messageLen == 1) 
+				{
+					if (gsm7bitCharstemp.indexOf(message.charAt(i)) > -1 ) 
+					{
+						engMsg = true;
+					}// end if
+					else 
+					{
+						engMsg = false;
+					}// end else
+				}// end if
+			}// end for
+			
+			if (engMsg) 
+			{
+				for ( var i = 0; i < messageLen; i++) 
+				{
+					if (gsm2bitsChars.indexOf(message.charAt(i)) > -1) 
+					{
+						extraMsgLen ++;
+					}// end if
+				}// end for
+				
+				messageLen += extraMsgLen;
+			}// end if
+			
+			if (engMsg) {
+				if (messageLen > 160) {
+					maxMsgLen = 153;
+				}
+
+			} else {
+				if (messageLen > 70) {
+					maxMsgLen = 67;
+				} else {
+					maxMsgLen = 70;
+				}
+			}
+			if (messageLen > 0) {
+				totalSeg = Math.ceil(messageLen / maxMsgLen);
+				remaining = maxMsgLen * totalSeg - messageLen;
+			}
+
+			return [ remaining, totalSeg, engMsg ];
+		}// end of function smsCharCounttem
+
+		function checkEnter(e) {
+			if (e.keyCode == 13) {
+				return false;
+			}
+		}
+
+		$(document).on("click", ".mmagd_2sms_action_btn li a.active", 
+			function(e) 
+			{
+				$(".mmagd_2sms_emplate_data_erea").css('display','block');
+				$(".mmagd_2sms_template_erea_name").attr('style','display:block !important');
+				$(".tem_message").attr('placeholder',"${msgs.creat_template_placeholder}");
+			}
+		);
+		
+		jQuery(document).ready(function($) {
+			updateCountdownForTem();
+			
+			$('.dial').knob({
+				min : '0',
+				max : '#{mainBean.totalSms}',
+				width : 106,
+				height : 106,
+				thickness : .20,
+				displayInput : false,
+				fgColor : "#ff9900",
+				bgColor : "#ebebeb",
+				readOnly : true
+			});
+			$({
+				value : 0
+			}).animate(
+					{
+						value : #{mainBean.consumedQuota} + #{mainBean.reservedQuota}
+					},
+					{
+						duration : 950,
+						easing : 'swing',
+						progress : function() {
+							$('.dial').val(Math.round(this.value))
+									.trigger('change');
+						}
+					});
+			$('.dial2').knob({
+				min : '0',
+				max : '100',
+				width : 106,
+				height : 106,
+				thickness : .20,
+				displayInput : false,
+				fgColor : "#ff9900",
+				bgColor : "#ebebeb",
+				readOnly : true
+			});
+			$({
+				value : 0
+			}).animate(
+					{
+						value : 0
+					},
+					{
+						duration : 950,
+						easing : 'swing',
+						progress : function() {
+							$('.dial2').val(Math.round(this.value))
+									.trigger('change');
+						}
+					});
+                                        
+		});
+
+		function updateCountdownTemEdit(ele) {
+			var x = $(ele);
+			var a = smsCharCountTemEdit(jQuery(x).val());
+
+			if (a[0] == false) {
+				$(x).next().val("ARABIC");
+			} else {
+				$(x).next().val("ENGLISH");
+			}
+
+		}
+
+		var gsm7bitChars = "\f|~^€[]{}@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?\\¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+		var gsm2bitsChars = "\f^{}\\[~]|€";
+		
+		function smsCharCountTemEdit(messageEdit) {
+			var engMsg = true;
+			var messageLen = messageEdit.length;
+			var extraMsgLen = 0;
+
+			for ( var i = 0; i < messageLen; i++) {
+				if (engMsg || messageLen == 1) {
+					if (gsm7bitChars.indexOf(messageEdit.charAt(i)) > -1) {
+						engMsg = true;
+					} else {
+						engMsg = false;
+					}
+				}
+			}
+			
+			if(engMsg)
+			{
+				for ( var i = 0; i < messageLen; i++) 
+				{
+					if (gsm2bitsChars.indexOf(messageEdit.charAt(i)) > -1) 
+					{
+						extraMsgLen ++;
+					}// end if
+				}// end for
+	
+				messageLen += extraMsgLen;
+			}// end if
+
+			return [ engMsg ];
+		}
+
+		
+		
+		//]]>
+	</script>
+                    <f:view locale="#{localeBean.language}">
+				<div class="AEthemeContainer">
+                                        <ui:include src="/logout/logout-panel.xhtml"/>
+					<h:form style="width:950px;">
+                                            
+						<h1>#{msgs.main_page_title}</h1>
+						<div class="canvas_Right">
+							<div class="pay_as_you_go_progresses_200mb_gift_pic">
+								 <div>
+									<canvas width="0" height="0"></canvas>
+									<input class="dial small" value="0" />
+								</div>
+								<div
+									class="pay_as_you_go_progresses_gift_200_mb_pro_pic_text_all">
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_num">#{mainBean.reservedAndConsumed}</div>
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_unit">#{msgs.of}
+										#{mainBean.totalSms}</div>
+								</div>
+							</div>
+						</div>
+
+						<span class="tefa_welocme_member">#{msgs.welcome}
+							#{mainBean.user.username}</span>
+						<br />
+						<br />
+                                                <span class="tefa_current_plan">#{msgs.plan}<span>
+								#{mainBean.userAcc.account.tier.tierName} </span></span>
+
+
+                                                <h:panelGroup rendered="#{mainBean.canShowPendingNotification and mainBean.waitingApprovalCount ne 0}">
+                                                    <a href="/web2sms/campaign/Campaigns.xhtml?status=pending"><span class="tefa_current_plan main-button3" style="font-style: normal; font-weight: normal;text-decoration: underline;cursor: pointer; font-size: 12pt;">
+                                                            #{msgs.you_have}<span> #{mainBean.waitingApprovalCount} #{msgs.campaigns_lower_case} </span> #{msgs.campaigns_to_be_approved}
+                                                        </span></a>
+                                                </h:panelGroup>
+					</h:form>
+					<div class="newtabs">
+						<ul>
+							<li class="#{mainBean.tabsClass} tab"><a
+								href="/web2sms/campaign/Campaigns.xhtml">#{msgs.campaigns} </a></li>
+							<li class="#{mainBean.tabsClass} tab2"><a href="/web2sms/list/Contacts.xhtml">
+									#{msgs.contacts}</a></li>
+							<li class="#{mainBean.tabsClass} tab3 activeone"><a href="Template.xhtml">
+									#{msgs.templates}</a></li>
+							<li class="#{mainBean.tabsClass} tab4"><a href="/web2sms/report/Reports.xhtml">
+									#{msgs.reports}</a></li>
+							<h:panelGroup rendered="#{mainBean.showUsersTab}">
+                               <li class="#{mainBean.tabsClass} tab5"><a href="/web2sms/user/Users.xhtml">#{msgs.users}</a></li>
+                            </h:panelGroup>
+                           <h:panelGroup rendered="#{mainBean.showGroupsTab}">
+                               <li class="#{mainBean.tabsClass} tab6"><a href="/web2sms/group/Groups.xhtml">#{msgs.groups}</a></li>
+                            </h:panelGroup>
+						</ul>
+					</div>
+				</div>
+				<div id="mmagd_2sms_wrapper">
+					<h:form id="template-form">
+                                                <h:outputText style="display: none;" value="#{templateBean.emptyString}"/>
+						<h:panelGroup id="error_mess">
+							<div class="#{general.facesSeverity}">
+								<span> </span>
+								<h:panelGroup
+									rendered="#{(general.facesSeverity == 'disclaimer error')}">
+									<h3>#{msgs.error}</h3>
+								</h:panelGroup>
+								<h:panelGroup
+									rendered="#{(general.facesSeverity == 'disclaimer success')}">
+									<h3>#{msgs.success}</h3>
+								</h:panelGroup>
+
+								<h:messages layout="table" showSummary="false" showDetail="true"
+									infoClass="disclaimer success" errorClass="disclaimer error"
+									style="border-collapse:inherit !important;"
+									styleClass="messages-ui" />
+							</div>
+						</h:panelGroup>
+
+						<h:panelGroup id="redirect-panel">
+							<script>
+								/* var goToHomeFlag = "${templateBean.goToHome}";
+								
+								if(goToHomeFlag == 'true') 
+								{
+									$('.tab .home-page').click();
+								} */
+							</script>
+						</h:panelGroup>
+						<h:panelGroup id="create-panel">
+							<ul class="actionsList mmagd_2sms_action_btn">
+								<li class=""><a href="#" title="#"
+									class="createtemp active" onclick="">
+										<div>
+											<div>#{msgs.create_new_tempalte}</div>
+										</div>
+								</a></li>
+								<li class="mmagd_2sms_template_erea_name"><span
+									class="mmagd_2sms_campain_text_field_s">#{msgs.template_name}</span>
+									<h:inputText styleClass="mmagd_2sms_campain_txt_field_erea"
+										size="20" value="#{templateBean.tempalteName}"
+										onkeypress="return checkEnter(event)" /></li>
+							</ul>
+							<div class="mmagd_2sms_emplate_data_erea">
+								<h:inputTextarea
+									styleClass="tem_message mmagd_2sms_create_template_erea"
+									value="#{templateBean.templateText}"
+									onkeyup="updateCountdownForTem()" />
+								<div class="mmagd_2sms_template_data">
+									<ul>
+										<li><span
+											class="countdowntem mmagd_2sms_template_data_txt_data" /> <span
+											class="countDownChar" /> <h:inputHidden
+												value="#{templateBean.language}" id="numMess" /></li>
+										<div class="mmagd_2sms_btns">
+											<li>
+												<ul class="actionsList flipped">
+													<li class=""><h:commandLink
+															styleClass="overlayClose black" value="#{msgs.cancel}"
+															onclick="hideTempCreate()">
+															<f:ajax render=":template-form:error_mess" />
+														</h:commandLink></li>
+
+													<li class=""><h:commandLink
+															styleClass="overlayClose active" value="#{msgs.save}"
+															action="#{templateBean.createTempalte}">
+															<f:ajax execute="@form"
+																render=":template-form:user-temp-list :template-form:error_mess :template-form:create-panel :template-form:redirect-panel" />
+														</h:commandLink></li>
+												</ul>
+											</li>
+										</div>
+									</ul>
+
+								</div>
+							</div>
+						</h:panelGroup>
+						<div class="mmagd_2sms_ready_template">
+							<h:outputText styleClass="mmagd_2sms_campain_full_title"
+								value="#{msgs.saved_templates}"
+								rendered="#{templateBean.viewTemplateTitles}" id="saved-tem2" />
+
+							<div class="mmagd_2sms_ready_template_history">
+								<h:panelGroup id="user-temp-list">
+									<h:dataTable var="bean" value="#{templateBean.templateList}">
+										<h:column>
+											<span class="mmagd_2sms_ready_template_sub_title">#{bean.template.templateName}</span>
+											<div class="mmagd_2sms_ready_template_history_messages">
+												<span>#{bean.numOfMessages} #{msgs.messages} -</span> <span>#{bean.numOfChar}
+													#{msgs.characters}</span>
+											</div>
+											<ul
+												class="actionsList flipped Edit_btn tmohamed-edit-button-float">
+												<li class=""><a class="EditTemp"
+													onclick="tempTextFocus(this)">
+														<div>
+															<div>#{msgs.edit}</div>
+														</div>
+												</a> <h:commandLink styleClass="overlayClose"
+														value="#{msgs.cancel}" onclick="hideEditTemp(this)"
+														style="display:none;">
+														<f:ajax
+															render=":template-form:user-temp-list :template-form:error_mess " />
+													</h:commandLink></li>
+											</ul>
+											<h:inputTextarea
+												styleClass="mmagd_2sms_create_template_erea toeditsavedtemp textareaDis"
+												value="#{bean.template.text}" id="temp-text"
+												onkeyup="updateCountdownTemEdit(this);" />
+
+											<h:inputHidden value="#{bean.template.language}" />
+											<ul class="actionsList flipped buttontosavetemp">
+
+												<li class=""><h:commandLink
+														styleClass="overlayClose black" value="#{msgs.delete}"
+														onclick="deleteThisTemp(this)"
+														action="#{templateBean.deleteTemplate}">
+														<f:setPropertyActionListener
+															target="#{templateBean.templateDelObj}" value="#{bean}" />
+														<f:ajax execute="@form"
+															render=":template-form:user-temp-list :template-form:error_mess"
+															event="action" />
+													</h:commandLink></li>
+
+												<li class=""><h:commandLink value="#{msgs.save}"
+														styleClass="overlayClose active"
+														action="#{templateBean.editTemplate}">
+														<f:setPropertyActionListener
+															target="#{templateBean.templateObj}" value="#{bean}" />
+														<f:ajax execute="@form" render=":template-form:error_mess"
+															onevent="hideEditTemp1" />
+													</h:commandLink></li>
+											</ul>
+										</h:column>
+									</h:dataTable>
+
+									<h:commandButton styleClass="refreshTemp"
+										actionListener="#{templateBean.populateList}"
+										style="display:none">
+										<f:ajax render=":template-form:user-temp-list" execute="@form" />
+									</h:commandButton>
+
+									<script>
+										/*
+											this script is used to make text area of 'Saved Template' Read Only
+											until user clicks on 'Edit' button.
+											Note, that this snippet couldn't be applied using jsf because 
+											(ReadOnly) attribute with jsf prevents the textarea from submitting the new value.
+											by tmohamed
+										*/
+										$('textarea.textareaDis').attr('readonly','readonly');
+									</script>
+								</h:panelGroup>
+
+							</div>
+
+							<div class="mmagd_2sms_ready_template">
+								<h:outputText styleClass="mmagd_2sms_campain_full_title"
+									value="#{msgs.ready_templates}"
+									rendered="#{templateBean.viewTemlateAdminTitle}" id="admin-tem" />
+
+								<h:dataTable var="tem" value="#{templateBean.adminTemplateList}"
+									styleClass="arabic-style6">
+									<h:column>
+										<div class="mmagd_2sms_ready_template_history">
+											<span class="mmagd_2sms_ready_template_sub_title">#{tem.template.templateName}</span>
+											<div class="mmagd_2sms_ready_template_history_messages">
+												<span>#{tem.numOfMessages} #{msgs.messages} -</span> <span>#{tem.numOfChar}
+													#{msgs.characters}</span>
+											</div>
+											<div class="mmagd_2sms_ready_template_history text_box">
+												#{tem.template.text}</div>
+										</div>
+									</h:column>
+								</h:dataTable>
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>

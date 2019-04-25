@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	dir="#{localeBean.direction}">
+<f:view locale="#{localeBean.language}">
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<h:outputScript library="js" name="jquery-ui-1.9.2.custom.js" />
+		<h:outputScript library="js" name="jquery-1.9.1.js" />
+		<h:outputScript library="js" name="jquery-ui-1.10.1.custom.js" />
+		<h:outputScript library="js" name="TweenMax.js" />
+		<h:outputScript library="js" name="Over.js" />
+		<h:outputScript library="js" name="jquery-ui-timepicker-addon.js" />
+
+	
+		<h:outputStylesheet library="smoothness"
+			name="jquery-ui-1.10.1.custom.css" />
+		<h:outputStylesheet library="smoothness"
+			name="jquery-ui-1.10.1.custom.min.css" />
+		<!--[if IE 8]> <h:outputStylesheet library="Styles" name="IE8.css" /> <![endif]-->
+		<h:outputStylesheet library="Styles" name="Style_ar.css"
+			rendered="#{localeBean.langArFlag}" />
+	</h:head>
+	<body>
+		<h:form id="uploadForm" enctype="multipart/form-data">
+			<script>
+				$(document).ready(function(e) {
+					$('.mmagd_quation_mark_overlay').mouseover(function(e) {
+						$('.everydaydisc').css('display', 'block');
+					});
+					$('.mmagd_quation_mark_overlay').mouseout(function(e) {
+						$('.everydaydisc').css('display', 'none');
+					});
+
+				});
+			</script>
+
+			<h:panelGroup id="error_mess">
+				<div class="#{general.facesSeverity}">
+					<span> </span>
+					<h:panelGroup
+						rendered="#{(general.facesSeverity == 'disclaimer error')}">
+						<h3>#{msgs.error}</h3>
+					</h:panelGroup>
+					<h:panelGroup
+						rendered="#{(general.facesSeverity == 'disclaimer success')}">
+						<h3>#{msgs.success}</h3>
+					</h:panelGroup>
+
+					<h:messages layout="table" showSummary="false" showDetail="true"
+						infoClass="disclaimer success" errorClass="disclaimer error"
+						style="border-collapse:inherit !important;" />
+
+				</div>
+			</h:panelGroup>
+
+			<div class="mmagd_2sms_contact_list_list_view2">
+				<h:graphicImage library="images" name="test.JPG"/>
+			</div>
+		</h:form>
+	</body>
+</f:view>
+</html>

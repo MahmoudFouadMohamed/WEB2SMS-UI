@@ -1,0 +1,12 @@
+.project
+.settings
+build
+bin
+target
+.classpath
+project.properties
+*/.project
+*/.classpath
+*/.settings
+other
+web2sms-ui

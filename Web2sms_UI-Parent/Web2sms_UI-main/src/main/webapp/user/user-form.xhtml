@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+
+    <body>
+
+        <div class="mmagd_contact_list_aad_new_contact_div2" style="display: block;">
+            <h:panelGroup id="bank-panel2">
+                <div class="mmagd_2sms_contact_list_title_lists">#{msgs.edit_user}</div>
+                <table style="clear: both;">
+                    <tr>
+                        <td style="margin: 0 2px;"><span
+                                class="mmagd_2sms_campain_text_field_3"
+                                style="margin-bottom: 13px;">#{msgs.user_name_user_form}</span></td>
+                        <td><h:inputText value="#{usersBean.displayedUser.username}" disabled="true"
+                                         styleClass="mmagd_2sms_campain_txt_field_erea" id="user-name" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="mmagd_2sms_campain_text_field_3"
+                                  style="margin-bottom: 13px;">#{msgs.name}</span></td>
+                        <td><h:inputText value="#{usersBean.displayedUser.name}" disabled="#{!usersBean.hasEditUserDataPriv}"
+                                         styleClass="mmagd_2sms_campain_txt_field_erea" id="name" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mmagd_2sms_campain_text_field_3"
+                                  style="margin-bottom: 13px;">#{msgs.mail}</span></td>
+                        <td><h:inputText value="#{usersBean.displayedUser.email}"  disabled="#{!usersBean.hasEditUserDataPriv}"
+                                         styleClass="mmagd_2sms_campain_txt_field_erea" id="mail"/></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mmagd_2sms_campain_text_field_3"
+                                  style="margin-bottom: 13px;">#{msgs.phone}</span></td>
+                        <td><h:inputText value="#{usersBean.displayedUser.phoneNumber}"  disabled="#{!usersBean.hasEditUserDataPriv}"
+                                         styleClass="mmagd_2sms_campain_txt_field_erea" id="phone" /></td>
+                    </tr>
+                    <tr>
+                        <td><span class="mmagd_2sms_campain_text_field_3"
+                                  style="margin-bottom: 13px;">#{msgs.group}</span></td>
+                        <td>
+                            <div class="fm-select in-form">
+                                <h:selectOneMenu id="user-group" disabled="#{usersBean.isEditSelfGroup or !usersBean.hasEditUserDataPriv or !usersBean.hasManageGroupsPriv or !usersBean.groupsContainSelfGroup}"
+                                                 styleClass="mmagd_2sms_campain_select_3 selectfrommenu no_float in-form"
+                                                 value="#{usersBean.displayedUser.groupId}">
+                                    <f:selectItems value="#{usersBean.groupsLists}" var="group" 
+                                                   itemLabel="#{group.isDefault()? group.groupName.concat(' - ').concat(msgs.default_group):group.groupName}"
+                                                   itemValue="#{group.groupId}" />
+
+                                    <f:ajax render="user-form:error_mess :user-form:all-users :user-form:bank-panel2"
+                                            execute="@this"/>
+                                </h:selectOneMenu>
+                                <span class="arrow-css margin-left9-ar"><i class="i-arrow-down-grey-lrg"></i></span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="mmagd_2sms_campain_template_btn_save">
+                    <ul class="actionsList">
+                        <li class=""><h:commandLink value="#{msgs.save}"
+                                                    actionListener="#{usersBean.editUser}">
+                                <f:ajax render=":user-form:bank-panel2 :user-form:error_mess :user-form:all-users :user-form:user-form-panel :user-form:show-user-form" event="action" execute="@form"/>
+                            </h:commandLink></li>
+                        <h:outputScript rendered="#{usersBean.userUpdatedSuccessfully}">
+                            $(".removeaddnew").click();
+                        </h:outputScript>
+                        <li class="removeaddnew"  onclick="hideSideForm(this)">
+                            <h:commandLink styleClass="black" value="#{msgs.cancel}" id="cancelButton" actionListener="#{usersBean.cancelEdit}">
+                                <f:ajax event="action" execute="@form"
+                                        render=":user-form:bank-panel2 :user-form:error_mess :user-form:all-users :user-form:user-form-panel :user-form:show-user-form" />
+                            </h:commandLink></li>
+                    </ul>
+                </div>
+            </h:panelGroup>
+
+        </div>
+    </body>
+</html>

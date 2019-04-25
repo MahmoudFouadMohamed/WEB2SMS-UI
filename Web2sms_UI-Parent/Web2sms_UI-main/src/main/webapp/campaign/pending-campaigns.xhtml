@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+
+    <body>
+
+        <f:view locale="#{localeBean.language}">
+            <div class="mmagd_2sms_currentcampain_content">
+
+
+                <h:form id="active-campaign-form" style="min-width: 700px">
+
+                    <div class="mmagd_2sms_campain_full_title">#{msgs.pending_campaigns}</div>
+                    <h:panelGroup id="error_mess">
+                        <div class="#{general.facesSeverity}">
+                            <span> </span>
+                            <h:panelGroup
+                                rendered="#{(general.facesSeverity == 'disclaimer error')}">
+                                <h3>#{msgs.error}</h3>
+                            </h:panelGroup>
+                            <h:panelGroup
+                                rendered="#{(general.facesSeverity == 'disclaimer success')}">
+                                <h3>#{msgs.success}</h3>
+                            </h:panelGroup>
+
+                            <h:messages layout="table" showSummary="false" showDetail="true"
+                                        infoClass="disclaimer success" errorClass="disclaimer error"
+                                        style="border-collapse:inherit !important;"
+                                        styleClass="messages-ui" />
+
+                        </div>
+                    </h:panelGroup>
+                    <h:panelGroup id="active-list">
+                        <script>
+                            function refreshPage(data) {
+                                var status = data.status;
+                                if (status === "success") {
+                                    var redirect_outcome = $(".redirect-outcome").val();
+                                    if (redirect_outcome !== "") {
+                                        window.location.href = "/web2sms/campaign/" + redirect_outcome;
+                                    }
+                                }
+                            }
+
+                            $(".mmagd_2sms_campain_full_Reports > ul").click(
+                                    function (e) {
+                                        $(".mmagd_2sms_campain_full_Reports > ul")
+                                                .removeClass("active");
+                                        $(this).addClass("active");
+                                    });
+                            $(".approve-reject-button").click(function (e) {
+                                e.stopPropagation();
+                            });
+                        </script>
+                        <div class="mmagd_2sms_campain_full_Reports">
+                            <h:inputText value="#{pendingCampaignBean.redirectOutcome}" id="redirect-outcome" class="redirect-outcome" style="display: none;"/>
+                            <ui:repeat id="campaignsList" value="#{pendingCampaignBean.pendingCampaignList}"
+                                       var="campaign" rendered="#{pendingCampaignBean.tableFlag}">
+                                <ul>
+                                    <li>
+                                        <div class="mmagd_2sms_full_campain_percentage">
+                                            <ul>
+                                                <li>
+                                                    <span
+                                                        class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.campaign_name}</span>
+                                                    <span
+                                                        style="overflow: hidden; text-overflow: ellipsis; max-width: 109px; white-space: nowrap;"
+                                                        class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.campaignName}</span>
+                                                    <div>
+                                                        <span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.creation_date}</span>
+                                                        <span
+                                                            style="overflow: hidden; text-overflow: ellipsis; max-width: 130px; white-space: nowrap;"
+                                                            class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.creationTimestamp}
+                                                        </span>
+                                                    </div>
+
+                                                    <h:panelGroup rendered="#{campaign.scheduleStartTimestamp != null}">
+                                                        <div>
+                                                            <span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.start_date}</span>
+                                                            <span class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.scheduleStartTimestamp}</span>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </li>
+
+                                                <li>
+                                                    <span
+                                                        class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.sender_name}</span>
+                                                    <span
+                                                        style="overflow: hidden; text-overflow: ellipsis; max-width: 60px; white-space: nowrap;"
+                                                        class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.senderName}</span>
+                                                    <h:panelGroup rendered="#{campaign.scheduleEndTimestamp != null}">
+                                                        <div>
+                                                            <span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.end_date}</span>
+                                                            <span class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.scheduleEndTimestamp}</span>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                    <h:panelGroup rendered="#{campaign.scheduleFrequency != null}">
+                                                        <div>
+                                                            <span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.frequency}</span>
+                                                            <span class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.scheduleFrequency}</span>
+                                                        </div>
+                                                    </h:panelGroup>
+                                                </li>
+                                                <li>
+                                                    <span
+                                                        class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.number_of_messages}</span>
+                                                    <span class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.smsCount}</span>
+                                                    <div>
+                                                        <span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.number_of_characters}</span>
+                                                        <span class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.smsText.length()}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.total_sms}</span>
+                                                        <span class="mmagd_2sms_full_campain_percentage_txt_bold">#{campaign.smsSegCount}</span>
+                                                    </div>
+                                                </li>
+                                                <li style="margin-bottom: 2px;">
+
+                                                    <div style="color: transparent; height: 27px;">jjjjjjjjjjjjjjjjjjjjjjjjjjjjj</div>
+                                                    <div style="color: transparent; height: 27px;">jjjjjjjjjjjjjjjjjjjjjjjjjjjjj</div>
+                                                    <ul class="actionsList flipped">
+                                                        <li class="">
+                                                            <h:commandLink rendered="#{mainBean.canApproveCampaigns}" class="approve-reject-button active" value="#{msgs.approve}" action="#{pendingCampaignBean.changeCampaignAction}">
+                                                                <f:setPropertyActionListener target="#{pendingCampaignBean.selectedCampaign}" value="#{campaign}" />
+                                                                <f:setPropertyActionListener target="#{pendingCampaignBean.selectedAction}" value="#{pendingCampaignBean.approveAction}" />
+                                                                <f:ajax onevent="refreshPage" render=":active-campaign-form:redirect-outcome :active-campaign-form:campaignsList  :active-campaign-form:error_mess" />
+                                                            </h:commandLink> 
+                                                        </li>
+
+                                                        <li class="">
+                                                            <h:commandLink rendered="#{mainBean.canRejectCampaigns}" class="approve-reject-button black" value="#{msgs.reject}" action="#{pendingCampaignBean.changeCampaignAction}">
+                                                                <f:setPropertyActionListener target="#{pendingCampaignBean.selectedCampaign}" value="#{campaign}" />
+                                                                <f:setPropertyActionListener target="#{pendingCampaignBean.selectedAction}" value="#{pendingCampaignBean.rejectAction}" />
+                                                                <f:ajax onevent="refreshPage" render=":active-campaign-form:redirect-outcome :active-campaign-form:campaignsList  :active-campaign-form:error_mess" />
+                                                            </h:commandLink>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="mmagd_2sms_full_campain_percentage" />
+                                    </li>
+                                </ul>
+                            </ui:repeat>
+                        </div>
+                        <h:panelGroup rendered="#{pendingCampaignBean.tableFlag}"
+                                      id="pagination-buttons">
+                            <ul class="actionsList3">
+                                <li><h:commandLink value="#{msgs.first}"
+                                                   disabled="#{pendingCampaignBean.firstRow == 0}"
+                                                   rendered="#{pendingCampaignBean.tableFlag}"
+                                                   actionListener="#{pendingCampaignBean.pageFirst}"
+                                                   styleClass="black">
+                                        <f:ajax
+                                            render=":active-campaign-form:active-list :active-campaign-form:pagination-buttons" />
+                                    </h:commandLink></li>
+
+                                <t:dataList value="#{pendingCampaignBean.pages}" var="page">
+                                    <li><h:commandLink value="#{page}"
+                                                       actionListener="#{pendingCampaignBean.page}"
+                                                       rendered="#{page != pendingCampaignBean.currentPage}">
+                                            <f:ajax
+                                                render=":active-campaign-form:active-list :active-campaign-form:pagination-buttons"
+                                                execute="@form" />
+                                        </h:commandLink> <h:outputText value="#{page}" escape="false"
+                                                                       rendered="#{page == pendingCampaignBean.currentPage}" /></li>
+                                </t:dataList>
+                                <li><h:commandLink value="#{msgs.last}"
+                                                   disabled="#{pendingCampaignBean.firstRow + pendingCampaignBean.rowsPerPage >= pendingCampaignBean.totalRows}"
+                                                   rendered="#{pendingCampaignBean.tableFlag}"
+                                                   actionListener="#{pendingCampaignBean.pageLast}"
+                                                   styleClass="black">
+                                        <f:ajax
+                                            render=":active-campaign-form:active-list :active-campaign-form:pagination-buttons" />
+                                    </h:commandLink></li>
+                            </ul>
+                        </h:panelGroup>
+
+                    </h:panelGroup>
+                </h:form>
+
+
+
+            </div>
+
+        </f:view>
+    </body>
+</html>

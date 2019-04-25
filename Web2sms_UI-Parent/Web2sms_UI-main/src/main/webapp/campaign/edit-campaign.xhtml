@@ -1,0 +1,1287 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+<h:head>
+	<script>
+		//<![CDATA[
+		           
+		   function updateTextEditBoxEvent(data) 
+		   {
+			   if (data.status == "success") {
+				   updateCountdownEdit();
+				}// end if
+     	   }// end of function updateTextEditBoxEvent
+
+			function updateCountdownEdit() {
+				var a = smsCharCountEdit(jQuery('.messageEdit').val());
+	
+				if(${localeBean.language == 'ar'}){
+					jQuery('.countdownEdit').text(
+					a[1] + ' رسالة ' + '- ' + a[0] + ' حرف باقى ');
+				}else{
+					jQuery('.countdownEdit').text(
+					a[1] + ' Message ' + '- ' + a[0] + ' characters left ');
+				}
+	
+			var input = document.getElementById('edit-campaign-form:numMess');
+			input.value = a[2];
+		}
+
+		var gsm7bitChars = "\f|~^€[]{}@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?\\¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ§¿abcdefghijklmnopqrstuvwxyzäöñüà";
+		var gsm2bitsChars = "\f^{}\\[~]|€";
+
+		function smsCharCountEdit(messageEdit) 
+			{
+				var engMsg = true;
+				var messageLen = messageEdit.length;
+				var totalSeg = 1;
+				var remaining = 160;
+				var maxMsgLen = 160;
+				var extraMsgLen = 0;
+		
+				for ( var i = 0; i < messageLen; i++) {
+					if (engMsg || messageLen == 1) {
+						if (gsm7bitChars.indexOf(messageEdit.charAt(i)) > -1) {
+							engMsg = true;
+						} else {
+							engMsg = false;
+						}
+					}
+				}
+			
+				if (engMsg) 
+				{
+					for ( var i = 0; i < messageLen; i++) 
+					{
+						if (gsm2bitsChars.indexOf(messageEdit.charAt(i)) > -1) 
+						{
+							extraMsgLen ++;
+						}// end if
+					}// end for
+			
+					messageLen += extraMsgLen;
+				}// end if
+			
+				if (engMsg) 
+				{
+					if (messageLen > 160) {
+						maxMsgLen = 153;
+					}
+				}// end if
+				else 
+				{
+					if (messageLen > 70) {
+						maxMsgLen = 67;
+					} else {
+						maxMsgLen = 70;
+					}
+				}// end else
+				
+				if (messageLen > 0) 
+				{
+					totalSeg = Math.ceil(messageLen / maxMsgLen);
+					remaining = maxMsgLen * totalSeg - messageLen;
+				}// end if
+		
+			return [ remaining, totalSeg, engMsg ];
+		}// end of function smsCharCountEdit
+		           
+		function checkEnter(e){
+			if (e.keyCode == 13) { 
+				return false;
+			}
+		} 
+		
+		function checkEnter1(e){
+			 if (e.keyCode == 13) {
+				 document.getElementById('choose-edit-list:search-hidden-button').click(); 
+				 return false;
+			 }
+		} 
+		           
+		function hideEditCampPage() {
+			$(".tefa_content_loads_here").empty();
+			$('#mmagd_2sms_wrapper').css('display', 'block');
+			$.get("../campaign/active-camapaigns.xhtml", function(
+					data) {
+				$(".tefa_content_loads_here").append(data);
+			
+			});
+		}
+		
+		function checkHideList(ele){
+			if(ele == true){
+				showOverlay('payment_methods_overlay_44');
+			}	
+		}
+		
+		jQuery(document).ready(function($) {
+			updateCountdownEdit();
+			$('.messageEdit').change(updateCountdownEdit);
+			$('.messageEdit').keyup(updateCountdownEdit);
+		});
+		
+		//]]>
+	</script>
+</h:head>
+<body>
+	<f:view locale="#{localeBean.language}">
+		<h:outputStylesheet library="Styles"
+			name="add-campaign_#{localeBean.language}.css" />
+
+		<div class="mmagd_2sms_editcampain_content">
+			<h:form id="edit-campaign-form">
+				<h:panelGroup id="error_mess" styleClass="messages-div">
+					<div class="#{general.facesSeverity}">
+						<span> </span>
+						<h:panelGroup
+							rendered="#{(general.facesSeverity == 'disclaimer error')}">
+							<h3>#{msgs.error}</h3>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{(general.facesSeverity == 'disclaimer success')}">
+							<h3>#{msgs.success}</h3>
+						</h:panelGroup>
+
+						<h:messages layout="table" showSummary="false" showDetail="true"
+							infoClass="disclaimer success" errorClass="disclaimer error"
+							style="border-collapse:inherit !important;"
+							styleClass="messages-ui" />
+
+					</div>
+				</h:panelGroup>
+				<h:outputText value="#{msgs.campaign_name}"
+					styleClass="mmagd_2sms_campain_text_field" />
+				<h:inputText
+					value="#{campaignActiveBean.campaignEditObj.campaignName}"
+					styleClass="mmagd_2sms_campain_txt_field_erea"
+					onkeypress="return checkEnter(event)" >
+					    <f:ajax event="keyup" execute="@this" 
+					    listener="#{campaignActiveBean.campaingNameChange(campaignActiveBean.campaignEditObj.campaignName)}" 
+					    render=":edit-campaign-form:editButton"/>
+					</h:inputText>
+
+
+				<br></br>
+
+				<!-- customize camp check box -->
+
+				<div class="mmagd_2sms_campain_checkbox_erea">
+					<div class="ss-choice-item mmagd_2sms_campian_check_box">
+						<label> <span
+							class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+							<h:selectBooleanCheckbox type="checkbox" disabled="true"
+								value="#{campaignActiveBean.customizeCampFlag}"
+								class="ss-q-checkbox mmagd_to_save_with_schedule"
+								name="entry.14348365981010" id="test" role="checkbox">
+
+ 							</h:selectBooleanCheckbox> <label class="ss-choice-label mmagd_label_check_list"
+							for="add-campaign-form:test"> <span> </span></label></label>
+					</div>
+					<h:outputText value="#{msgs.customize_camp}"
+						styleClass="mmagd_2sms_campain_text_field" />
+					<h:panelGroup id="customCampNote">
+						<h:panelGroup rendered="#{campaignActiveBean.customizeCampFlag}">
+							<br></br>
+							<span style="font-size: 12px; color: red;">
+								#{msgs.customize_note} </span>
+
+						</h:panelGroup>
+					</h:panelGroup>
+					<br></br>
+
+
+				</div>
+
+				<br></br>
+				<div class="mmagd_2sms_campain_checkbox_erea">
+					<div class="ss-choice-item mmagd_2sms_campian_check_box">
+						<label> <span
+							class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+							<h:selectBooleanCheckbox type="checkbox"
+								value="#{campaignActiveBean.scheduleFlag}"
+								class="ss-q-checkbox mmagd_to_save_with_schedule"
+								valueChangeListener="#{campaignActiveBean.dateChecked}"
+								name="entry.1434836598" id="group_1434836598_1" role="checkbox">
+								
+								
+								<f:ajax
+									render=":edit-campaign-form:datePanel :edit-campaign-form:save-create :edit-campaign-form:editButton"
+									execute="@this" />
+							</h:selectBooleanCheckbox> <label class="ss-choice-label mmagd_label_check_list"
+							for="edit-campaign-form:group_1434836598_1"> <span>
+							</span></label></label>
+					</div>
+					<h:outputText value="#{msgs.save_with_schedule}"
+						styleClass="mmagd_2sms_campain_text_field" />
+				</div>
+				<h:panelGroup id="datePanel">
+					<script>
+					$(function() {
+						$('.dtPickerFrom2')
+								.datetimepicker(
+
+										{
+											timeFormat : 'HH:mm',
+											dateFormat : 'dd/mm/yy',
+											showOn : "button",
+											buttonImage : "/web2sms/resources/images/calender_icon.png",
+											buttonImageOnly : true,
+											minDate : 0
+										});
+						$('.tPickerFrom')
+								.timepicker(
+										{
+											timeFormat : 'HH:mm',
+											showOn : "button",
+											buttonImage : "/web2sms/resources/images/calender_icon.png",
+											buttonImageOnly : true
+										});
+					});
+				</script>
+					<div class="mmagd_2sms_campain_date_time" style="display: block;">
+						<h:outputText value="#{msgs.start_date_and_time}"
+							styleClass="mmagd_2sms_campain_text_field"
+							rendered="#{campaignActiveBean.dateAndTimeFlag}" />
+						<h:inputText value="#{campaignActiveBean.startDate}"
+							styleClass="mmagd_2sms_campain_txt_field_erea dtPickerFrom2"
+							rendered="#{campaignActiveBean.dateAndTimeFlag}" >
+							 <f:ajax event="change" execute="@this" 
+					    listener="#{campaignActiveBean.campaingStartDateChange(campaignActiveBean.startDate)}" 
+					    render=":edit-campaign-form:editButton"/>
+							</h:inputText>
+					</div>
+					<div class="mmagd_2sms_campain_date_time_2" style="display: block;">
+						<h:outputText value="#{msgs.stop_time}"
+							styleClass="mmagd_2sms_campain_text_field"
+							rendered="#{campaignActiveBean.dateAndTimeFlag}" />
+						<h:inputText value="#{campaignActiveBean.stopTime}"
+							styleClass="mmagd_2sms_campain_txt_field_erea tPickerFrom"
+							rendered="#{campaignActiveBean.dateAndTimeFlag}" > <f:ajax event="change" execute="@this" 
+					    listener="#{campaignActiveBean.campaingStopTimeChange(campaignActiveBean.stopTime)}" 
+					    render=":edit-campaign-form:editButton"/>
+					    </h:inputText>
+					</div>
+				</h:panelGroup>
+				<div class="mmagd_2sms_campain_sending">
+					<div class="ss-choice-item mmagd_2sms_campian_check_box">
+						<label> <span
+							class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+							<h:selectBooleanCheckbox value="#{campaignActiveBean.onceFlag}"
+								class="ss-q-checkbox mmagd_to_send_once"
+								valueChangeListener="#{campaignActiveBean.frequencyChecked}"
+								id="group_1434836598_2">
+								<f:ajax
+									render=":edit-campaign-form:freqPanel
+									 :edit-campaign-form:datePanel :edit-campaign-form:editButton"
+									execute="@this" />
+							</h:selectBooleanCheckbox> <label class="ss-choice-label mmagd_label_check_list"
+							for="edit-campaign-form:group_1434836598_2"> <span>
+							</span></label></label>
+					</div>
+					<div class="mmagd_2sms_campain_send_txt">
+						<h:outputText value="#{msgs.send_once}"
+							styleClass="mmagd_2sms_campain_text_field" />
+					</div>
+					<h:panelGroup id="freqPanel">
+						<script>
+						$(function() {
+							$('.dPickerFrom')
+									.datepicker(
+											{
+												showOn : "button",
+												dateFormat : 'dd/mm/yy',
+												buttonImage : "/web2sms/resources/images/calender_icon.png",
+												buttonImageOnly : true,
+												showButtonPanel : true,
+												minDate : 0
+
+											});
+						});
+					</script>
+						<div class="mmagd_2sms_campain_send_txt" style="display: block;">
+							<h:outputText value="#{msgs.sending_frequency}"
+								styleClass="mmagd_2sms_campain_text_field_2"
+								rendered="#{campaignActiveBean.frequencyFlag}"
+								style="display: block;" />
+						</div>
+
+						<div class="mmagd_2sms_campain_radio_btn_" style="display: block;">
+							<div
+								class="ss-choice-item mmagd_radio_btn_visa_card mmagd_2sms_campain_radio_btn_pos freqClass">
+								<label> <span
+									class="ss-choice-item-control goog-inline-block"></span> <h:selectOneRadio
+										value="#{campaignActiveBean.campaignEditObj.scheduleFrequency}"
+										styleClass="ss-q-radio"
+										rendered="#{campaignActiveBean.frequencyFlag}" role="radio"
+										aria-label="Tarrif" required=""
+										style="border-collapse:inherit;">
+										<f:selectItem itemValue="DAILY" itemLabel="#{msgs.daily}" />
+										<f:selectItem itemValue="WEEKLY" itemLabel="#{msgs.weekly}" />
+										<f:selectItem itemValue="MONTHLY" itemLabel="#{msgs.monthly}" />
+										 <f:ajax event="change" execute="@this" 
+					    listener="#{campaignActiveBean.campaingscheduleFrequencyChange(campaignActiveBean.campaignEditObj.scheduleFrequency)}" 
+					    render=":edit-campaign-form:editButton"/>
+									</h:selectOneRadio> <label class="ss-choice-label" for="group_644119837_2">
+										<span></span>
+								</label></label>
+							</div>
+						</div>
+						<div class="end_date_style" style="display: block;">
+							<h:outputText value="#{msgs.end_date}"
+								styleClass="mmagd_2sms_campain_text_field"
+								rendered="#{campaignActiveBean.endDateFlag}" />
+							<h:inputText value="#{campaignActiveBean.endDate}"
+								styleClass="mmagd_2sms_campain_txt_field_erea dPickerFrom"
+								rendered="#{campaignActiveBean.endDateFlag}" >
+								 <f:ajax event="change" execute="@this" 
+					    listener="#{campaignActiveBean.campaingScheduleEndDateChange(campaignActiveBean.endDate)}" 
+					    render=":edit-campaign-form:editButton"/>
+								</h:inputText>
+						</div>
+					</h:panelGroup>
+				</div>
+				<div class="mmagd_2sms_campain_sendibg_list_contact">
+					<div class="mmagd_2sms_campain_send_txt">
+						<h:outputText value="#{msgs.sender_name}"
+							styleClass="mmagd_2sms_campain_text_field" />
+					</div>
+
+					<h:panelGroup id="single-sender-panel">
+						<h:panelGroup
+							rendered="#{fn:length(campaignActiveBean.activeUserSenderList) == 1 ? 'true' : 'false'}">
+							<div class="mmagd_2sms_campain_send_txt">
+								<h:outputText
+									value="#{campaignActiveBean.campaignEditObj.senderName}"
+									styleClass="mmagd_2sms_campain_text_field_dimmed" />
+							</div>
+						</h:panelGroup>
+					</h:panelGroup>
+
+					<h:panelGroup id="chooseAccountSenderPanel">
+						<h:panelGroup
+							rendered="#{fn:length(campaignActiveBean.activeUserSenderList) > 1 ? 'true' : 'false'}">
+							<div class="fm-select left">
+								<h:selectOneMenu class="mmagd_2sms_campain_select_3"
+									value="#{campaignActiveBean.campaignEditObj.senderName}"
+									valueChangeListener="#{campaignActiveBean.getChoosenSenderName}">
+									<f:ajax execute="@this" event="valueChange"
+										render=":confirm-delete-form:DeleteSenderConfirmationMessagePanelGroupID :edit-campaign-form:editButton" />
+									<f:selectItem itemValue="" itemLabel="" />
+									<f:selectItems
+										value="#{campaignActiveBean.activeUserSenderList}" var="l"
+										itemLabel="#{l}" itemValue="#{l}" />
+								</h:selectOneMenu>
+								<span class="arrow-css"><i class="i-arrow-down-grey-lrg"></i>
+								</span>
+							</div>
+						</h:panelGroup>
+					</h:panelGroup>
+
+					<div>
+						<h:commandLink href="#"
+							class="mmagd_2sms_campain_edit_btn_1 toeditUser_name"
+							onclick="showOverlay('payment_methods_overlay_3');">
+							<f:ajax /> #{msgs.edit}</h:commandLink>
+					</div>
+
+					<div>
+						<h:commandLink href="#"
+							class="mmagd_2sms_campain_edit_btn_1 toeditUser_name"
+							onclick="showOverlay('payment_methods_overlay_55');">
+							<f:ajax />#{msgs.add}</h:commandLink>
+					</div>
+					<div>
+						<h:panelGroup id="DeleteCommandLinkContainerPanelGroupID">
+							<h:commandLink href="#"
+								class="mmagd_2sms_campain_edit_btn_1 toeditUser_name"
+								rendered="#{fn:length(campaignActiveBean.activeUserSenderList) > 1 ? 'true' : 'false'}"
+								onclick="showOverlay('payment_methods_overlay_56');">
+								<f:ajax />#{msgs.delete}
+							</h:commandLink>
+						</h:panelGroup>
+					</div>
+
+					<div
+						class="ss-choice-item mmagd_2sms_campian_check_box mmagd_2sms_campain_checkbox_sender"
+						style="display: none;">
+						<label> <span
+							class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+							<input type="checkbox" name="entry.1434836598"
+							value="Multiple Web Pages" id="group_1434836598_3"
+							role="checkbox" class="ss-q-checkbox" /> <label
+							class="ss-choice-label mmagd_label_check_list"
+							for="group_1434836598_3"> <span> </span></label></label> <span
+							class="mmagd_2sms_campain_text_field">Select Name (for
+							intra co. only)</span>
+						<div>
+							<select class="mmagd_2sms_campain_select">
+								<option>Online Team</option>
+								<option>Marcom</option>
+								<option>VIS</option>
+								<option>Social media</option>
+								<option>Markting</option>
+							</select>
+						</div>
+					</div>
+					<div class="mmagd_2sms_campain_send_to">
+						<div class="mmagd_2sms_campain_send_txt">
+							<span class="mmagd_2sms_campain_text_field">#{msgs.send_to}</span>
+						</div>
+						<div class="mmagd_2sms_campain_send_txt">
+							<h:panelGroup layout="block"
+								styleClass="mmagd_2sms_add_campain_items_send_to tefatofillin"
+								id="test-div">
+								<ul>
+									<ui:repeat var="list"
+										value="#{campaignActiveBean.contactListInfoList}">
+										<li class="test-li"><span
+											class="mmagd_2sms_campain_add_sendto_txt">#{list.listName}</span>
+											<h:commandLink 
+												styleClass="mmagd_2sms_add_campain_sendto_close_icon">
+												<f:ajax listener="#{campaignActiveBean.getRemovedList(list.listName)}"  event="click" execute="@this"
+													render=":edit-campaign-form:numOfContact
+													 :choose-edit-list:all-list-table
+													 :edit-campaign-form:editButton
+										 :edit-campaign-form:test-div" />
+													
+											</h:commandLink></li>
+									</ui:repeat>
+								</ul>
+
+								<ul>
+									<ui:repeat var="cont"
+										value="#{campaignActiveBean.selectedContact}">
+										<li class="test-li"><span
+											class="mmagd_2sms_campain_add_sendto_txt">#{cont.msisdn}</span>
+											<h:commandLink
+												styleClass="mmagd_2sms_add_campain_sendto_close_icon">
+												<f:ajax 
+												listener="#{campaignActiveBean.getRemovedContact(cont.msisdn)}"
+												execute="@this"
+												event="click"
+													render=":edit-campaign-form:numOfContact 
+													:edit-campaign-form:editButton
+													:choose-edit-list:all-contact-list-table
+													:edit-campaign-form:test-div" 
+													/>
+											</h:commandLink></li>
+									</ui:repeat>
+								</ul>
+
+							</h:panelGroup>
+						</div>
+
+						<h:commandLink
+							onclick="checkHideList(#{campaignActiveBean.hideList})"
+							actionListener="#{campaignActiveBean.populateListOfLists}">
+							<f:ajax
+								render=":choose-edit-list:all-list-table :choose-edit-list:all-contact-list-table   :choose-edit-list:individual-contact-list" />
+
+							<div class="mmagd_2sms_campain_send_to_add"></div>
+						</h:commandLink>
+
+						<h:panelGroup
+							styleClass="mmagd_2sms_campain_send_txt arabic-style2 tmohamed-float"
+							id="numOfContact">
+							<span class="mmagd_2sms_campain_text_send_to_contacts">#{campaignActiveBean.numOfSelectedLists}
+								#{msgs.contacts}</span>
+						</h:panelGroup>
+					</div>
+				</div>
+				<div class="mmagd_2sms_campain_message_campain">
+					<div class="mmagd_2sms_campain_send_txt">
+						<h:outputText value="#{msgs.campaign_message}"
+							styleClass="mmagd_2sms_campain_text_field" />
+					</div>
+					<div class="mmagd_2sms_creat_campain_insert_check_box">
+						<div
+							class="ss-choice-item mmagd_2sms_campian_check_box mmagd_2sms_campain_check_box_message">
+							<label> <span
+								class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+								<input type="checkbox" name="entry.1434836598"
+								value="Multiple Web Pages" id="group_1434836598_4"
+								role="checkbox" class="ss-q-checkbox" /> <label
+								class="ss-choice-label mmagd_label_check_list"
+								for="group_1434836598_4"> <span> </span></label></label>
+						</div>
+						<div class="mmagd_2sms_campain_send_txt">
+							<span class="mmagd_2sms_campain_text_field">Insert Item</span>
+						</div>
+					</div>
+					<div style="display: none;">
+						<select class="mmagd_2sms_campain_select_2">
+							<option>Recipient’s Name</option>
+							<option>Marcom</option>
+							<option>VIS</option>
+							<option>Social media</option>
+							<option>Markting</option>
+						</select>
+					</div>
+					<div class="mmagd_2sms_campain_insert_name">
+						<div
+							class="ss-choice-item mmagd_2sms_campian_check_box mmagd_2sms_campain_check_box_message">
+							<label> <span
+								class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+								<h:selectBooleanCheckbox
+									value="#{campaignActiveBean.templateDiv}" class="ss-q-checkbox"
+									valueChangeListener="#{campaignActiveBean.isTempChecked}"
+									id="group_1434836598_5">
+									<f:ajax render=":edit-campaign-form:template_script"
+										execute="@this" />
+								</h:selectBooleanCheckbox> <label class="ss-choice-label mmagd_label_check_list"
+								for="edit-campaign-form:group_1434836598_5"> <span>
+								</span></label></label>
+						</div>
+						<div class="mmagd_2sms_campain_send_txt">
+							<h:outputText value="#{msgs.use_template}"
+								styleClass="mmagd_2sms_campain_text_field tempelate_button" />
+						</div>
+						<h:panelGroup id="template_script">
+							<script>
+							var checkTempFalg = ${campaignActiveBean.templateChecked};
+							
+							$(function() {
+								
+				
+									if (checkTempFalg) {
+										
+										  $('.mmagd_2sms_campain_radio_btn_pos_2').fadeTo('fast',1); 
+										/*  $('.mmagd_2sms_campain_template_options_history.bg').css(
+												'display', 'none'); */
+										$('.mmagd_2sms_campain_radio_btn_pos_2').css(
+												'pointer-events', 'auto');
+										/* $('.mmagd_2sms_campain_template_options_history').css(
+												'overflow-y', 'auto'); */
+										
+									} else {
+									
+										  $('.mmagd_2sms_campain_radio_btn_pos_2').fadeTo('fast',0.5);   
+										$('.mmagd_2sms_campain_template_options_history.bg').css(
+												'display', 'block');
+										$('.mmagd_2sms_campain_radio_btn_pos_2').css(
+												'pointer-events', 'none');
+										/* $('.mmagd_2sms_campain_template_options_history').css(
+												'overflow', 'hidden'); */
+									
+									}
+								});
+							
+						</script>
+						</h:panelGroup>
+					</div>
+					<div class="mmagd_2sms_campain_template_message_erea">
+						<div class="mmagd_2sms_campain_message_txt">
+							<h:inputTextarea
+								styleClass="messageEdit mmagd_2sms_campain_text_area_txt"
+								value="#{campaignActiveBean.newSmsText}" id="user-text"
+								onkeyup="updateCountdownEdit();" >
+								 <f:ajax event="keyup" execute="@this" 
+					    listener="#{campaignActiveBean.campaingTemplateChange(campaignActiveBean.newSmsText)}" 
+					    render=":edit-campaign-form:editButton"/>
+								</h:inputTextarea>
+						</div>
+						<h:panelGroup id="tempPanel">
+							<h:panelGroup>
+								<div class="mmagd_2sms_campain_template_options_history">
+									<div class="bg mmagd_2sms_campain_template_options_history bg">
+										<div
+											class="ss-choice-item mmagd_radio_btn_visa_card mmagd_2sms_campain_radio_btn_pos_2">
+											<label> <span
+												class="ss-choice-item-control goog-inline-block"></span> <h:selectOneRadio
+													value="#{campaignActiveBean.choosenTemplate}"
+													name="entry.644119837" id="group_644119837_4" role="radio"
+													class="ss-q-radio template-table" aria-label="Tarrif"
+													required=""
+													valueChangeListener="#{campaignActiveBean.getTempClicked}"
+													layout="pageDirection">
+													<f:selectItems itemValue="#{temp.text}"
+														itemLabel="#{temp.templateName}"
+														value="#{campaignActiveBean.templateList}" var="temp" />
+													<f:ajax execute="@this"
+														render=":edit-campaign-form:user-text :edit-campaign-form:editButton"
+														onevent="updateTextEditBoxEvent" />
+
+												</h:selectOneRadio> <label class="ss-choice-label" for="group_644119837_4">
+													<span></span>
+											</label></label>
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+						</h:panelGroup>
+						<div class="mmagd_2sms_campain_history_message_left_btn">
+							<div class="mmagd_2sms_campain_send_txt">
+								<span class="countdownEdit mmagd_2sms_campain_text_field" />
+								<h:inputHidden value="#{campaignActiveBean.editedLanguage}"
+									id="numMess" />
+							</div>
+						</div>
+						<h:panelGroup id="redirect-panel">
+							<script>
+							
+							if (#{campaignActiveBean.goTohistory} == true) {
+								$(".tefa_content_loads_here").empty();
+								$('#mmagd_2sms_wrapper').css('display', 'block');
+								$.get("../campaign/history.xhtml", function(
+										data) {
+									$(".tefa_content_loads_here").append(data);
+								
+								});
+							}
+							
+						</script>
+						</h:panelGroup>
+						
+						<div class="mmagd_2sms_campain_template_btn_save"
+							style="display: block;">
+							<h:panelGroup id="editButton" >
+							<ul class="actionsList">
+								<li class=""><h:commandLink rendered="#{campaignActiveBean.campaignEdited}"
+										value="#{campaignActiveBean.saveButtonFlag == 'true' ? msgs.save_with_schedule :  msgs.save}"
+										id="save-create" styleClass="active">
+										<f:ajax event="action"
+											listener="#{campaignActiveBean.editCampaign}"
+											execute="edit-campaign-form"
+											render="edit-campaign-form:error_mess :edit-campaign-form:redirect-panel" />
+									</h:commandLink></li>
+								<li><h:commandLink value="#{msgs.close}" styleClass="black"
+										onclick="hideEditCampPage()">
+										<f:ajax execute="@this" />
+									</h:commandLink></li>
+							</ul>
+							</h:panelGroup>
+						</div>
+						
+					</div>
+				</div>
+
+			</h:form>
+		</div>
+
+		<h:form id="choose-edit-list">
+			<div class="overlayBG"></div>
+			<div class="overlaydiv" id="payment_methods_overlay_44">
+				<script>
+		 $(function() {
+			 $( ".tabs" ).tabs();
+			 });</script>
+
+				<div class="overlayContainerOuter">
+					<div class="overlayContainerInner">
+						<div class="overlayContent" id="payment_methods_overlay_content"
+							style="left: 400px;">
+							<a href="#" class="overlayClose overlayClose_iconed"
+								onclick="hideoverlay('payment_methods_overlay_44');">#{msgs.close}</a>
+							<h4>#{msgs.new_contact_or_list}</h4>
+							<div class="tabs" style="overflow: hidden; border: none;">
+								<ul
+									style="width: 500px !important; border: none; background: none; color: none; border-bottom-style: 1px solid #AAAAAA"
+									class="tab-ul">
+									<li class="arabic-style tablist"><a href="#tabs-1">#{msgs.lists}</a></li>
+									<li class="arabic-style tablist"><a href="#tabs-2">#{msgs.contacts}</a></li>
+								</ul>
+								<div id="tabs-1">
+									<div class="modalDetails arabic-style3"
+										style="display: block; min-width: auto;">
+										<span class="mmagd_right_icon"></span>
+
+										<div class="paymentoption">
+											<br />
+											<div class="mmagd_2sms_contact_list_view_overlay">
+												<div class="mmagd_2sms_contact_list_search_area"
+													style="margin: 0px !important;">
+													<div
+														class="mmagd_2sms_conatct_list_search_icon mmagd_search_icon_position"></div>
+													<h:inputText
+														styleClass="mmagd_2sms_campain_txt_field_erea mmagd_2sms_contact_page_input_padding"
+														type="text" size="105"
+														value="#{campaignActiveBean.listNameSearch}"
+														onkeypress="return checkEnter1(event)"
+														style="width:437px !important;margin-left:0px !important;margin-top:0px !important;border:1px solid #999999 !important;">
+														<f:ajax event="keyup"
+															listener="#{campaignActiveBean.searchList}"
+															render="choose-edit-list:all-list-table :choose-edit-list:script-panel" />
+													</h:inputText>
+												</div>
+
+												<h:commandLink id="search-hidden-button"
+													style="display:hidden">
+													<f:ajax listener="#{campaignActiveBean.searchList}"
+														render="choose-edit-list:all-list-table :choose-edit-list:script-panel" />
+												</h:commandLink>
+
+												<h:panelGroup id="script-panel">
+													<script>
+													var searchMode = ${campaignActiveBean.searchMode};
+													$(function() {
+														$('#myscroll6').scroll(
+															function() {
+																var scroll = $('#myscroll6');
+																if (scroll[0].scrollHeight
+																	- scroll.scrollTop() == scroll
+																	.height()) //scrollTop is 0 based
+															{
+																if(searchMode == false){
+																	$(".loadButton887").click();
+																}
+															}
+														});			
+														
+													});
+													
+													 function clickOnListInfo(ele) {
+															var x = $(ele);
+															$(x).parent().next().click();
+														}
+												</script>
+												</h:panelGroup>
+
+												<div
+													class="mmagd_2sms_conatct_list_check_list_conatct_overlay"
+													style="width: 474px; overflow: auto" id="myscroll6">
+													<ul>
+														<h:dataTable value="#{campaignActiveBean.listInfo}"
+															var="bean" styleClass="jsfTable" id="all-list-table">
+															<h:column>
+																<li
+																	class="mmagd_2sms_conatct_list_check_box_list_sub_link">
+																	<div
+																		class="ss-choice-item mmagd_2sms_campian_check_box">
+																		<label><span
+																			class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+																			<h:selectBooleanCheckbox
+																				value="#{campaignActiveBean.checked[bean.listId]}"
+																				styleClass="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"
+																				id="group_1434836598_12">
+																				<f:ajax event="valueChange" execute="@this"
+																					render=":choose-edit-list:script-panel" />
+																			</h:selectBooleanCheckbox> <label
+																			class="ss-choice-label mmagd_label_check_list  list_label_test"
+																			for="" onclick="getId(this)"><span></span></label></label>
+																	</div>
+																	<div onclick="clickOnListInfo(this)">
+																		<span class="mmagd_2sms_campain_text_field"
+																			style="color: #444444; font-size: 12px">#{bean.listName}</span>
+																		<span class="mmagd_2sms_contact_list_no_of_contact">(
+																			#{bean.contactsCount} #{msgs.contacts})</span>
+																	</div>
+																</li>
+																<h:commandLink style="display:none"
+																	actionListener="#{campaignActiveBean.getUpdateListId(bean.listId)}">
+																	<f:ajax
+																		render=":choose_contacts_from_list:all-contacts-list-table :choose-edit-list:show-contact-list" />
+																</h:commandLink>
+
+															</h:column>
+														</h:dataTable>
+														<h:panelGroup id="show-contact-list">
+															<script>
+																		if(${campaignActiveBean.listCheckedFlag} == false){
+																			showOverlay('payment_methods_overlay884');
+																		}
+																	</script>
+														</h:panelGroup>
+													</ul>
+												</div>
+												<h:commandLink
+													actionListener="#{campaignActiveBean.pageNext1}"
+													styleClass="loadButton887">
+													<f:ajax execute="@this"
+														render=":choose-edit-list:all-list-table" />
+												</h:commandLink>
+											</div>
+										</div>
+
+									</div>
+								</div>
+								<div id="tabs-2">
+									<h:panelGroup id="individual-contact-list">
+										<div
+											class="mmagd_2sms_conatct_list_check_list_conatct_overlay tmohamed-contact-list">
+											<ul>
+												<h:dataTable
+													value="#{campaignActiveBean.individualContactList}"
+													var="con" styleClass="jsfTable" id="all-contact-list-table">
+													<h:column>
+														<li>
+															<div class="ss-choice-item mmagd_2sms_campian_check_box">
+																<label> <span
+																	class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+																	<h:selectBooleanCheckbox
+																		value="#{campaignActiveBean.checked2[con.msisdn]}"
+																		styleClass="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"
+																		id="group_1434836598_188" /> <label
+																	class="ss-choice-label mmagd_label_check_list  list_label_test"
+																	for="" onclick="getId(this)"> <span></span></label></label>
+															</div> <span class="mmagd_2sms_campain_text_field"
+															style="color: #444444; font-size: 12px">#{con.msisdn}
+																<h:outputText value="- #{con.firstName}"
+																	rendered="#{con.firstName != null}" escape="false" />
+														</span>
+														</li>
+													</h:column>
+												</h:dataTable>
+											</ul>
+										</div>
+									</h:panelGroup>
+									<ul class="actionsList web2sms-list arabic-style">
+										<li><h:commandLink value="#{msgs.add_new_contact}"
+												rendered="#{campaignActiveBean.individualFlag}"
+												styleClass="black"
+												onclick="showOverlay('payment_methods_overlay224')">
+												<f:ajax event="action" execute="choose-edit-list"
+													render=":edit-campaign-form:test-div :edit-campaign-form:numOfContact :choose-edit-list:all-list-table" />
+											</h:commandLink></li>
+									</ul>
+								</div>
+							</div>
+
+							<div
+								class="confirm_to_charge_withcredit_card arabic-style actions-panel-width">
+								<ul class="actionsList flipped web2sms-list" style="width: 80px">
+									<li><h:commandLink value="#{msgs.cancel}"
+											onclick="hideoverlay('payment_methods_overlay_44');"
+											styleClass="overlayClose">
+											<f:ajax />
+										</h:commandLink></li>
+								</ul>
+
+								<ul class="actionsList flipped web2sms-list done-button-width">
+									<li><h:commandLink value="#{msgs.done}"
+											styleClass="overlayClose active"
+											onclick="hideoverlay('payment_methods_overlay_44');">
+											<f:ajax event="action"
+												listener="#{campaignActiveBean.getSelectedLists}"
+												execute="choose-edit-list"
+												render=":edit-campaign-form:test-div :edit-campaign-form:editButton :edit-campaign-form:numOfContact :choose-edit-list:all-list-table" />
+										</h:commandLink></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+		<h:form id="add_new_contact_form">
+			<div class="overlaydiv" id="payment_methods_overlay224">
+				<div class="overlayContainerOuter">
+					<div class="overlayContainerInner">
+						<div class="overlayContent" id="payment_methods_overlay_content"
+							style="left: 400px;">
+							<a href="#" class="overlayClose overlayClose_iconed"
+								onclick="hideCustomoverlay('payment_methods_overlay224');">#{msgs.close}</a>
+							<div class="modalDetails" style="display: block;">
+								<span class="mmagd_right_icon"></span>
+								<h2>
+									<h:outputText value="#{msgs.add_new_contact}" />
+								</h2>
+								<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+								<div class="paymentoption">
+									<br />
+									<h:panelGroup id="bank-panel">
+										<h:panelGroup id="error_mess">
+											<div class="#{general.facesSeverity}">
+												<span> </span>
+												<h:panelGroup
+													rendered="#{(general.facesSeverity == 'disclaimer error')}">
+													<h3>#{msgs.error}</h3>
+												</h:panelGroup>
+												<h:panelGroup
+													rendered="#{(general.facesSeverity == 'disclaimer success')}">
+													<h3>#{msgs.success}</h3>
+												</h:panelGroup>
+
+												<h:messages layout="table" showSummary="false"
+													showDetail="true" infoClass="disclaimer success"
+													errorClass="disclaimer error"
+													style="border-collapse:inherit !important;" />
+
+											</div>
+										</h:panelGroup>
+										<table style="clear: both; margin-top: 20px;">
+											<tr>
+												<td><span class="mmagd_2sms_campain_text_field_3">#{msgs.first_name}</span>
+												</td>
+												<td><h:inputText
+														value="#{campaignActiveBean.firstName}"
+														styleClass="mmagd_2sms_campain_txt_field_erea"
+														id="first-name" size="25" /></td>
+											</tr>
+
+											<tr>
+												<td><span class="mmagd_2sms_campain_text_field">#{msgs.contact_number}</span></td>
+												<td><h:inputText value="#{campaignActiveBean.msisdn}"
+														styleClass="mmagd_2sms_campain_txt_field_erea" id="msisdn"
+														size="25" /></td>
+											</tr>
+										</table>
+
+										<h:panelGroup id="close-add-contact-panel">
+											<script>
+											if (#{campaignActiveBean.contactAddedSuccess} == true) {
+												hideCustomoverlay('payment_methods_overlay224');
+											}
+									</script>
+										</h:panelGroup>
+										<div class="mmagd_2sms_campain_template_btn_save">
+											<ul class="actionsList">
+												<li class="removeaddnew"><h:commandLink
+														styleClass="overlayClose active" value="#{msgs.done}"
+														action="#{campaignActiveBean.createNewContact}">
+														<f:ajax event="action" execute="@form"
+															render=":add_new_contact_form:bank-panel :add_new_contact_form:error_mess :choose-edit-list:individual-contact-list :add_new_contact_form:close-add-contact-panel" />
+													</h:commandLink></li>
+											</ul>
+										</div>
+									</h:panelGroup>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+		<h:form id="choose_contacts_from_list">
+			<div class="overlaydiv" id="payment_methods_overlay884">
+				<div class="overlayContainerOuter">
+					<div class="overlayContainerInner">
+						<div class="overlayContent" id="payment_methods_overlay_content"
+							style="left: 400px;">
+							<a href="#" class="overlayClose overlayClose_iconed"
+								onclick="hideCustomoverlay('payment_methods_overlay884');">#{msgs.close}</a>
+							<div class="modalDetails" style="display: block;">
+								<span class="mmagd_right_icon"></span>
+								<h2>
+									<h:outputText value="#{msgs.choose_contacts}" />
+								</h2>
+								<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+								<div class="paymentoption">
+									<br />
+
+									<script>
+													$(function() {
+														$('#myscroll78').scroll(
+															function() {
+																var scroll = $('#myscroll78');
+																if (scroll[0].scrollHeight
+																	- scroll.scrollTop() == scroll
+																	.height()) //scrollTop is 0 based
+															{
+																$(".loadButton78").click();
+															}
+														});			
+														
+													});
+												</script>
+									<div class="mmagd_2sms_conatct_list_check_list_conatct_overlay"
+										style="overflow: auto" id="myscroll78">
+										<ul>
+											<h:dataTable value="#{campaignActiveBean.contactList}"
+												var="bean" styleClass="jsfTable"
+												id="all-contacts-list-table">
+												<h:column>
+													<li>
+														<div class="ss-choice-item mmagd_2sms_campian_check_box">
+															<label> <span
+																class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+																<h:selectBooleanCheckbox
+																	value="#{campaignActiveBean.checked3[bean.msisdn]}"
+																	styleClass="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"
+																	id="group_1434836598_8568">
+																	<f:ajax event="valueChange" execute="@this" />
+																</h:selectBooleanCheckbox> <label
+																class="ss-choice-label mmagd_label_check_list  list_label_test"
+																for="" onclick="getId(this)"> <span></span></label></label>
+														</div> <span class="mmagd_2sms_campain_text_field"
+														style="color: #444444; font-size: 12px">#{bean.msisdn}
+															<h:outputText value="- #{bean.firstName}"
+																rendered="#{bean.firstName != null}" escape="false" />
+													</span>
+													</li>
+												</h:column>
+											</h:dataTable>
+
+										</ul>
+
+									</div>
+									<h:commandLink actionListener="#{campaignActiveBean.pageNext1}"
+										styleClass="loadButton78" style="display:none;">
+										<f:ajax execute="@this"
+											render=":choose_contacts_from_list:all-contacts-list-table" />
+									</h:commandLink>
+
+									<div
+										class="confirm_to_charge_withcredit_card arabic-style actions-panel-width">
+										<ul class="actionsList flipped web2sms-list"
+											style="width: 80px">
+											<li><h:commandLink value="#{msgs.cancel}"
+													onclick="hideCustomoverlay('payment_methods_overlay884');"
+													styleClass="overlayClose">
+													<f:ajax event="action" />
+												</h:commandLink></li>
+										</ul>
+										<ul class="actionsList flipped web2sms-list done-button-width">
+											<li><h:commandLink value="#{msgs.done}"
+													styleClass="overlayClose active"
+													onclick="hideCustomoverlay('payment_methods_overlay884');">
+													<f:ajax event="action"
+														listener="#{campaignActiveBean.getSelectedContactsFromList}"
+														execute="choose_contacts_from_list"
+														render=":choose-edit-list:all-contact-list-table" />
+												</h:commandLink></li>
+										</ul>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+		<h:form id="change-sender-name">
+			<div class="overlayBG"></div>
+			<div class="overlaydiv" id="payment_methods_overlay_3">
+				<div class="overlayContainerOuter">
+					<div class="overlayContainerInner">
+						<div class="overlayContent" id="payment_methods_overlay_content"
+							style="left: 400px;">
+
+							<h:commandLink styleClass="overlayClose overlayClose_iconed"
+								onclick="hideoverlay('payment_methods_overlay_3');"
+								value="#{msgs.close}"
+								actionListener="#{campaignActiveBean.clearAfterCancel}">
+								<f:ajax
+									render=":change-sender-name:error_mess :change-sender-name:sender-input" />
+							</h:commandLink>
+
+							<div class="modalDetails" style="display: block;">
+								<span class="mmagd_right_icon"></span>
+								<h2>#{msgs.send_request}</h2>
+								<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+								<h:panelGroup id="error_mess">
+									<div class="#{general.facesSeverity}">
+										<span> </span>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer error')}">
+											<h3>#{msgs.error}</h3>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer success')}">
+											<h3>#{msgs.success}</h3>
+										</h:panelGroup>
+
+										<h:messages layout="table" showSummary="false"
+											showDetail="true" infoClass="disclaimer success"
+											errorClass="disclaimer error"
+											style="border-collapse:inherit !important;" />
+									</div>
+								</h:panelGroup>
+								<div class="paymentoption">
+									<br /> <span class="mmagd_txt_confirm">#{msgs.do_you_want_to_continue}
+									</span>
+								</div>
+								<br />
+								<div
+									class="mmagd_2sms_cmpain_new_send_request_txt_field sender_input">
+									<h:inputText value="#{campaignActiveBean.changeSenderName}"
+										class="mmagd_2sms_campain_txt_field_erea" size="40"
+										id="sender-input" onkeypress="return checkEnter(event)" />
+								</div>
+
+								<h:panelGroup id="close-panel">
+									<script>
+											if (#{campaignActiveBean.senderNameSucces} == true) {
+											
+													hideoverlay('payment_methods_overlay_3');
+												}	
+									</script>
+								</h:panelGroup>
+
+
+								<div class="confirm_to_charge_withcredit_card_1">
+									<ul class="actionsList flipped">
+										<li><h:commandLink styleClass="overlayClose black"
+												onclick="hideoverlay('payment_methods_overlay_3');"
+												value="#{msgs.cancel}"
+												actionListener="#{campaignActiveBean.clearAfterCancel}">
+												<f:ajax
+													render=":edit-campaign-form:error_mess :change-sender-name:sender-input :change-sender-name:error_mess" />
+											</h:commandLink></li>
+										<li><h:commandLink value="#{msgs.submit}"
+												styleClass="overlayClose active"
+												action="#{campaignActiveBean.changeSenderNameNew}">
+												<f:ajax event="action" execute="change-sender-name"
+													render=":edit-campaign-form:error_mess :change-sender-name:close-panel :change-sender-name:error_mess" />
+											</h:commandLink></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+
+		<h:form id="add-new-sender-form">
+			<div class="overlayBG"></div>
+			<div class="overlaydiv" id="payment_methods_overlay_55">
+				<div class="overlayContainerOuter">
+					<div class="overlayContainerInner">
+						<div class="overlayContent" id="payment_methods_overlay_content"
+							style="left: 400px;">
+
+							<h:commandLink styleClass="overlayClose overlayClose_iconed"
+								onclick="hideoverlay('payment_methods_overlay_55');"
+								value="#{msgs.close}"
+								actionListener="#{campaignActiveBean.clearAfterCancel}">
+								<f:ajax
+									render=":add-new-sender-form:error_mess :add-new-sender-form:sender-input" />
+							</h:commandLink>
+
+							<div class="modalDetails" style="display: block;">
+								<span class="mmagd_right_icon"></span>
+								<h2>#{msgs.send_request}</h2>
+								<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+								<h:panelGroup id="error_mess">
+									<div class="#{general.facesSeverity}">
+										<span> </span>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer error')}">
+											<h3>#{msgs.error}</h3>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{(general.facesSeverity == 'disclaimer success')}">
+											<h3>#{msgs.success}</h3>
+										</h:panelGroup>
+
+										<h:messages layout="table" showSummary="false"
+											showDetail="true" infoClass="disclaimer success"
+											errorClass="disclaimer error"
+											style="border-collapse:inherit !important;" />
+									</div>
+								</h:panelGroup>
+								<div class="paymentoption">
+									<br /> <span class="mmagd_txt_confirm">#{msgs.do_you_want_to_continue}
+									</span>
+								</div>
+								<br />
+								<div
+									class="mmagd_2sms_cmpain_new_send_request_txt_field sender_input">
+									<h:inputText value="#{campaignActiveBean.newSenderName}"
+										class="mmagd_2sms_campain_txt_field_erea" size="40"
+										id="sender-input" onkeypress="return checkEnter(event)" />
+								</div>
+
+								<h:panelGroup id="close-panel">
+									<script>
+											if (#{campaignActiveBean.senderNameSucces} == true) {
+											
+													hideoverlay('payment_methods_overlay_55');
+												}	
+									</script>
+								</h:panelGroup>
+
+
+								<div class="confirm_to_charge_withcredit_card_1">
+									<ul class="actionsList flipped">
+										<li><h:commandLink styleClass="overlayClose black"
+												onclick="hideoverlay('payment_methods_overlay_55');"
+												value="#{msgs.cancel}"
+												actionListener="#{campaignActiveBean.clearAfterCancel}">
+												<f:ajax
+													render=":edit-campaign-form:error_mess :add-new-sender-form:sender-input :add-new-sender-form:error_mess" />
+											</h:commandLink></li>
+										<li><h:commandLink value="#{msgs.submit}"
+												styleClass="overlayClose active"
+												action="#{campaignActiveBean.addNewSenderName}">
+												<f:ajax event="action" execute="add-new-sender-form"
+													render=":edit-campaign-form:error_mess :add-new-sender-form:close-panel :add-new-sender-form:error_mess" />
+											</h:commandLink></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+		<h:form id="confirm-delete-form">
+			<div class="overlayBG"></div>
+			<div class="overlaydiv" id="payment_methods_overlay_56">
+				<div class="overlayContainerOuter">
+					<div class="overlayContainerInner">
+						<div class="overlayContent" id="payment_methods_overlay_content"
+							style="left: 400px;">
+
+							<h:commandLink styleClass="overlayClose overlayClose_iconed"
+								onclick="hideoverlay('payment_methods_overlay_56');"
+								value="#{msgs.close}"
+								actionListener="#{campaignActiveBean.clearAfterCancel}">
+								<f:ajax
+									render=":edit-campaign-form:error_mess :edit-campaign-form:chooseAccountSenderPanel :edit-campaign-form:single-sender-panel :edit-campaign-form:DeleteCommandLinkContainerPanelGroupID" />
+							</h:commandLink>
+
+							<div class="modalDetails" style="display: block;">
+								<span class="mmagd_right_icon"></span>
+								<h2>#{msgs.confirmation}</h2>
+								<hr id="paymentoptihr" class="deactivate_bundel_overlay_hrline" />
+								<div class="paymentoption">
+
+									<br /> <span class="mmagd_txt_confirm"> <h:panelGroup
+											id="DeleteSenderConfirmationMessagePanelGroupID">
+											<h:outputFormat value="#{msgs.confirm_delete_sender}"
+												rendered="#{campaignActiveBean.campaignEditObj.senderName != null}">
+												<f:param
+													value=": #{campaignActiveBean.campaignEditObj.senderName}" />
+											</h:outputFormat>
+
+											<h:outputFormat value="#{msgs.confirm_delete_sender}"
+												rendered="#{campaignActiveBean.campaignEditObj.senderName == null}">
+												<f:param value="" />
+											</h:outputFormat>
+										</h:panelGroup>
+									</span> <br />
+								</div>
+
+								<div class="confirm_to_charge_withcredit_card">
+
+									<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+										<li><a href="#" title="#" class="overlayClose black"
+											onclick="hideoverlay('payment_methods_overlay_56');">
+												<div>
+													<div>#{msgs.no}</div>
+												</div>
+										</a></li>
+									</ul>
+
+									<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+										<li><h:commandLink styleClass="overlayClose active"
+												onclick="hideoverlay2('payment_methods_overlay_56');"
+												value="#{msgs.yse}"
+												action="#{campaignActiveBean.deleteSingleSender}">
+												<f:ajax
+													render=":edit-campaign-form:error_mess :edit-campaign-form:chooseAccountSenderPanel :edit-campaign-form:single-sender-panel :edit-campaign-form:DeleteCommandLinkContainerPanelGroupID" />
+											</h:commandLink></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</h:form>
+
+	</f:view>
+</body>
+</html>

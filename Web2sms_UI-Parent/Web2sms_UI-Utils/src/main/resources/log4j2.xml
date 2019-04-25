@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<Configuration>
+    <Appenders>
+        <RollingRandomAccessFile name="APP_UTILS_appender"  fileName="web2sms-ui/logs/web2sms_app.log"
+                                 filePattern="web2sms-ui/logs/web2sms_app.log.%d{yyyy-MM-dd}" append="true">
+            <PatternLayout pattern="%d{yyyyMMdd HH:mm:ss.SSS z} | %p | %X{LOGIN_ID} - %x | %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+        <RollingRandomAccessFile name="WEB_MODULE_appender"  fileName="web2sms-ui/logs/web2sms_web.log"
+                                 filePattern="web2sms-ui/logs/web2sms_web.log.%d{yyyy-MM-dd}" append="true">
+            <PatternLayout pattern="%d{yyyyMMdd HH:mm:ss.SSS z} | %p | %X{LOGIN_ID} - %x | %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+        
+         <RollingRandomAccessFile name="ENCTYPTION_UTILS_appender"  fileName="web2sms-ui/logs/web2sms_encyrption.log"
+                                 filePattern="web2sms-ui/logs/web2sms_encryption.log.%d{yyyy-MM-dd}" append="true">
+            <PatternLayout pattern="%d{yyyyMMdd HH:mm:ss.SSS z} | %p  | %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+
+    <Loggers>
+        <Root level="trace">
+        </Root>
+        <!--===================================================================================================-->
+        <AsyncLogger name="APP_UTILS" level="INFO">
+            <AppenderRef ref="APP_UTILS_appender"/>
+        </AsyncLogger>
+        <AsyncLogger name="WEB_MODULE" level="INFO">
+            <AppenderRef ref="WEB_MODULE_appender"/>
+        </AsyncLogger>
+        <AsyncLogger name="ENCTYPTION_UTILS" level="trace">
+            <AppenderRef ref="ENCTYPTION_UTILS_appender"/>
+        </AsyncLogger>
+    </Loggers>
+</Configuration>

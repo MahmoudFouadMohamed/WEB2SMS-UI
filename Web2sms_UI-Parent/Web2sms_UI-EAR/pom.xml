@@ -1,0 +1,155 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>Web2sms_UI-EAR</artifactId>
+	<packaging>ear</packaging>
+
+	<parent>
+		<artifactId>Web2sms_UI-Parent</artifactId>
+		<groupId>com.edafa.web2sms</groupId>
+		<version>2.5B</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Web2sms_UI-Utils</artifactId>
+			<version>${project.version}</version>
+			<type>ejb</type>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>Web2sms_UI-main</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.edafa.jee</groupId>
+			<artifactId>app-error-manager</artifactId>
+			<version>0.2.2</version>
+			<type>ejb</type>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- <dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> 
+			<version>1.2.17</version> </dependency> <dependency> <groupId>${project.groupId}.lib</groupId> 
+			<artifactId>ini4j</artifactId> <version>0.5.2</version> </dependency> -->
+	</dependencies>
+
+	<build>
+		<finalName>Web2sms_UI-EAR</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-ear-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<applicationName>Web2sms_UI_EAR</applicationName>
+					<displayName>Web2sms_UI_EAR</displayName>
+					<version>6</version>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
+					<initializeInOrder>true</initializeInOrder>
+					<modules>
+						<webModule>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>Web2sms_UI-main</artifactId>
+							<context-root>web2sms</context-root>
+							<bundleFileName>Web2sms_UI-main.war</bundleFileName>
+						</webModule>
+						<ejbModule>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>Web2sms_UI-Utils</artifactId>
+							<bundleFileName>Web2sms_UI-Utils.jar</bundleFileName>
+						</ejbModule>
+						<ejbModule>
+							<groupId>com.edafa.jee</groupId>
+							<artifactId>app-error-manager</artifactId>
+							<bundleFileName>AppErrorManager.jar</bundleFileName>
+						</ejbModule>
+						<jarModule>
+							<groupId>com.edafa.utils</groupId>
+							<artifactId>jcommons</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+						<jarModule>
+							<groupId>org.apache.logging.log4j</groupId>
+							<artifactId>log4j-api</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+						<jarModule>
+							<groupId>org.apache.logging.log4j</groupId>
+							<artifactId>log4j-core</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+						<jarModule>
+							<groupId>org.apache.logging.log4j</groupId>
+							<artifactId>log4j-web</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+						<jarModule>
+							<groupId>com.lmax</groupId>
+							<artifactId>disruptor</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+
+
+						<jarModule>
+							<groupId>com.edafa.web2sms</groupId>
+							<artifactId>EncyrptionUtil</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+						<jarModule>
+							<groupId>com.google.guava</groupId>
+							<artifactId>guava</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+
+
+						<jarModule>
+							<groupId>org.apache.commons</groupId>
+							<artifactId>commons-pool2</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+						<jarModule>
+							<groupId>org.bouncycastle</groupId>
+							<artifactId>bcprov-jdk15on</artifactId>
+							<bundleDir>lib</bundleDir>
+						</jarModule>
+
+
+
+
+					</modules>
+					<envEntries>
+						<env-entry>
+							<env-entry-name>java:app/env/basedir</env-entry-name>
+							<env-entry-type>java.lang.String</env-entry-type>
+							<env-entry-value>web2sms-ui/</env-entry-value>
+						</env-entry>
+						<env-entry>
+							<env-entry-name>java:app/env/basedirfiles</env-entry-name>
+							<env-entry-type>java.lang.String</env-entry-type>
+							<env-entry-value>web2sms-ui/files</env-entry-value>
+						</env-entry>
+						<env-entry>
+							<env-entry-name>java:app/env/baseconfigdir</env-entry-name>
+							<env-entry-type>java.lang.String</env-entry-type>
+							<env-entry-value>web2sms-ui/configuration/</env-entry-value>
+						</env-entry>
+					</envEntries>
+				</configuration>
+			</plugin>
+			<!-- <plugin> <groupId>com.oracle.weblogic</groupId> <artifactId>weblogic-maven-plugin</artifactId> 
+				<version>12.1.2-0-0</version> <executions> Deploy the application to the 
+				server <execution> <phase>pre-integration-test</phase> <goals> <goal>deploy</goal> 
+				</goals> <configuration> <adminurl>t3://127.0.0.1:7101</adminurl> <user>weblogic</user> 
+				<password>welcome1</password> <middlewareHome>/home/mark/space/maven/wls030213</middlewareHome> 
+				The location of the file or directory to be deployed <source>${project.build.directory}/Web2sms_UI-EAR.ear</source> 
+				The target servers where the application is deployed <targets>AdminServer</targets> 
+				<verbose>true</verbose> <name>Web2sms_UI-EAR</name> </configuration> </execution> 
+				</executions> </plugin> -->
+		</plugins>
+	</build>
+
+</project>

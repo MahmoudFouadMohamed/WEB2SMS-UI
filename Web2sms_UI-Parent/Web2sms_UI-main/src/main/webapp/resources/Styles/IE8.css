@@ -1,0 +1,108 @@
+input {
+	width: auto !important;
+}
+
+/*input[type="radio"] {
+	float: left;
+	display: block;
+}
+
+input[type="radio"]+label {
+	color: #333;
+	font-family: Arial, sans-serif;
+	font-size: 13px;
+}
+
+input[type="radio"]+label span {
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	margin: -1px 4px 0 0;
+	vertical-align: middle;
+	background: url(img/buttons.png) -54px top no-repeat;
+	cursor: pointer;
+	display: none;
+}
+
+input[type="radio"]:checked+label span {
+	background: url(img/buttons.png) -35px top no-repeat;
+}
+
+input[type="checkbox"] {
+	float: left;
+	display: block
+}
+
+input[type="checkbox"]+label {
+	color: #333;
+	font-family: Arial, sans-serif;
+	font-size: 13px;
+}
+
+input[type="checkbox"]+label span {
+	display: inline-block;
+	width: 18px;
+	height: 20px;
+	margin: -1px 4px 0 0;
+	vertical-align: middle;
+	background: url(img/buttons.png) 0px top no-repeat;
+	cursor: pointer;
+	display: none;
+}
+
+input[type="checkbox"]:checked+label span {
+	background: url(img/buttons.png) -17px top no-repeat;
+}*/
+.overlaydiv {
+	opacity: 0;
+	display: none;
+	position: fixed;
+	top: 0px;
+	width: 100px;
+	height: 100px;
+	left: 0px;
+	background-repeat: repeat-x;
+	background-image: url(../images/OverLaybg.png);
+}
+
+.overlayBG {
+	display: none !important;
+}
+
+input[type="radio"] {
+	display: block !important;
+}
+
+input[type="radio"]+label {
+	color: #333 !important;
+	font-family: Arial, sans-serif !important;
+	font-size: 13px !important;
+}
+
+input[type="radio"]+label span {
+	display: none !important;
+}
+
+input[type="checkbox"] {
+	display: block !important;
+}
+
+input[type="checkbox"]+label {
+	color: #333 !important;
+	font-family: Arial, sans-serif !important;
+	font-size: 13px !important;
+}
+
+input[type="checkbox"]+label span {
+	display: none !important;
+}
+
+table input[type="radio"]+label {
+	margin-top: -15px !important;
+	background: none !important;
+}
+
+table input[type="radio"]:checked+label {
+	margin-top: -15px !important;
+	background: none !important;
+}

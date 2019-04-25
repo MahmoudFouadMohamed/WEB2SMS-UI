@@ -1,0 +1,202 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+	<script>
+		$(function() {
+			$('.mmagd_2sms_campain_full_Reports_History > ul > li > div')
+					.click(
+							function(e) {
+								$(
+										'.mmagd_2sms_campain_full_Reports_History > ul > li > div')
+										.removeClass('active');
+								$(this).addClass('active');
+							});
+
+			$('.tefa_History_Section_container h3 span a').click(
+					function(e) {
+						$('.tefa_campaign_checklist_to_delete label').css(
+								'display', 'block');
+
+					});
+
+		});
+
+		function hideHistoryPage() {
+			$(".tefa_content_loads_here").empty();
+			$.get("../campaign/active-camapaigns.xhtml",
+					function(data) {
+						$(".loading-img").css('display', 'none');
+						$(".tefa_content_loads_here").append(data);
+			});
+		}
+	</script>
+</h:head>
+<body>
+	<f:view locale="#{localeBean.language}">
+		<div class="tefa_History_Section_container" style="display: block;">
+			<h:form id="history-form">
+                                <h:outputText style="display: none;" value="#{campaignHistoryBean.emptyString}"/>
+				<h:panelGroup id="error_mess">
+					<div class="#{general.facesSeverity}">
+						<span> </span>
+						<h:panelGroup
+							rendered="#{(general.facesSeverity == 'disclaimer error')}">
+							<h3>#{msgs.error}</h3>
+						</h:panelGroup>
+						<h:panelGroup
+							rendered="#{(general.facesSeverity == 'disclaimer success')}">
+							<h3>#{msgs.success}</h3>
+						</h:panelGroup>
+
+						<h:messages layout="table" showSummary="false" showDetail="true"
+							infoClass="disclaimer success" errorClass="disclaimer error"
+							style="border-collapse:inherit !important;"
+							styleClass="messages-ui" />
+
+					</div>
+				</h:panelGroup>
+
+				<h3>
+					#{msgs.campaign_history}
+					<h:panelGroup id="history_edit_button">
+						<h:commandLink value="#{msgs.edit}" style="font-weight: bold;">
+							<f:ajax render=":history-form:error_mess" />
+						</h:commandLink>
+					</h:panelGroup>
+				</h3>
+
+				<h:panelGroup id="history-list">
+					<script>
+						$('.mmagd_2sms_campain_full_Reports_History > ul > li > div')
+						.click(
+								function(e) {
+									$(
+											'.mmagd_2sms_campain_full_Reports_History > ul > li > div')
+											.removeClass('active');
+									$(this).addClass('active');
+								});
+					</script>
+					<div class="tefa_campaigns_content">
+						<div class="mmagd_2sms_campain_full_Reports_History">
+							<ul>
+								<li><ui:repeat
+										value="#{campaignHistoryBean.historyCampaignList}" var="bean">
+										<div class="mmagd_2sms_full_campain_percentage custom-table">
+											<ul>
+												<li class="tefa_campaign_checklist_to_delete"><label><span
+														class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+														<h:selectBooleanCheckbox
+															value="#{campaignHistoryBean.checked[bean.campaignId]}"
+															id="group_1434836598_35" class="ss-q-checkbox" /> <label
+														class="ss-choice-label mmagd_label_check_list list_label_test"
+														for="" onclick="getId(this)"><span></span></label></label></li>
+
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.campaign_name}</span></li>
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.campaignName}</span></li>
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.start_date_and_time}</span></li>
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.scheduleStartTimestamp}</span></li>
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.frequency}</span></li>
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.scheduleFrequency}</span></li>
+												<li><span
+													class="mmagd_2sms_full_campain_percentage_txt_">#{msgs.status}</span></li>
+												<li class="tefa_campaign_history_status"><span
+													class="mmagd_2sms_full_campain_percentage_txt_bold">#{bean.status}</span></li>
+
+											</ul>
+											<div class="mmagd_2sms_full_campain_percentage">
+												<table width="700" border="0" cellpadding="5">
+													<tr>
+														<td width="13%" rowspan="2">#{msgs.creation_date}</td>
+														<td width="17%" rowspan="2">#{bean.creationTimestamp}</td>
+														<td width="19%" rowspan="2">#{msgs.sender_name}</td>
+														<td width="6%" rowspan="2">#{bean.senderName}</td>
+														<td width="15%" rowspan="2">#{msgs.total_sms}</td>
+														<td width="6%" rowspan="2">#{bean.smsSegCount}</td>
+													</tr>
+													<tr>
+														<td valign="bottom"></td>
+													</tr>
+													<tr>
+														<td>#{msgs.end_date}</td>
+														<td>#{bean.endTimestamp}</td>
+														<td>#{msgs.number_of_messages}</td>
+														<td>#{bean.submittedSMSCount}</td>
+														<td>#{msgs.sms_sent}</td>
+														<td>#{bean.submittedSMSSegCount}</td>
+													</tr>
+
+												</table>
+											</div>
+										</div>
+
+									</ui:repeat></li>
+							</ul>
+						</div>
+					</div>
+				</h:panelGroup>
+				
+				<h:panelGroup id="pagination-buttons">
+					<h:panelGroup rendered="#{campaignHistoryBean.tableFlag}"
+						 styleClass="arabic-style">
+						<ul class="actionsList3">
+							<li class="arabic-style"><h:commandLink value="#{msgs.first}"
+									disabled="#{campaignHistoryBean.firstRow == 0}"
+									rendered="#{campaignHistoryBean.tableFlag}"
+									actionListener="#{campaignHistoryBean.pageFirst}"
+									styleClass="black">
+									<f:ajax
+										render=":history-form:history-list :history-form:pagination-buttons" />
+								</h:commandLink></li>
+	
+							<t:dataList value="#{campaignHistoryBean.pages}" var="page">
+								<li class="arabic-style"><h:commandLink value="#{page}"
+										actionListener="#{campaignHistoryBean.page}"
+										rendered="#{page != campaignHistoryBean.currentPage}">
+										<f:ajax
+											render=":history-form:history-list :history-form:pagination-buttons"
+											execute="@form" />
+									</h:commandLink> <h:outputText value="#{page}" escape="false"
+										rendered="#{page == campaignHistoryBean.currentPage}" /></li>
+							</t:dataList>
+							<li class="arabic-style"><h:commandLink value="#{msgs.last}"
+									disabled="#{campaignHistoryBean.firstRow + campaignHistoryBean.rowsPerPage >= campaignHistoryBean.totalRows}"
+									rendered="#{campaignHistoryBean.tableFlag}"
+									actionListener="#{campaignHistoryBean.pageLast}"
+									styleClass="black">
+									<f:ajax
+										render=":history-form:history-list :history-form:pagination-buttons" />
+								</h:commandLink></li>
+						</ul>
+					</h:panelGroup>
+				</h:panelGroup>
+				
+				<ul class="actionsList flipped tmohamed-float">
+					<li class=""><h:commandLink styleClass="active"
+							value="#{msgs.delete}"
+							actionListener="#{campaignHistoryBean.deleteHistory}"
+							rendered="#{campaignHistoryBean.historyTableFlag}">
+							<f:ajax execute="@form"
+								render=":history-form:history-list :history-form:pagination-buttons :history-form:error_mess" />
+						</h:commandLink></li>
+
+					<li><h:commandLink value="#{msgs.close}" styleClass="black"
+							rendered="#{campaignHistoryBean.historyTableFlag}"
+							onclick="hideHistoryPage()">
+							<f:ajax execute="@this" />
+						</h:commandLink></li>
+				</ul>
+			</h:form>
+		</div>
+	</f:view>
+</body>
+</html>

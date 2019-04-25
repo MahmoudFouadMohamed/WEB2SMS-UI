@@ -1,0 +1,687 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:t="http://myfaces.apache.org/tomahawk">
+<h:head>
+
+</h:head>
+<body>
+	<ui:composition
+            template="#{localeBean.language == 'ar' ? '../resources/AR/Cloud Portal _ Homepage.xhtml' : '../resources/EN/Cloud Portal _ Homepage.xhtml'}">
+		<ui:define name="content">
+
+			<script>
+			//<![CDATA[
+			        
+		function checkEnter(e) {
+			if (e.keyCode == 13) {
+				return false;
+			}
+		}
+
+		function checkEnter1(e) {
+			if (e.keyCode == 13) {
+				document.getElementById("contact-form:search-hidden-button")
+						.click();
+				return false;
+			}
+		}
+		
+	
+
+	
+				$(document).ready(function(e) {
+					
+					$(".dial").knob({
+						min : "0",
+						max : "#{mainBean.totalSms}",
+						width : 106,
+						height : 106,
+						thickness : .20,
+						displayInput : false,
+						fgColor : "#ff9900",
+						bgColor : "#ebebeb",
+						readOnly : true
+					});
+					$({
+						value : 0
+					}).animate(
+							{
+								value : #{mainBean.consumedQuota} + #{mainBean.reservedQuota}
+							},
+							{
+								duration : 950,
+								easing : "swing",
+								progress : function() {
+									$(".dial").val(Math.round(this.value))
+											.trigger("change");
+								}
+							});
+					$(".dial2").knob({
+						min : "0",
+						max : "100",
+						width : 106,
+						height : 106,
+						thickness : .20,
+						displayInput : false,
+						fgColor : "#ff9900",
+						bgColor : "#ebebeb",
+						readOnly : true
+					});
+					$({
+						value : 0
+					}).animate(
+							{
+								value : 0
+							},
+							{
+								duration : 950,
+								easing : "swing",
+								progress : function() {
+									$(".dial2").val(Math.round(this.value))
+											.trigger("change");
+								}
+							});
+					
+	                $(".full_width").attr("placeholder", "${msgs.search_By_Group_Name}");
+	                $(".group_name_creation").attr("placeholder", "${msgs.Enter_Group_Name}");
+					
+								
+			$(".mmagd_2sms_contact_sub_contact li").click(function(e) {
+								$(".mmagd_2sms_contact_sub_contact li").removeClass("activesubcont");
+								$(this).addClass("activesubcont");});
+		});
+
+				function loadGroupUsers(data){
+                                    if(data !== null && data.status==="complete") 
+                                        showOverlay("Edit_current_contact1");
+                                }	
+
+	
+					//]]>
+				
+					</script>
+
+
+
+                    <f:view locale="#{localeBean.language}">
+				<div class="AEthemeContainer">
+                                        <ui:include src="/logout/logout-panel.xhtml"/>
+					<h:form style="width:950px;">
+						<h1>#{msgs.main_page_title}</h1>
+						<div class="canvas_Right">
+							<div class="pay_as_you_go_progresses_200mb_gift_pic">
+								<div>
+									<canvas width="0" height="0"></canvas>
+									<input class="dial small" value="0" />
+								</div>
+								<div
+									class="pay_as_you_go_progresses_gift_200_mb_pro_pic_text_all">
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_num">#{mainBean.reservedAndConsumed}</div>
+									<div class="pay_as_you_go_progresses_200mb_gift_pic_text_unit">#{msgs.of}
+										#{mainBean.totalSms}</div>
+								</div>
+							</div>
+						</div>
+
+						<span class="tefa_welocme_member">#{msgs.welcome}
+							#{mainBean.user.username}</span>
+						<br />
+						<br />
+						<span class="tefa_current_plan">#{msgs.plan}<span>
+								#{mainBean.userAcc.account.tier.tierName} </span></span>
+						<h:panelGroup
+                                                    rendered="#{mainBean.canShowPendingNotification and mainBean.waitingApprovalCount ne 0}">
+							<a href="/web2sms/campaign/Campaigns.xhtml?status=pending"><span
+								class="tefa_current_plan main-button3"
+								style="font-style: normal; font-weight: normal; text-decoration: underline; cursor: pointer; font-size: 12pt;">
+									#{msgs.you_have}<span> #{mainBean.waitingApprovalCount}
+										#{msgs.campaigns_lower_case} </span> #{msgs.campaigns_to_be_approved}
+							</span></a>
+						</h:panelGroup>
+					</h:form>
+					<div class="newtabs">
+						<ul>
+							<li class="#{mainBean.tabsClass} tab"><a
+								href="/web2sms/campaign/Campaigns.xhtml">#{msgs.campaigns} </a></li>
+							<li class="#{mainBean.tabsClass} tab2 "><a
+								href="/web2sms/list/Contacts.xhtml"> #{msgs.contacts}</a></li>
+							<li class="#{mainBean.tabsClass} tab3"><a
+								href="/web2sms/template/Template.xhtml"> #{msgs.templates}</a></li>
+							<li class="#{mainBean.tabsClass} tab4"><a
+								href="/web2sms/report/Reports.xhtml"> #{msgs.reports}</a></li>
+							<h:panelGroup rendered="#{mainBean.showUsersTab}">
+								<li class="#{mainBean.tabsClass} tab5"><a
+									href="/web2sms/user/Users.xhtml">#{msgs.users}</a></li>
+							</h:panelGroup>
+							<h:panelGroup rendered="#{mainBean.showGroupsTab}">
+								<li class="#{mainBean.tabsClass} tab6 activeone"><a
+									href="/web2sms/group/Groups.xhtml">#{msgs.groups}</a></li>
+							</h:panelGroup>
+						</ul>
+					</div>
+				</div>
+				<h:form id="edit-contact-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="Edit_current_contact1">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="" style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('Edit_current_contact1');">#{msgs.close}</a>
+									<div class="modalDetails" style="display: block;">
+										<h:panelGroup>
+											<h2>#{msgs.users}</h2>
+										</h:panelGroup>
+
+										<h:panelGroup id="error_mess">
+											<div class="#{(general.facesSeverity == 'disclaimer success')?groupBean.msgsClassForUsersPanel : general.facesSeverity}">
+												<span> </span>
+												<h:panelGroup
+													rendered="#{(general.facesSeverity == 'disclaimer error')}">
+													<h3>#{msgs.error}</h3>
+												</h:panelGroup>
+												<h:panelGroup
+													rendered="#{(general.facesSeverity == 'disclaimer success')  and groupBean.allDefaultGroupUsers.size() ne 0}">
+													<h3>#{msgs.success}</h3>
+												</h:panelGroup>
+
+												<h:messages layout="table" showSummary="false"
+													showDetail="true" infoClass="disclaimer success"
+													errorClass="disclaimer error"
+													style="border-collapse:inherit !important;"
+													styleClass="messages-ui" />
+
+											</div>
+										</h:panelGroup>
+
+										<hr class="deactivate_bundel_overlay_hrline" />
+										<div class="">
+											<h:panelGroup id="edit-contact-list-panel">
+												<h:panelGroup>
+													<ul>
+														<h:dataTable var="par"
+															value="#{groupBean.allDefaultGroupUsers}"
+															id="sub-contact-table">
+															<h:column>
+																<li
+																	class="mmagd_2sms_conatct_list_check_box_list_sub_link listItem"
+																	style="cursor: auto;"><div>
+																		<div
+																			class="ss-choice-item mmagd_2sms_campian_check_box">
+																			<label><span
+																				class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+																				<h:selectBooleanCheckbox
+																					value="#{groupBean.selectedUsers[par.userId]}"
+																					styleClass="ss-q-checkbox"
+                                                                                                                                                                        disabled="#{(not groupBean.canEditGroupUsers) or par.username==groupBean.userAcc.username or groupBean.groupBasic.default}"
+																					id="group_1434836598_13">
+                                                                                                                                                                    <f:ajax event="valueChange" execute="@this" />
+																				</h:selectBooleanCheckbox> <label
+																				class="ss-choice-label mmagd_label_check_list list_label_test"
+																				for="" onclick="getId(this)"><span></span></label></label>
+																		</div>
+																		<span class="mmagd_2sms_campain_text_field"
+																			style="overflow: hidden; text-overflow: ellipsis; max-width: 240px; white-space: nowrap; display: inline-block;">
+																			<h:outputText value="#{par.username}" escape="false" />
+																		</span> <span class="mmagd_2sms_contact_list_no_of_contact"
+																			style="float: initial !important;"> 
+                                                                                                                                                    <h:panelGroup id="groupAdminPanel">
+                                                                                                                                                        <h:panelGroup rendered="#{groupBean.canMarkGroupsAdmin}">
+																				<h:panelGroup
+                                                                                                                                                                    rendered="#{groupBean.groupAdminId == par.userId and groupBean.selectedUsers.containsKey(par.userId)}">
+																					<span class="mmagd_2sms_contact_list_no_of_contact">
+																						#{msgs.admin} </span>
+																					<ui:remove>
+																						<h:commandLink
+																							class="mmagd_2sms_contact_list_no_of_contact"
+																							value="#{msgs.remove}"
+																							actionListener="#{groupBean.revokeGroupAdmin()}">
+																							<f:ajax
+																								onevent="showOverlay('Edit_current_contact1')"
+																								render=":edit-contact-form:edit-contact-list-panel :edit-contact-form:error_mess"></f:ajax>
+																						</h:commandLink>
+																					</ui:remove>
+																				</h:panelGroup>
+																				<h:panelGroup
+																					rendered="#{( groupBean.groupAdminId != par.userId or not groupBean.selectedUsers.containsKey(par.userId) )and par.username ne groupBean.userAcc.username }">
+																					<h:commandLink
+																						class="mmagd_2sms_contact_list_no_of_contact"
+																						value="#{msgs.make_admin}"
+																						actionListener="#{groupBean.markAsGroupAdmin(par.userId, par.username)}">
+																						<f:ajax
+																							onevent="showOverlay('Edit_current_contact1')"
+																							render=":edit-contact-form:edit-contact-list-panel :edit-contact-form:error_mess"></f:ajax>
+																					</h:commandLink>
+																				</h:panelGroup>
+                                                                                                                                                            </h:panelGroup>
+																			</h:panelGroup>
+																		</span>
+																	</div></li>
+															</h:column>
+														</h:dataTable>
+													</ul>
+												</h:panelGroup>
+												<ul class="actionsList flipped">
+													<li class=""><h:commandLink class=""
+															onclick="hideoverlay('Edit_current_contact1');">
+															<f:ajax listener="#{groupBean.cancel}"></f:ajax>
+															<div>#{msgs.cancel}</div>
+														</h:commandLink></li>
+													<h:panelGroup
+                                                                                                            rendered="#{not(groupBean.adminsGroup and groupBean.defaultGroup)}">
+
+														<li class="active"><h:commandLink
+																value="#{msgs.save}" styleClass="active"
+																actionListener="#{groupBean.changeGroupUsers}"
+																onclick="hideoverlay('Edit_current_contact1');">
+																<f:ajax execute="@form"
+																	render=":contact-form:sub-contact-table :contact-form:error_mess :edit-contact-form:edit-contact-list-panel" />
+															</h:commandLink></li>
+													</h:panelGroup>
+												</ul>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="change-list-name-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="Edit_current_contact">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="" style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('Edit_current_contact');">#{msgs.close}</a>
+									<div class="modalDetails" style="display: block;">
+										<h2>#{msgs.edit}</h2>
+										<hr class="deactivate_bundel_overlay_hrline" />
+										<div class="">
+											<div class="clearfix"></div>
+											<div class="mmagd_2sms_contact_add_new_txt_field List_name">
+												<span class="mmagd_2sms_campain_text_field">#{msgs.groupName}:
+												</span>
+												<h:inputText styleClass="mmagd_2sms_campain_txt_field_erea"
+													size="25" value="#{groupBean.editedGroupName}"
+													onkeypress="return checkEnter(event)" />
+											</div>
+											<div class="clearfix"></div>
+											<ul class="actionsList flipped">
+												<li class=""><h:commandLink class=""
+														onclick="hideoverlay('Edit_current_contact');">
+														<div>#{msgs.cancel}</div>
+														<f:ajax listener="#{groupBean.cancel}"
+															render=":change-list-name-form">
+														</f:ajax>
+													</h:commandLink></li>
+												<li class="active"><h:commandLink value="#{msgs.save}"
+														styleClass="active" action="#{groupBean.changeGroupName}"
+														onclick="hideoverlay('Edit_current_contact');">
+														<f:ajax execute="@form"
+															render=":contact-form:error_mess :contact-form:all-lists :contact-form:group-name :change-list-name-form" />
+													</h:commandLink></li>
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+				<h:form id="confirm-delete-form">
+					<div class="overlayBG"></div>
+					<div class="overlaydiv" id="payment_methods_overlay_1">
+						<div class="overlayContainerOuter">
+							<div class="overlayContainerInner">
+								<div class="overlayContent" id="IntraListOverlayDivContent_1"
+									style="left: 400px;">
+									<a href="#" class="overlayClose overlayClose_iconed"
+										onclick="hideoverlay('payment_methods_overlay_1');">#{msgs.close}</a>
+
+									<div class="modalDetails" style="display: block;">
+										<span class="mmagd_right_icon"></span>
+										<h2>#{msgs.confirmation}</h2>
+										<hr id="paymentoptihr"
+											class="deactivate_bundel_overlay_hrline" />
+										<div class="paymentoption">
+
+											<br /> <span class="mmagd_txt_confirm">#{msgs.continue_process}</span>
+											<br />
+										</div>
+
+										<div class="confirm_to_charge_withcredit_card">
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><ui:remove>
+														<a href="#" title="#" class="overlayClose black"
+															onclick="hideoverlay('payment_methods_overlay_1');">
+															<div>
+																<div>#{msgs.no}</div>
+															</div>
+														</a>
+													</ui:remove> <h:commandLink class="overlayClose black"
+														value="#{msgs.no}"
+														onclick="hideoverlay('payment_methods_overlay_1');">
+														<f:ajax execute="@form"
+															render=":contact-form:error_mess :contact-form:all-lists :contact-form:group-name" />
+													</h:commandLink></li>
+											</ul>
+
+											<ul class="actionsList flipped mmagd_action_btn_no_or_yes">
+												<li><h:commandLink styleClass="overlayClose active"
+														onclick="hideoverlay2('payment_methods_overlay_1');"
+														value="#{msgs.yse}"
+														actionListener="#{groupBean.deleteGroup}">
+														<f:ajax event="action"
+															render=":contact-form:error_mess :contact-form:all-lists "
+															execute="confirm-delete-form" />
+													</h:commandLink></li>
+											</ul>
+
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</h:form>
+
+
+				<div id="mmagd_2sms_wrapper">
+					<h:form id="contact-form">
+						<div class="mmagd_2sms_contact_list_content">
+
+							<div class="mmagd_2sms_contact_add_list_btn">
+								<ul class="actionsList">
+									<li><h:commandLink rendered="#{groupBean.canCreateGroup}"
+											class="mmagd_2sms_contact_list_btn_add arabic-style5"
+											style="width: 130px !important;"
+											onclick="clickOnUpdate(this)"
+											actionListener="#{groupBean.getSelectedGroup(null)}">
+											<f:ajax
+												render=":contact-form:group-name :contact-form:sub-contact-table  :change-list-name-form :contact-form:error_mess :contact-form:editRefreshPanel  :contact-form:deleteAddContactInList  " />
+
+											<div class="ss-choice-item mmagd_2sms_campian_check_box">
+												<label> <label
+													class="ss-choice-label mmagd_label_check_list list_label_test"
+													for="" onclick="getId(this)"><span></span></label></label>
+											</div>
+											<div class="mmagd_2sms_contact_list_add_icon"></div>
+											<div>#{msgs.add_new_group}</div>
+
+										</h:commandLink></li>
+								</ul>
+
+							</div>
+						</div>
+
+						<h:panelGroup id="error_mess">
+							<div class="#{general.facesSeverity}">
+								<span> </span>
+								<h:panelGroup
+									rendered="#{(general.facesSeverity == 'disclaimer error')}">
+									<h3>#{msgs.error}</h3>
+								</h:panelGroup>
+								<h:panelGroup
+                                                                    rendered="#{(general.facesSeverity == 'disclaimer success')}">
+									<h3>#{msgs.success}</h3>
+								</h:panelGroup>
+
+								<h:messages layout="table" showSummary="false" showDetail="true"
+                                                                            infoClass="disclamer success" errorClass="disclaimer error"
+									style="border-collapse:inherit !important;"
+									styleClass="messages-ui" />
+
+							</div>
+						</h:panelGroup>
+
+
+						<div class="mmagd_2sms_contact_list_list_view">
+
+							<div class="mmagd_2sms_contact_list_search_area">
+								<div
+									class="mmagd_2sms_conatct_list_search_icon main_list_search groups-search"></div>
+								<script>
+									   $(".full_width").attr("placeholder", "${msgs.search_By_Group_Name}");
+						                $(".group_name_creation").attr("placeholder", "${msgs.Enter_Group_Name}");
+						                </script>
+								<h:inputText class="full_width" size="150"
+									value="#{groupBean.searchValue}"
+									style="height:30px;padding-left:12px;padding-right:12px">
+									<f:ajax event="keyup" listener="#{groupBean.searchForGroup}"
+										render=":contact-form:all-lists :contact-form:pagination-buttons" />
+								</h:inputText>
+							</div>
+
+							<div class="mmagd_2sms_conatct_list_check_list_conatct">
+								<h:dataTable layout="unorderedList"
+									value="#{groupBean.listofGroups}" var="bean"
+									styleClass="mmagd_2sms_contact_sub_contact"
+									itemStyleClass="mmagd_2sms_conatct_list_check_box_list_sub_link"
+									id="all-lists">
+									<h:column>
+										<li class="listItem" onclick="clickOnUpdate(this)">
+											<div>
+												<div class="ss-choice-item mmagd_2sms_campian_check_box">
+													<label> <label
+														class="ss-choice-label mmagd_label_check_list list_label_test"
+														for="" onclick="getId(this)"><span></span></label></label>
+												</div>
+												<span class="mmagd_2sms_campain_text_field"
+													style="overflow: hidden; text-overflow: ellipsis; max-width: 150px; white-space: nowrap; display: inline-block;">#{bean.groupName}</span>
+
+												<span class="mmagd_2sms_contact_list_no_of_contact"
+													style="float: initial !important;"> <h:panelGroup
+														rendered="#{bean.default}">
+														<span class="mmagd_2sms_contact_list_no_of_contact"
+															style="float: initial !important;"> -
+															#{msgs.default_Group} </span>
+													</h:panelGroup>
+												</span> <span class="mmagd_2sms_contact_list_no_of_contact">
+                                                                                                    <h:commandLink value="#{msgs.users}" style="float:right;"
+														action="#{groupBean.populateGroupUsersToEdit(bean)}"
+														styleClass="arabic-style4">
+														<f:ajax
+															render=":edit-contact-form:edit-contact-list-panel :edit-contact-form:error_mess"
+															onevent="loadGroupUsers"
+															execute="@this" />
+													</h:commandLink>
+												</span>
+
+											</div>
+										</li>
+										<h:commandLink style="display:none"
+											actionListener="#{groupBean.getSelectedGroup(bean)}">
+											<f:ajax
+												render=":contact-form:group-name :contact-form:sub-contact-table  :change-list-name-form :contact-form:error_mess :contact-form:editRefreshPanel  :contact-form:deleteAddContactInList  " />
+
+										</h:commandLink>
+									</h:column>
+									<f:facet name="footer">
+										<div class=""></div>
+									</f:facet>
+								</h:dataTable>
+							</div>
+							<h:commandLink actionListener="#{groupBean.populateGroups}"
+								styleClass="loadButton5">
+								<f:ajax execute="@this"
+									render=":contact-form:all-lists :contact-form:error_mess :contact-form:sub-contact-table" />
+							</h:commandLink>
+
+							<h:panelGroup id="pagination-buttons">
+								<h:panelGroup rendered="#{groupBean.tableFlag}"
+									id="pagination-buttons-internal" style="float:left;width:auto"
+									styleClass="mmagd_2sms_contact_list_list_view arabic-style">
+									<ul class="actionsList3">
+										<li class="arabic-style"><h:commandLink
+												value="#{msgs.first}" disabled="#{groupBean.firstRow == 0}"
+												rendered="#{groupBean.tableFlag}"
+												actionListener="#{groupBean.pageFirst}" styleClass="black">
+												<f:ajax
+													render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form:error_mess" />
+											</h:commandLink></li>
+
+										<t:dataList value="#{groupBean.pages}" var="page">
+											<li class="arabic-style"><h:commandLink value="#{page}"
+													actionListener="#{groupBean.page}"
+													rendered="#{page != groupBean.currentPage}">
+													<f:ajax
+														render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form:error_mess"
+														execute="@form" />
+												</h:commandLink> <h:outputText value="#{page}" escape="false"
+													rendered="#{page == groupBean.currentPage}" /></li>
+										</t:dataList>
+										<li class="arabic-style"><h:commandLink
+												value="#{msgs.last}"
+												disabled="#{groupBean.firstRow + groupBean.rowsPerPage >= groupBean.totalRows}"
+												rendered="#{groupBean.tableFlag}"
+												actionListener="#{groupBean.pageLast}" styleClass="black">
+												<f:ajax
+													render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form:error_mess" />
+											</h:commandLink></li>
+									</ul>
+								</h:panelGroup>
+							</h:panelGroup>
+						</div>
+						<div id="update-list-nameDiv">
+							<div class="mmagd_2sms_contact_list_asset_contacts mmagd_SubList">
+								<div class="mmagd_2sms_contact_list_title_contacts_list_choose">
+
+									<div class="mmagd_2sms_contact_list_search_area">
+										<div class="mmagd_2sms_contact_list_title_lists">
+											<h:panelGroup id="group-name">
+												<h:panelGroup rendered="#{groupBean.editFlag}">
+
+													<h:outputText value="#{groupBean.groupBasic.groupName}" />
+													<span> #{msgs.group}</span>
+												</h:panelGroup>
+
+												<script>
+									   $(".full_width").attr("placeholder", "${msgs.search_By_Group_Name}");
+						                $(".group_name_creation").attr("placeholder", "${msgs.Enter_Group_Name}");
+						                </script>
+												<h:panelGroup rendered="#{not groupBean.editFlag}">
+
+													<div class="mmagd_2sms_contact_list_search_area">
+														<h:inputText
+															class="full_width group_name_creation"
+															size="150" value="#{groupBean.groupName}"
+															style="height:30px;padding-left:12px;padding-right:12px;width:380px !important">
+														</h:inputText>
+													</div>
+												</h:panelGroup>
+											</h:panelGroup>
+											<h:panelGroup id="editRefreshPanel">
+												<h:panelGroup rendered="#{groupBean.editFlag}">
+													<h:panelGroup
+														rendered="#{groupBean.canEditGroup and not groupBean.adminsFlag}">
+														<ul class="actionsList flipped">
+															<li style="margin-top: 0px;"><a href="#" title="#"
+																class="Edit_Contacts"
+																onclick="showOverlay('Edit_current_contact')">
+																	<div>
+																		<div>
+																			<i> </i>#{msgs.editGroupName}
+																		</div>
+																	</div>
+															</a></li>
+														</ul>
+													</h:panelGroup>
+												</h:panelGroup>
+											</h:panelGroup>
+										</div>
+									</div>
+								</div>
+								<div
+									class="mmagd_2sms_conatct_list_check_list_conatct mmagdinnergroup"
+									id="scroll-contact-div">
+									<ul>
+										<h:dataTable var="par" value="#{groupBean.allPrivileges}"
+											id="sub-contact-table">
+											<h:column>
+												<li
+													class="mmagd_2sms_conatct_list_check_box_list_sub_link listItem"
+													style="cursor: auto;"><div>
+														<div class="ss-choice-item mmagd_2sms_campian_check_box">
+															<label><span
+																class="ss-choice-item-control goog-inline-block mmagd_pay_bill_check_box"></span>
+																<h:selectBooleanCheckbox
+																	value="#{groupBean.selectedPrivillages[par.privilegeId]}"
+																	styleClass="ss-q-checkbox" id="group_1434836598_13"
+                                                                                                                                        disabled="#{groupBean.adminsFlag or not groupBean.canEditGroupPriv}">
+																	<f:ajax event="valueChange" execute="@this" />
+																</h:selectBooleanCheckbox> <label
+																class="ss-choice-label mmagd_label_check_list list_label_test"
+																for="" onclick="getId(this)"><span></span></label></label>
+														</div>
+														<span class="mmagd_2sms_campain_text_field"
+															style="overflow: hidden; text-overflow: ellipsis; max-width: 240px; white-space: nowrap; display: inline-block;">
+															<h:outputText
+																value="#{par.privilegeName} #{msgs.privliges}"
+																escape="false" />
+														</span>
+													</div></li>
+											</h:column>
+										</h:dataTable>
+									</ul>
+								</div>
+
+								<h:panelGroup id="deleteAddContactInList">
+									<h:panelGroup>
+										<div class="">
+											<ul class="actionsList flipped custom-list custom-flipped">
+												<h:panelGroup rendered="#{groupBean.editFlag}">
+													<li class=""><h:commandLink
+															rendered="#{groupBean.canEditGroupPriv and not groupBean.adminsFlag}"
+															styleClass="overlayClose active"
+															action="#{groupBean.changeGroupPriviliges}"
+															value="#{msgs.saveGroupPrivilege}">
+															<f:ajax render=":contact-form:error_mess" />
+														</h:commandLink></li>
+												</h:panelGroup>
+												<li class=""><h:commandLink
+														rendered="#{not groupBean.editFlag}"
+														styleClass="overlayClose active"
+														action="#{groupBean.createGroup}"
+														value="#{msgs.createGroup}">
+														<f:ajax render=":contact-form:all-lists :contact-form:pagination-buttons :contact-form" execute=":contact-form" />
+													</h:commandLink></li>
+
+												<li class=""><h:commandLink value="#{msgs.cancel}">
+														<f:ajax execute=":contact-form" render=":contact-form"
+															listener="#{groupBean.cancel}" />
+													</h:commandLink></li>
+											</ul>
+										</div>
+									</h:panelGroup>
+									<h:panelGroup rendered="#{groupBean.editeDeleteFlag}">
+										<h:panelGroup rendered="#{not groupBean.adminsFlag}">
+											<ul class="actionsList flipped ">
+												<li class=""><h:commandLink styleClass="black"
+														rendered="#{groupBean.canDeleteGroup}"
+														onclick="showOverlay('payment_methods_overlay_1');"
+														value="#{msgs.delete_group}">
+														<f:ajax execute=":contact-form" />
+													</h:commandLink></li>
+											</ul>
+										</h:panelGroup>
+									</h:panelGroup>
+
+								</h:panelGroup>
+							</div>
+						</div>
+					</h:form>
+				</div>
+
+			</f:view>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>
